@@ -1,0 +1,6 @@
+{
+  "wallet_profile": "yoshiki_main",
+  "quantum_address": "qmpNdwz8p_quantum_safe_dilithium_coordinates_abc123",
+  "secret_seed_phrase": "2923be84e16cd6ae529049f1f1bbe9ebb3a6db3c870c3e99245e0d1c06b747de",
+  "cryptography_standard": "Dilithium-Matrix-G2"
+}
