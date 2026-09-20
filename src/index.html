@@ -19,29 +19,35 @@
 <body>
 
 <div class="dashboard-container">
-    <h2 style="margin:0; text-align:center; letter-spacing:2px; text-shadow: 0 0 8px rgba(0,255,157,0.4);">📡 QMASK TACTICS REAL-TIME VIEWER</h2>
+    <h2 style="margin:0; text-align:center; letter-spacing:2px; text-shadow: 0 0 8px rgba(0,255,157,0.4);">📡 QMASK TACTICS COMBAT SYSTEMS</h2>
     <hr style="border:0; border-top: 2px solid #00ff9d; margin: 15px 0;">
     <div class="metric-line"><span>System Stature:</span> <span id="node-status" class="status-badge">PINGING DAEMON...</span></div>
     <div class="metric-line"><span>Simulated Block Height:</span> <span id="block-height-display" class="highlight">0</span></div>
+    <div class="metric-line"><span>Trophy Asset Rewards:</span> <span id="ftg-trophy-display" style="color:#fbbf24; font-weight:bold;">0 FTG</span></div>
     <div class="metric-line"><span>Visual Engine Era:</span> <span id="visual-era-display" style="color:#e11d48; font-weight:bold;">1-BIT VECTOR GRAPHICS</span></div>
 </div>
 
-<!-- 🎮 THE REAL-TIME GRAPHICS ENGINE -->
+<!-- 🎮 THE GAME VIEWPORT -->
 <canvas id="gameCanvas" width="640" height="320"></canvas>
 
 <div class="game-controls">
-    <button onclick="TriggerActionMove('STARK_BLIND')">🛡️ STARK BLIND</button>
-    <button onclick="TriggerActionMove('VOLCANIC_BURST')">🌋 VOLCANIC BURST</button>
-    <button onclick="SimulateBlockAdvance()">🧱 FORCE ADVANCE BLOCK</button>
+    <button onclick="TriggerActionMove('STARK_BLIND')">🛡️ STARK BLIND (+HP)</button>
+    <button onclick="TriggerActionMove('VOLCANIC_BURST')">🌋 VOLCANIC BURST (ATTACK)</button>
+    <button onclick="ResetCombatScenario()">🔄 RESET BATTLE</button>
+    <button onclick="SimulateBlockAdvance()">🧱 ADVANCE BLOCK</button>
 </div>
 
 <script>
     let simulatedBlockHeight = 13675;
+    let ftgTrophiesEarned = 0;
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     
-    // Particle matrix array for rendering real-time graphic impacts
+    let atomonHP = 100;
+    let coreuptHP = 100;
+    
     let combatParticles = [];
+    let floatingTexts = [];
 
     async function QueryNodeDaemonPipeline() {
         try {
@@ -63,125 +69,182 @@
 
     function SimulateBlockAdvance() {
         simulatedBlockHeight += 45000;
-        // Spawn transition rings when shifting eras
         SpawnExplosion(320, 160, "#a855f7", 30);
     }
 
+    function ResetCombatScenario() {
+        atomonHP = 100;
+        coreuptHP = 100;
+        floatingTexts = [];
+        SpawnExplosion(320, 160, "#00ff9d", 20);
+    }
+
     function TriggerActionMove(moveName) {
-        if (moveName === 'STARK_BLIND') {
-            // Shielding defensive loop: Spawn defensive rings around Atomon (left side)
-            SpawnExplosion(130, 130, "#38bdf8", 40);
-        } else if (moveName === 'VOLCANIC_BURST') {
-            // Eruption attack: Blast particles right into Coreupt (right side)
-            SpawnExplosion(500, 130, "#e11d48", 50);
+        if (coreuptHP <= 0 || atomonHP <= 0) {
+            SpawnFloatingText(320, 160, "BATTLE OVER! RESET SYSTEM", "#f87171");
+            return;
         }
+
+        if (moveName === 'STARK_BLIND') {
+            let healAmount = Math.floor(Math.random() * 15) + 5;
+            atomonHP = Math.min(100, atomonHP + healAmount);
+            SpawnExplosion(130, 130, "#38bdf8", 30);
+            SpawnFloatingText(130, 100, "+" + healAmount + " HP", "#38bdf8");
+            setTimeout(ExecuteAiCounterMove, 800);
+        } 
+        else if (moveName === 'VOLCANIC_BURST') {
+            let dmg = Math.floor(Math.random() * 25) + 10;
+            coreuptHP = Math.max(0, coreuptHP - dmg);
+            SpawnExplosion(500, 130, "#e11d48", 40);
+            SpawnFloatingText(500, 100, "-" + dmg + " HP", "#e11d48");
+            
+            if (coreuptHP <= 0) {
+                ftgTrophiesEarned += 1;
+                document.getElementById('ftg-trophy-display').innerText = ftgTrophiesEarned + " FTG";
+                SpawnExplosion(500, 130, "#fbbf24", 60);
+                SpawnFloatingText(320, 160, "👑 VICTORY! +1 FTG UNLOCKED", "#fbbf24");
+            } else {
+                setTimeout(ExecuteAiCounterMove, 800);
+            }
+        }
+    }
+
+    function ExecuteAiCounterMove() {
+        if (coreuptHP <= 0) return;
+        let aiDmg = Math.floor(Math.random() * 18) + 8;
+        atomonHP = Math.max(0, atomonHP - aiDmg);
+        SpawnExplosion(130, 130, "#fb923c", 30);
+        SpawnFloatingText(130, 100, "-" + aiDmg + " HP", "#fb923c");
     }
 
     function SpawnExplosion(x, y, color, count) {
         for (let i = 0; i < count; i++) {
             combatParticles.push({
-                x: x,
-                y: y,
+                x: x, y: y,
                 vx: (Math.random() - 0.5) * 8,
                 vy: (Math.random() - 0.5) * 8,
                 radius: Math.random() * 4 + 1,
-                alpha: 1,
-                color: color
+                alpha: 1, color: color
             });
         }
     }
 
-    function UpdateAndDrawParticles() {
+    function SpawnFloatingText(x, y, text, color) {
+        floatingTexts.push({
+            x: x, y: y, text: text, color: color,
+            vy: -1.2, alpha: 1
+        });
+    }
+
+    function UpdateGameElements() {
         for (let i = combatParticles.length - 1; i >= 0; i--) {
             let p = combatParticles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-            p.alpha -= 0.02; // Smooth fade away loop
-
-            if (p.alpha <= 0) {
-                combatParticles.splice(i, 1);
-                continue;
-            }
-
-            ctx.save();
-            ctx.globalAlpha = p.alpha;
-            ctx.fillStyle = p.color;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
+            p.x += p.vx; p.y += p.vy; p.alpha -= 0.02;
+            if (p.alpha <= 0) combatParticles.splice(i, 1);
+        }
+        for (let i = floatingTexts.length - 1; i >= 0; i--) {
+            let t = floatingTexts[i];
+            t.y += t.vy; t.alpha -= 0.015;
+            if (t.alpha <= 0) floatingTexts.splice(i, 1);
         }
     }
 
+    function DrawInterfaceHP(x, y, currentHP, width) {
+        ctx.strokeStyle = "#475569";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, width, 14);
+        
+        if (currentHP > 50) ctx.fillStyle = "#22c55e"; 
+        else if (currentHP > 20) ctx.fillStyle = "#eab308"; 
+        else ctx.fillStyle = "#ef4444"; 
+        
+        let fillWidth = (currentHP / 100) * width;
+        ctx.fillRect(x + 2, y + 2, Math.max(0, fillWidth - 4), 10);
+        
+        ctx.fillStyle = "#fff";
+        ctx.font = "10px monospace";
+        ctx.fillText(currentHP + "/100 HP", x + width/2 - 25, y + 11);
+    }
+
     function MainEngineRenderLoop() {
-        // Wipe screen clear on every individual frame tick
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         document.getElementById('block-height-display').innerText = simulatedBlockHeight;
 
-        // --- RENDER MATRIX BASED ON ACTIVE ERA HEIGHT ---
         if (simulatedBlockHeight <= 15000) {
             document.getElementById('visual-era-display').innerText = "1-BIT VECTOR ERA";
             document.getElementById('visual-era-display').style.color = "#00ff9d";
             canvas.style.borderColor = "#00ff9d";
 
-            ctx.strokeStyle = "#00ff9d";
-            ctx.lineWidth = 2;
-            
-            // Wireframe Atomon (Left)
-            ctx.strokeRect(80, 80, 100, 100);
-            ctx.beginPath(); ctx.moveTo(130, 80); ctx.lineTo(100, 50); ctx.lineTo(110, 80); ctx.stroke();
-            ctx.strokeText("ATOMON [LVL 1]", 75, 210);
+            ctx.strokeStyle = "#00ff9d"; ctx.lineWidth = 2;
+            if (atomonHP > 0) ctx.strokeRect(80, 80, 100, 100);
+            ctx.strokeText("ATOMON [LVL 1]", 75, 215);
+            DrawInterfaceHP(75, 55, atomonHP, 110);
 
-            // Wireframe Coreupt (Right)
-            ctx.strokeRect(440, 80, 120, 100);
-            ctx.strokeText("COREUPT [LVL 1]", 445, 210);
+            if (coreuptHP > 0) ctx.strokeRect(440, 80, 120, 100);
+            ctx.strokeText("COREUPT [LVL 1]", 445, 215);
+            DrawInterfaceHP(445, 55, coreuptHP, 110);
         } 
         else if (simulatedBlockHeight > 15000 && simulatedBlockHeight <= 100000) {
-            document.getElementById('visual-era-display').innerText = "8-BIT GAME BOY COLOR ERA";
+            document.getElementById('visual-era-display').innerText = "8-BIT GBC ERA";
             document.getElementById('visual-era-display').style.color = "#38bdf8";
             canvas.style.borderColor = "#38bdf8";
 
-            // Pokémon GBC Flat Sprites Shaded Layout
-            ctx.fillStyle = "#1e3a8a"; ctx.fillRect(80, 80, 100, 100);
-            ctx.fillStyle = "#38bdf8"; ctx.fillRect(95, 95, 30, 30);
-            ctx.fillStyle = "#ffffff"; ctx.font = "12px monospace"; ctx.fillText("ATOMON [8-BIT]", 82, 210);
+            if (atomonHP > 0) {
+                ctx.fillStyle = "#1e3a8a"; ctx.fillRect(80, 80, 100, 100);
+                ctx.fillStyle = "#38bdf8"; ctx.fillRect(95, 95, 30, 30);
+            }
+            ctx.fillStyle = "#ffffff"; ctx.font = "12px monospace"; ctx.fillText("ATOMON [8-BIT]", 82, 215);
+            DrawInterfaceHP(75, 55, atomonHP, 110);
 
-            ctx.fillStyle = "#b91c1c"; ctx.fillRect(440, 80, 120, 100);
-            ctx.fillStyle = "#f87171"; ctx.fillRect(460, 100, 80, 60);
-            ctx.fillStyle = "#ffffff"; ctx.fillText("COREUPT [8-BIT]", 450, 210);
+            if (coreuptHP > 0) {
+                ctx.fillStyle = "#b91c1c"; ctx.fillRect(440, 80, 120, 100);
+                ctx.fillStyle = "#f87171"; ctx.fillRect(460, 100, 80, 60);
+            }
+            ctx.fillStyle = "#ffffff"; ctx.fillText("COREUPT [8-BIT]", 450, 215);
+            DrawInterfaceHP(445, 55, coreuptHP, 110);
         } 
         else {
-            document.getElementById('visual-era-display').innerText = "16-BIT ADVANCED ERA (MAX UNLOCKED)";
+            document.getElementById('visual-era-display').innerText = "16-BIT ADVANCED ERA";
             document.getElementById('visual-era-display').style.color = "#a855f7";
             canvas.style.borderColor = "#a855f7";
 
-            // 16-Bit Smooth Render Gradients
             let gradient = ctx.createLinearGradient(0,0,640,0);
             gradient.addColorStop("0", "#a855f7"); gradient.addColorStop("1", "#3b82f6");
-            ctx.fillStyle = gradient;
-            ctx.font = "14px monospace";
-            ctx.fillText("🌟 SGL ENGINE EXECUTING HIGH-FIDELITY SPRITE MATRICES 🌟", 90, 40);
+            ctx.fillStyle = gradient; ctx.font = "14px monospace";
+            ctx.fillText("🌟 SGL ENGINE EXECUTING HIGH-FIDELITY SPRITE MATRICES 🌟", 90, 30);
 
-            ctx.fillStyle = "#6366f1"; ctx.beginPath(); ctx.arc(130, 130, 55, 0, 2 * Math.PI); ctx.fill();
-            ctx.fillStyle = "#fff"; ctx.fillText("ATOMON [16-BIT EMERALD STYLE]", 45, 210);
+            if (atomonHP > 0) {
+                ctx.fillStyle = "#6366f1"; ctx.beginPath(); ctx.arc(130, 130, 55, 0, 2 * Math.PI); ctx.fill();
+            }
+            ctx.fillStyle = "#fff"; ctx.fillText("ATOMON [16-BIT EMERALD STYLE]", 45, 215);
+            DrawInterfaceHP(75, 55, atomonHP, 110);
 
-            ctx.fillStyle = "#ec4899"; ctx.beginPath(); ctx.arc(500, 130, 60, 0, 2 * Math.PI); ctx.fill();
-            ctx.fillStyle = "#fff"; ctx.fillText("COREUPT [16-BIT VERSUS MODE]", 415, 210);
+            if (coreuptHP > 0) {
+                ctx.fillStyle = "#ec4899"; ctx.beginPath(); ctx.arc(500, 130, 60, 0, 2 * Math.PI); ctx.fill();
+            }
+            ctx.fillStyle = "#fff"; ctx.fillText("COREUPT [16-BIT VERSUS MODE]", 415, 215);
+            DrawInterfaceHP(445, 55, coreuptHP, 110);
         }
 
-        // Processing particle physics loops over top of the sprite canvases
-        UpdateAndDrawParticles();
+        UpdateGameElements();
+        
+        for (let p of combatParticles) {
+            ctx.save(); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color;
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+        }
+        for (let t of floatingTexts) {
+            ctx.save(); ctx.globalAlpha = t.alpha; ctx.fillStyle = t.color;
+            ctx.font = "bold 14px monospace"; ctx.fillText(t.text, t.x - 20, t.y); ctx.restore();
+        }
 
-        // Recursively trigger next screen paint frame smooth execution
         requestAnimationFrame(MainEngineRenderLoop);
     }
 
-    // Fire the loops
     QueryNodeDaemonPipeline();
     setInterval(QueryNodeDaemonPipeline, 3000);
-    requestAnimationFrame(MainEngineRenderLoop); // Instantly starts a constant 60 FPS graphics tick
+    requestAnimationFrame(MainEngineRenderLoop);
 </script>
 
 </body>
