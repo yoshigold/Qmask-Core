@@ -4,67 +4,184 @@
     <meta charset="UTF-8">
     <title>Qmask Tactics Alpha-0 Cockpit</title>
     <style>
-        body { background-color: #0b0f19; color: #00ff9d; font-family: 'Courier New', monospace; padding: 40px; display: flex; justify-content: center; align-items: center; min-height: 80vh; }
-        .dashboard-container { border: 2px solid #00ff9d; border-radius: 12px; padding: 35px; width: 100%; max-width: 600px; background-color: #111827; box-shadow: 0 0 25px rgba(0, 255, 157, 0.25); text-align: center; }
-        .status-badge { background-color: #064e3b; color: #34d399; border: 2px solid #34d399; padding: 6px 16px; border-radius: 6px; display: inline-block; font-weight: bold; font-size: 16px; letter-spacing: 1px; box-shadow: 0 0 10px rgba(52, 211, 153, 0.2); }
-        .metric-line { margin: 25px 0; font-size: 16px; border-bottom: 1px dashed #334155; padding-bottom: 12px; text-align: left; display: flex; justify-content: space-between; }
+        body { background-color: #0b0f19; color: #00ff9d; font-family: 'Courier New', monospace; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 95vh; user-select: none; }
+        .dashboard-container { border: 2px solid #00ff9d; border-radius: 12px; padding: 20px; width: 100%; max-width: 700px; background-color: #111827; box-shadow: 0 0 25px rgba(0, 255, 157, 0.25); margin-bottom: 20px; }
+        .status-badge { background-color: #064e3b; color: #34d399; border: 1px solid #34d399; padding: 4px 12px; border-radius: 4px; font-weight: bold; }
+        .metric-line { margin: 10px 0; font-size: 14px; border-bottom: 1px dashed #334155; padding-bottom: 6px; display: flex; justify-content: space-between; }
         .highlight { color: #38bdf8; font-weight: bold; }
-        h2 { margin-top: 0; letter-spacing: 2px; text-shadow: 0 0 8px rgba(0, 255, 157, 0.4); }
+        #gameCanvas { border: 4px solid #00ff9d; background-color: #000; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 157, 0.15); }
+        .game-controls { margin-top: 15px; display: flex; gap: 10px; }
+        button { background-color: #064e3b; color: #00ff9d; border: 2px solid #00ff9d; padding: 8px 16px; font-family: monospace; font-size: 14px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: all 0.1s ease; }
+        button:hover { background-color: #00ff9d; color: #000; }
+        button:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
 
 <div class="dashboard-container">
-    <h2>📡 QMASK TACTICS COCKPIT INTERFACE</h2>
-    <hr style="border: 0; border-top: 2px solid #00ff9d; margin-bottom: 30px;">
-    
-    <div class="metric-line">
-        <span>Network Status:</span> <span id="node-status" class="status-badge">SWEEPING MEMORY...</span>
-    </div>
-    <div class="metric-line">
-        <span>Active Node Identifier:</span> <span id="node-name" class="highlight">-</span>
-    </div>
-    <div class="metric-line">
-        <span>Communication Port Hook (P2P):</span> <span id="p2p-port" class="highlight">-</span>
-    </div>
-    <div class="metric-line">
-        <span>Remote Procedure Call Port (RPC):</span> <span id="rpc-port" class="highlight">-</span>
-    </div>
+    <h2 style="margin:0; text-align:center; letter-spacing:2px; text-shadow: 0 0 8px rgba(0,255,157,0.4);">📡 QMASK TACTICS REAL-TIME VIEWER</h2>
+    <hr style="border:0; border-top: 2px solid #00ff9d; margin: 15px 0;">
+    <div class="metric-line"><span>System Stature:</span> <span id="node-status" class="status-badge">PINGING DAEMON...</span></div>
+    <div class="metric-line"><span>Simulated Block Height:</span> <span id="block-height-display" class="highlight">0</span></div>
+    <div class="metric-line"><span>Visual Engine Era:</span> <span id="visual-era-display" style="color:#e11d48; font-weight:bold;">1-BIT VECTOR GRAPHICS</span></div>
+</div>
+
+<!-- 🎮 THE REAL-TIME GRAPHICS ENGINE -->
+<canvas id="gameCanvas" width="640" height="320"></canvas>
+
+<div class="game-controls">
+    <button onclick="TriggerActionMove('STARK_BLIND')">🛡️ STARK BLIND</button>
+    <button onclick="TriggerActionMove('VOLCANIC_BURST')">🌋 VOLCANIC BURST</button>
+    <button onclick="SimulateBlockAdvance()">🧱 FORCE ADVANCE BLOCK</button>
 </div>
 
 <script>
+    let simulatedBlockHeight = 13675;
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Particle matrix array for rendering real-time graphic impacts
+    let combatParticles = [];
+
     async function QueryNodeDaemonPipeline() {
         try {
-            // 🛠️ Target port 8329 explicitly to match our running reverse proxy
             const response = await fetch('http://localhost:8329', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ jsonrpc: "2.0", method: "getnodestatus", id: 1 })
             });
             const data = await response.json();
-            
             if (data.result) {
-                document.getElementById('node-status').innerText = "🟢 QMASK 100% OPERATIONAL";
+                document.getElementById('node-status').innerText = "🟢 SGL PIPELINE OPERATIONAL";
                 document.getElementById('node-status').style.backgroundColor = "#064e3b";
-                document.getElementById('node-status').style.color = "#34d399";
-                document.getElementById('node-status').style.borderColor = "#34d399";
-                
-                document.getElementById('node-name').innerText = data.result.active_node;
-                document.getElementById('p2p-port').innerText = data.result.p2p_port;
-                document.getElementById('rpc-port').innerText = data.result.rpc_port;
             }
         } catch (error) {
-            document.getElementById('node-status').innerText = "❌ DAEMON DISCONNECTED";
+            document.getElementById('node-status').innerText = "❌ LOCAL SANDBOX ACTIVE";
             document.getElementById('node-status').style.backgroundColor = "#7f1d1d";
-            document.getElementById('node-status').style.color = "#f87171";
-            document.getElementById('node-status').style.borderColor = "#f87171";
         }
     }
 
-    // Initialize immediate connection handshake
+    function SimulateBlockAdvance() {
+        simulatedBlockHeight += 45000;
+        // Spawn transition rings when shifting eras
+        SpawnExplosion(320, 160, "#a855f7", 30);
+    }
+
+    function TriggerActionMove(moveName) {
+        if (moveName === 'STARK_BLIND') {
+            // Shielding defensive loop: Spawn defensive rings around Atomon (left side)
+            SpawnExplosion(130, 130, "#38bdf8", 40);
+        } else if (moveName === 'VOLCANIC_BURST') {
+            // Eruption attack: Blast particles right into Coreupt (right side)
+            SpawnExplosion(500, 130, "#e11d48", 50);
+        }
+    }
+
+    function SpawnExplosion(x, y, color, count) {
+        for (let i = 0; i < count; i++) {
+            combatParticles.push({
+                x: x,
+                y: y,
+                vx: (Math.random() - 0.5) * 8,
+                vy: (Math.random() - 0.5) * 8,
+                radius: Math.random() * 4 + 1,
+                alpha: 1,
+                color: color
+            });
+        }
+    }
+
+    function UpdateAndDrawParticles() {
+        for (let i = combatParticles.length - 1; i >= 0; i--) {
+            let p = combatParticles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.alpha -= 0.02; // Smooth fade away loop
+
+            if (p.alpha <= 0) {
+                combatParticles.splice(i, 1);
+                continue;
+            }
+
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    function MainEngineRenderLoop() {
+        // Wipe screen clear on every individual frame tick
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        document.getElementById('block-height-display').innerText = simulatedBlockHeight;
+
+        // --- RENDER MATRIX BASED ON ACTIVE ERA HEIGHT ---
+        if (simulatedBlockHeight <= 15000) {
+            document.getElementById('visual-era-display').innerText = "1-BIT VECTOR ERA";
+            document.getElementById('visual-era-display').style.color = "#00ff9d";
+            canvas.style.borderColor = "#00ff9d";
+
+            ctx.strokeStyle = "#00ff9d";
+            ctx.lineWidth = 2;
+            
+            // Wireframe Atomon (Left)
+            ctx.strokeRect(80, 80, 100, 100);
+            ctx.beginPath(); ctx.moveTo(130, 80); ctx.lineTo(100, 50); ctx.lineTo(110, 80); ctx.stroke();
+            ctx.strokeText("ATOMON [LVL 1]", 75, 210);
+
+            // Wireframe Coreupt (Right)
+            ctx.strokeRect(440, 80, 120, 100);
+            ctx.strokeText("COREUPT [LVL 1]", 445, 210);
+        } 
+        else if (simulatedBlockHeight > 15000 && simulatedBlockHeight <= 100000) {
+            document.getElementById('visual-era-display').innerText = "8-BIT GAME BOY COLOR ERA";
+            document.getElementById('visual-era-display').style.color = "#38bdf8";
+            canvas.style.borderColor = "#38bdf8";
+
+            // Pokémon GBC Flat Sprites Shaded Layout
+            ctx.fillStyle = "#1e3a8a"; ctx.fillRect(80, 80, 100, 100);
+            ctx.fillStyle = "#38bdf8"; ctx.fillRect(95, 95, 30, 30);
+            ctx.fillStyle = "#ffffff"; ctx.font = "12px monospace"; ctx.fillText("ATOMON [8-BIT]", 82, 210);
+
+            ctx.fillStyle = "#b91c1c"; ctx.fillRect(440, 80, 120, 100);
+            ctx.fillStyle = "#f87171"; ctx.fillRect(460, 100, 80, 60);
+            ctx.fillStyle = "#ffffff"; ctx.fillText("COREUPT [8-BIT]", 450, 210);
+        } 
+        else {
+            document.getElementById('visual-era-display').innerText = "16-BIT ADVANCED ERA (MAX UNLOCKED)";
+            document.getElementById('visual-era-display').style.color = "#a855f7";
+            canvas.style.borderColor = "#a855f7";
+
+            // 16-Bit Smooth Render Gradients
+            let gradient = ctx.createLinearGradient(0,0,640,0);
+            gradient.addColorStop("0", "#a855f7"); gradient.addColorStop("1", "#3b82f6");
+            ctx.fillStyle = gradient;
+            ctx.font = "14px monospace";
+            ctx.fillText("🌟 SGL ENGINE EXECUTING HIGH-FIDELITY SPRITE MATRICES 🌟", 90, 40);
+
+            ctx.fillStyle = "#6366f1"; ctx.beginPath(); ctx.arc(130, 130, 55, 0, 2 * Math.PI); ctx.fill();
+            ctx.fillStyle = "#fff"; ctx.fillText("ATOMON [16-BIT EMERALD STYLE]", 45, 210);
+
+            ctx.fillStyle = "#ec4899"; ctx.beginPath(); ctx.arc(500, 130, 60, 0, 2 * Math.PI); ctx.fill();
+            ctx.fillStyle = "#fff"; ctx.fillText("COREUPT [16-BIT VERSUS MODE]", 415, 210);
+        }
+
+        // Processing particle physics loops over top of the sprite canvases
+        UpdateAndDrawParticles();
+
+        // Recursively trigger next screen paint frame smooth execution
+        requestAnimationFrame(MainEngineRenderLoop);
+    }
+
+    // Fire the loops
     QueryNodeDaemonPipeline();
-    // Keep data loops synchronized every 2 seconds
-    setInterval(QueryNodeDaemonPipeline, 2000);
+    setInterval(QueryNodeDaemonPipeline, 3000);
+    requestAnimationFrame(MainEngineRenderLoop); // Instantly starts a constant 60 FPS graphics tick
 </script>
 
 </body>
