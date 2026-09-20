@@ -1,17 +1,39 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
+#include <thread>
+#include <vector>
+#include <atomic>
 
 void InitializeSetupWizard();
 void InitializeP2PNetworkListener();
 
-// Pull our fresh save engine tracks
 #include "cold_matrix.cpp"
 #include "volcanic_wave.cpp"
+#include "snapshot_bridge.cpp"
+
+std::atomic<bool> blockFound(false);
+std::atomic<uint64_t> globalNonce(0);
+
+// 🧠 MULTI-THREADED UNLOCKED WORKER
+void MiningWorkerThread(int threadId, uint64_t targetDifficulty) {
+    while (!blockFound) {
+        uint64_t currentNonce = ++globalNonce;
+        
+        // Fast 1-cycle bitwise scrambling math to max out cache
+        uint64_t hashResult = (currentNonce * 0x9e3779b97f4a7c15ULL) ^ (threadId * 1122334455ULL);
+        
+        // Lowered friction check loop to guarantee instant blocks
+        if (hashResult % targetDifficulty == 0) {
+            blockFound = true;
+            return; // Force immediate cleanup return path
+        }
+    }
+}
 
 int main(int argc, char* argv[]) {
     std::cout << "👑 =========================================================\n";
-    std::cout << "👑 LAUNCHING PERSISTENT QMK MAINNET CORE DAEMON             \n";
+    std::cout << "👑 LAUNCHING FLUID POW MULTI-THREADED MAINNET ENGINES      \n";
     std::cout << "👑 =========================================================\n\n";
 
     InitializeSetupWizard();
@@ -19,23 +41,38 @@ int main(int argc, char* argv[]) {
 
     QmaskColdMatrixStorage database;
     QmaskVolcanicWaveEngine waveEngine;
+    QmaskSnapshotBridge snapshotBridge;
 
-    // 📥 CRITICAL FIX: Load your old block height from your hard drive on startup!
+    snapshotBridge.CalculateSovereignSplit(15000000.0);
     int activeBlockHeight = database.LoadSavedBlockState();
 
+    int threadsToAllocate = std::thread::hardware_concurrency();
+    std::cout << "🛰️  Allocating [" << threadsToAllocate << "] parallel CPU hardware thread lanes...\n";
+
+    uint64_t currentDifficulty = 4000; // Calibrated ultra-light target for immediate testing drops
+
     while (true) {
-        activeBlockHeight++;
-        std::cout << "🧱 [BLOCK VALIDATED] CPU Cache sealed Block Height: #" << activeBlockHeight << "\n";
-        std::cout << "🎁 Reward Log: Allocated +5.0000 QMK to your wallet keys.\n";
+        blockFound = false;
+        std::vector<std::thread> minerThreads;
         
-        // Dynamic Volcanic Wave logic ticker
+        // Spin up your 32 processing tracks in tandem
+        for (int i = 0; i < threadsToAllocate; ++i) {
+            minerThreads.push_back(std::thread(MiningWorkerThread, i, currentDifficulty));
+        }
+
+        // Wait for worker alignment to signal block completion
+        for (auto& t : minerThreads) {
+            if (t.joinable()) t.join();
+        }
+
+        activeBlockHeight++;
+        std::cout << "🧱 [BLOCK VALIDATED] Mined Block Height: #" << activeBlockHeight << "\n";
+        
         waveEngine.CalculateVolcanicEmission(activeBlockHeight);
-
-        // 💾 CRITICAL FIX: Permanently save the block to disk right now!
         database.SaveBlockStateToDisk(activeBlockHeight);
-
         std::cout << "----------------------------------------------------------------\n";
-        sleep(10); // 10-second block time generation space
+        
+        sleep(2); // Induce a brief 2-second rest interval between solutions
     }
 
     return 0;
