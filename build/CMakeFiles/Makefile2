@@ -64,6 +64,7 @@ CMAKE_BINARY_DIR = /mnt/c/Users/user/Desktop/Qmask-Core/build
 
 # The main recursive "all" target.
 all: CMakeFiles/moneud.dir/all
+all: CMakeFiles/moneu-cli.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -72,6 +73,7 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/moneud.dir/clean
+clean: CMakeFiles/moneu-cli.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -81,7 +83,7 @@ clean: CMakeFiles/moneud.dir/clean
 CMakeFiles/moneud.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/user/Desktop/Qmask-Core/build/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target moneud"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/user/Desktop/Qmask-Core/build/CMakeFiles --progress-num=6,7,8,9,10,11,12 "Built target moneud"
 .PHONY : CMakeFiles/moneud.dir/all
 
 # Build rule for subdir invocation for target.
@@ -99,6 +101,32 @@ moneud: CMakeFiles/moneud.dir/rule
 CMakeFiles/moneud.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/clean
 .PHONY : CMakeFiles/moneud.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/moneu-cli.dir
+
+# All Build rule for target.
+CMakeFiles/moneu-cli.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/user/Desktop/Qmask-Core/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target moneu-cli"
+.PHONY : CMakeFiles/moneu-cli.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/moneu-cli.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/user/Desktop/Qmask-Core/build/CMakeFiles 5
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/moneu-cli.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/user/Desktop/Qmask-Core/build/CMakeFiles 0
+.PHONY : CMakeFiles/moneu-cli.dir/rule
+
+# Convenience name for target.
+moneu-cli: CMakeFiles/moneu-cli.dir/rule
+.PHONY : moneu-cli
+
+# clean rule for target.
+CMakeFiles/moneu-cli.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/clean
+.PHONY : CMakeFiles/moneu-cli.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

@@ -1,3 +1,4 @@
 /mnt/c/Users/user/Desktop/Qmask-Core/build/CMakeFiles/moneud.dir
+/mnt/c/Users/user/Desktop/Qmask-Core/build/CMakeFiles/moneu-cli.dir
 /mnt/c/Users/user/Desktop/Qmask-Core/build/CMakeFiles/edit_cache.dir
 /mnt/c/Users/user/Desktop/Qmask-Core/build/CMakeFiles/rebuild_cache.dir

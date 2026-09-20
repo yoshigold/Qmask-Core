@@ -1,15 +1,16 @@
+# Ignore all compiled binary executables and build cache lanes
 build/
+bin/
+*.exe
 *.o
-*.a
-CMakeCache.txt
-CMakeFiles/
-cmake_install.cmake
-Makefile
-*.pem
-*.key
-*.asc
-moneu.conf
-.rpc.cookie
-wallet.dat
-noise.dat
-__pycache__/
+*.obj
+*.out
+moneud
+moneu-cli
+qmask_*
+
+# Ignore local wallet keys and database transaction sheets
+*.dat
+.idea/
+.vscode/
+.git/

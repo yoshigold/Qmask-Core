@@ -2,22 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Qmask Tactics — Real-Time Node Interface Panel</title>
+    <title>Qmask Tactics Alpha-0 Cockpit</title>
     <style>
-        body { background-color: #121212; color: #ffffff; font-family: monospace; padding: 20px; }
-        h1 { color: #00ffcc; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .dashboard-box { background: #1a1a1a; padding: 15px; border-radius: 5px; border: 1px solid #00ffcc; }
+        body { background-color: #0b0f19; color: #00ff9d; font-family: 'Courier New', monospace; padding: 40px; display: flex; justify-content: center; align-items: center; min-height: 80vh; }
+        .dashboard-container { border: 2px solid #00ff9d; border-radius: 12px; padding: 35px; width: 100%; max-width: 600px; background-color: #111827; box-shadow: 0 0 25px rgba(0, 255, 157, 0.25); text-align: center; }
+        .status-badge { background-color: #064e3b; color: #34d399; border: 2px solid #34d399; padding: 6px 16px; border-radius: 6px; display: inline-block; font-weight: bold; font-size: 16px; letter-spacing: 1px; box-shadow: 0 0 10px rgba(52, 211, 153, 0.2); }
+        .metric-line { margin: 25px 0; font-size: 16px; border-bottom: 1px dashed #334155; padding-bottom: 12px; text-align: left; display: flex; justify-content: space-between; }
+        .highlight { color: #38bdf8; font-weight: bold; }
+        h2 { margin-top: 0; letter-spacing: 2px; text-shadow: 0 0 8px rgba(0, 255, 157, 0.4); }
     </style>
 </head>
 <body>
 
-    <h1>🎮 Qmask Tactics: Chronicles of the Lattice</h1>
-    <div class="dashboard-box">
-        <h3>📡 Node Telemetry Pipeline Terminal Connected</h3>
-        <p>Press <b>F12</b> on your keyboard and open the <b>Console</b> tab window to view your live running block height data stream records loading in real-time!</p>
+<div class="dashboard-container">
+    <h2>📡 QMASK TACTICS COCKPIT INTERFACE</h2>
+    <hr style="border: 0; border-top: 2px solid #00ff9d; margin-bottom: 30px;">
+    
+    <div class="metric-line">
+        <span>Network Status:</span> <span id="node-status" class="status-badge">SWEEPING MEMORY...</span>
     </div>
+    <div class="metric-line">
+        <span>Active Node Identifier:</span> <span id="node-name" class="highlight">-</span>
+    </div>
+    <div class="metric-line">
+        <span>Communication Port Hook (P2P):</span> <span id="p2p-port" class="highlight">-</span>
+    </div>
+    <div class="metric-line">
+        <span>Remote Procedure Call Port (RPC):</span> <span id="rpc-port" class="highlight">-</span>
+    </div>
+</div>
 
-    <!-- This links your script file logic directly into this interface window box -->
-    <script src="app.js"></script>
+<script>
+    async function QueryNodeDaemonPipeline() {
+        try {
+            // 🛠️ Target port 8329 explicitly to match our running reverse proxy
+            const response = await fetch('http://localhost:8329', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ jsonrpc: "2.0", method: "getnodestatus", id: 1 })
+            });
+            const data = await response.json();
+            
+            if (data.result) {
+                document.getElementById('node-status').innerText = "🟢 QMASK 100% OPERATIONAL";
+                document.getElementById('node-status').style.backgroundColor = "#064e3b";
+                document.getElementById('node-status').style.color = "#34d399";
+                document.getElementById('node-status').style.borderColor = "#34d399";
+                
+                document.getElementById('node-name').innerText = data.result.active_node;
+                document.getElementById('p2p-port').innerText = data.result.p2p_port;
+                document.getElementById('rpc-port').innerText = data.result.rpc_port;
+            }
+        } catch (error) {
+            document.getElementById('node-status').innerText = "❌ DAEMON DISCONNECTED";
+            document.getElementById('node-status').style.backgroundColor = "#7f1d1d";
+            document.getElementById('node-status').style.color = "#f87171";
+            document.getElementById('node-status').style.borderColor = "#f87171";
+        }
+    }
+
+    // Initialize immediate connection handshake
+    QueryNodeDaemonPipeline();
+    // Keep data loops synchronized every 2 seconds
+    setInterval(QueryNodeDaemonPipeline, 2000);
+</script>
+
 </body>
 </html>

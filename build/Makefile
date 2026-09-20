@@ -129,6 +129,19 @@ moneud/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/build
 .PHONY : moneud/fast
 
+#=============================================================================
+# Target rules for targets named moneu-cli
+
+# Build rule for target.
+moneu-cli: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 moneu-cli
+.PHONY : moneu-cli
+
+# fast build rule for target.
+moneu-cli/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/build
+.PHONY : moneu-cli/fast
+
 src/cold_matrix.o: src/cold_matrix.cpp.o
 .PHONY : src/cold_matrix.o
 
@@ -183,6 +196,7 @@ src/net.o: src/net.cpp.o
 # target to build an object file
 src/net.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/src/net.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/net.cpp.o
 .PHONY : src/net.cpp.o
 
 src/net.i: src/net.cpp.i
@@ -191,6 +205,7 @@ src/net.i: src/net.cpp.i
 # target to preprocess a source file
 src/net.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/src/net.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/net.cpp.i
 .PHONY : src/net.cpp.i
 
 src/net.s: src/net.cpp.s
@@ -199,6 +214,7 @@ src/net.s: src/net.cpp.s
 # target to generate assembly for a file
 src/net.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/src/net.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/net.cpp.s
 .PHONY : src/net.cpp.s
 
 src/setup_wizard.o: src/setup_wizard.cpp.o
@@ -207,6 +223,7 @@ src/setup_wizard.o: src/setup_wizard.cpp.o
 # target to build an object file
 src/setup_wizard.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/src/setup_wizard.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/setup_wizard.cpp.o
 .PHONY : src/setup_wizard.cpp.o
 
 src/setup_wizard.i: src/setup_wizard.cpp.i
@@ -215,6 +232,7 @@ src/setup_wizard.i: src/setup_wizard.cpp.i
 # target to preprocess a source file
 src/setup_wizard.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/src/setup_wizard.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/setup_wizard.cpp.i
 .PHONY : src/setup_wizard.cpp.i
 
 src/setup_wizard.s: src/setup_wizard.cpp.s
@@ -223,6 +241,7 @@ src/setup_wizard.s: src/setup_wizard.cpp.s
 # target to generate assembly for a file
 src/setup_wizard.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/src/setup_wizard.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/setup_wizard.cpp.s
 .PHONY : src/setup_wizard.cpp.s
 
 src/tactics_core.o: src/tactics_core.cpp.o
@@ -249,12 +268,37 @@ src/tactics_core.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/src/tactics_core.cpp.s
 .PHONY : src/tactics_core.cpp.s
 
+src/wallet_cli_entry.o: src/wallet_cli_entry.cpp.o
+.PHONY : src/wallet_cli_entry.o
+
+# target to build an object file
+src/wallet_cli_entry.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/wallet_cli_entry.cpp.o
+.PHONY : src/wallet_cli_entry.cpp.o
+
+src/wallet_cli_entry.i: src/wallet_cli_entry.cpp.i
+.PHONY : src/wallet_cli_entry.i
+
+# target to preprocess a source file
+src/wallet_cli_entry.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/wallet_cli_entry.cpp.i
+.PHONY : src/wallet_cli_entry.cpp.i
+
+src/wallet_cli_entry.s: src/wallet_cli_entry.cpp.s
+.PHONY : src/wallet_cli_entry.s
+
+# target to generate assembly for a file
+src/wallet_cli_entry.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/wallet_cli_entry.cpp.s
+.PHONY : src/wallet_cli_entry.cpp.s
+
 src/wallet_guard.o: src/wallet_guard.cpp.o
 .PHONY : src/wallet_guard.o
 
 # target to build an object file
 src/wallet_guard.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/src/wallet_guard.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/wallet_guard.cpp.o
 .PHONY : src/wallet_guard.cpp.o
 
 src/wallet_guard.i: src/wallet_guard.cpp.i
@@ -263,6 +307,7 @@ src/wallet_guard.i: src/wallet_guard.cpp.i
 # target to preprocess a source file
 src/wallet_guard.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/src/wallet_guard.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/wallet_guard.cpp.i
 .PHONY : src/wallet_guard.cpp.i
 
 src/wallet_guard.s: src/wallet_guard.cpp.s
@@ -271,6 +316,7 @@ src/wallet_guard.s: src/wallet_guard.cpp.s
 # target to generate assembly for a file
 src/wallet_guard.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneud.dir/build.make CMakeFiles/moneud.dir/src/wallet_guard.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moneu-cli.dir/build.make CMakeFiles/moneu-cli.dir/src/wallet_guard.cpp.s
 .PHONY : src/wallet_guard.cpp.s
 
 # Help Target
@@ -281,6 +327,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... moneu-cli"
 	@echo "... moneud"
 	@echo "... src/cold_matrix.o"
 	@echo "... src/cold_matrix.i"
@@ -297,6 +344,9 @@ help:
 	@echo "... src/tactics_core.o"
 	@echo "... src/tactics_core.i"
 	@echo "... src/tactics_core.s"
+	@echo "... src/wallet_cli_entry.o"
+	@echo "... src/wallet_cli_entry.i"
+	@echo "... src/wallet_cli_entry.s"
 	@echo "... src/wallet_guard.o"
 	@echo "... src/wallet_guard.i"
 	@echo "... src/wallet_guard.s"
