@@ -1,31 +1,43 @@
 #include <iostream>
-#ifdef _WIN32
-#include <direct.h>
-#define mkdir(path, mode) _mkdir(path)
-#endif
 #include <fstream>
 #include <string>
+#ifdef _WIN32
+#include <direct.h>
+#else
 #include <sys/stat.h>
 #include <sys/types.h>
+#endif
 #include <random>
 
 class QmaskColdMatrixStorage {
 public:
     void SaveBlockStateToDisk(int blockHeight) {
-        std::string dirPath = std::string(getenv(_WIN32 ? "USERPROFILE" : "HOME")) + "/.qmask";
+        std::string dirPath = std::string(getenv("HOME") ? getenv("HOME") : (getenv("USERPROFILE") ? getenv("USERPROFILE") : "."));
+        dirPath += "/.qmask";
+#ifdef _WIN32
+        _mkdir(dirPath.c_str());
+#else
         mkdir(dirPath.c_str(), 0777);
+#endif
         std::ofstream saveFile(dirPath + "/block_height.dat", std::ios::trunc);
         if (saveFile.is_open()) { saveFile << blockHeight; saveFile.close(); }
     }
+
     int LoadSavedBlockState() {
-        std::string filePath = std::string(getenv(_WIN32 ? "USERPROFILE" : "HOME")) + "/.qmask/block_height.dat";
-        std::ifstream readFile(filePath); int savedHeight = 13714;
+        std::string dirPath = std::string(getenv("HOME") ? getenv("HOME") : (getenv("USERPROFILE") ? getenv("USERPROFILE") : "."));
+        dirPath += "/.qmask";
+        std::ifstream readFile(dirPath + "/block_height.dat"); int savedHeight = 13714;
         if (readFile.is_open()) { readFile >> savedHeight; readFile.close(); }
         return savedHeight;
     }
     void InitializeSovereignIdentityPool() {
-        std::string dirPath = std::string(getenv(_WIN32 ? "USERPROFILE" : "HOME")) + "/.qmask";
+        std::string dirPath = std::string(getenv("HOME") ? getenv("HOME") : (getenv("USERPROFILE") ? getenv("USERPROFILE") : "."));
+        dirPath += "/.qmask";
+#ifdef _WIN32
+        _mkdir(dirPath.c_str());
+#else
         mkdir(dirPath.c_str(), 0777);
+#endif
         std::string walletPath = dirPath + "/wallet.json";
         std::ifstream checkWallet(walletPath);
         if (!checkWallet.is_open()) {
@@ -34,7 +46,6 @@ public:
                 std::random_device rd; std::mt19937_64 gen(rd()); uint64_t addrKey = gen();
                 createWallet << "{\n  \"wallet_title\": \"Quantum-Mask Sovereign Primary Key Set\",\n  \"mining_receive_address\": \"qmk_FOUNDER_" << std::to_string(addrKey).substr(0, 10) << "\",\n  \"status\": \"ACTIVE_MAINNET_NODE\"\n}\n";
                 createWallet.close();
-                std::cout << "[IDENTITY] Generated fresh sovereign wallet.json file.\n";
             }
         }
         std::ofstream createNoise(dirPath + "/noise_entropy.raw", std::ios::binary | std::ios::trunc);
