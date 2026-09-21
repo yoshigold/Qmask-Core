@@ -12,19 +12,19 @@
 class QmaskColdMatrixStorage {
 public:
     void SaveBlockStateToDisk(int blockHeight) {
-        std::string dirPath = std::string(getenv("HOME")) + "/.qmask";
+        std::string dirPath = std::string(getenv(_WIN32 ? "USERPROFILE" : "HOME")) + "/.qmask";
         mkdir(dirPath.c_str(), 0777);
         std::ofstream saveFile(dirPath + "/block_height.dat", std::ios::trunc);
         if (saveFile.is_open()) { saveFile << blockHeight; saveFile.close(); }
     }
     int LoadSavedBlockState() {
-        std::string filePath = std::string(getenv("HOME")) + "/.qmask/block_height.dat";
+        std::string filePath = std::string(getenv(_WIN32 ? "USERPROFILE" : "HOME")) + "/.qmask/block_height.dat";
         std::ifstream readFile(filePath); int savedHeight = 13714;
         if (readFile.is_open()) { readFile >> savedHeight; readFile.close(); }
         return savedHeight;
     }
     void InitializeSovereignIdentityPool() {
-        std::string dirPath = std::string(getenv("HOME")) + "/.qmask";
+        std::string dirPath = std::string(getenv(_WIN32 ? "USERPROFILE" : "HOME")) + "/.qmask";
         mkdir(dirPath.c_str(), 0777);
         std::string walletPath = dirPath + "/wallet.json";
         std::ifstream checkWallet(walletPath);
