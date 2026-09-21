@@ -3,55 +3,44 @@
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
-
-#ifdef _WIN32
-#include <direct.h>
-#endif
+#include <random>
 
 class QmaskColdMatrixStorage {
 public:
-    // 🧱 THE MAINNET SAVE VALVE: Writes block heights straight to persistent disk storage
     void SaveBlockStateToDisk(int blockHeight) {
-        std::string dirPath;
-        
-        #ifdef _WIN32
-            dirPath = "qmask_mainnet_data";
-            _mkdir(dirPath.c_str());
-        #else
-            // SOVEREIGN PATH SEPARATION: Move to its own native hidden directory folder
-            dirPath = std::string(getenv("HOME")) + "/.qmask";
-            mkdir(dirPath.c_str(), 0777); 
-        #endif
-
-        std::string filePath = dirPath + "/block_height.dat";
-
-        std::ofstream saveFile(filePath, std::ios::trunc);
-        if (saveFile.is_open()) {
-            saveFile << blockHeight;
-            saveFile.close();
-            std::cout << "💾 [COLD MATRIX] Hard-drive sync complete. Sealed block height #" << blockHeight << " safely to disk.\n";
-        } else {
-            std::cout << "⚠️  [STORAGE ERROR] Failed to pierce the system barrier to write save file.\n";
-        }
+        std::string dirPath = std::string(getenv("HOME")) + "/.qmask";
+        mkdir(dirPath.c_str(), 0777);
+        std::ofstream saveFile(dirPath + "/block_height.dat", std::ios::trunc);
+        if (saveFile.is_open()) { saveFile << blockHeight; saveFile.close(); }
     }
-
     int LoadSavedBlockState() {
-        #ifdef _WIN32
-            std::string filePath = "qmask_mainnet_data/block_height.dat";
-        #else
-            std::string filePath = std::string(getenv("HOME")) + "/.qmask/block_height.dat";
-        #endif
-        
-        std::ifstream readFile(filePath);
-        int savedHeight = 13714; // Default baseline start if no file exists
-
-        if (readFile.is_open()) {
-            readFile >> savedHeight;
-            readFile.close();
-            std::cout << "📥 [MAINNET BOOT] Found historical save ledger. Resuming sync from block height #" << savedHeight << "\n";
-        } else {
-            std::cout << "🧱 [GENESIS BOOT] No prior database save spotted. Initializing fresh node track.\n";
-        }
+        std::string filePath = std::string(getenv("HOME")) + "/.qmask/block_height.dat";
+        std::ifstream readFile(filePath); int savedHeight = 13714;
+        if (readFile.is_open()) { readFile >> savedHeight; readFile.close(); }
         return savedHeight;
+    }
+    void InitializeSovereignIdentityPool() {
+        std::string dirPath = std::string(getenv("HOME")) + "/.qmask";
+        mkdir(dirPath.c_str(), 0777);
+        std::string walletPath = dirPath + "/wallet.json";
+        std::ifstream checkWallet(walletPath);
+        if (!checkWallet.is_open()) {
+            std::ofstream createWallet(walletPath);
+            if (createWallet.is_open()) {
+                std::random_device rd; std::mt19937_64 gen(rd()); uint64_t addrKey = gen();
+                createWallet << "{\n  \"wallet_title\": \"Quantum-Mask Sovereign Primary Key Set\",\n  \"mining_receive_address\": \"qmk_FOUNDER_" << std::to_string(addrKey).substr(0, 10) << "\",\n  \"status\": \"ACTIVE_MAINNET_NODE\"\n}\n";
+                createWallet.close();
+                std::cout << "[IDENTITY] Generated fresh sovereign wallet.json file.\n";
+            }
+        }
+        std::ofstream createNoise(dirPath + "/noise_entropy.raw", std::ios::binary | std::ios::trunc);
+        if (createNoise.is_open()) {
+            std::random_device rd;
+            for (int i = 0; i < 256; i++) {
+                uint32_t randomNoiseSeed = rd();
+                createNoise.write(reinterpret_cast<const char*>(&randomNoiseSeed), sizeof(randomNoiseSeed));
+            }
+            createNoise.close();
+        }
     }
 };
