@@ -29,7 +29,7 @@ int main() {
     QmaskColdMatrixStorage database; QmaskVolcanicWaveEngine waveEngine; QmaskSnapshotBridge snapshotBridge;
     int activeBlockHeight = database.LoadSavedBlockState();
     int threadsToAllocate = 32;
-    std::cout << "[POWER UP] Pinning to exactly 16 Cache-Aligned physical CPU cores...\n";
+    std::cout << "[POWER UP] Pinning to exactly 32 Cache-Aligned physical CPU cores...\n";
     while (true) {
         blockFound = false; std::vector<std::thread> minerThreads;
         for (int i = 0; i < threadsToAllocate; ++i) minerThreads.push_back(std::thread(MiningWorkerThread, i, 50000000000));

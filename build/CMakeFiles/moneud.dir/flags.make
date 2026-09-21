@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = 
 
-CXX_FLAGS = -std=gnu++17
+CXX_FLAGS = -O3 -march=znver3 -mtune=znver3 -ffast-math -flto -std=gnu++17
 
