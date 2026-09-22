@@ -1,43 +1,29 @@
-extern int GetActiveSwarmPeerCount();
 #include <iostream>
 #include <string>
-#include <fstream>
+
+extern int GetActiveSwarmPeerCount();
+extern int GetPendingImmatureBlocks();
 
 int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        std::cout << "⚠️  [CLI Error] No command payload argument specified.\n";
-        return 1;
-    }
-
+    if (argc < 2) { std::cout << "Missing query parameters.\n"; return 1; }
     std::string command = argv[1];
-
+    
     if (command == "getbalance") {
         std::cout << "👑 Active Account Balance: 20.00000000 QMK\n";
-    } 
-    else if (command == "getmininginfo") {
-        // Updated directory track pointing straight to your sovereign folder vault
-        std::string filePath = std::string(getenv("HOME")) + "/.qmask/block_height.dat";
-        std::ifstream readFile(filePath);
-        int currentHeight = 13714; 
-
-        if (readFile.is_open()) {
-            readFile >> currentHeight;
-            readFile.close();
-        }
-
-        std::cout << "{\n";
-        std::cout << "  \"blocks\": " << currentHeight << ",\n";
-        std::cout << "  \"current_block_reward\": \"5.00000000 QMK\",\n";
-        std::cout << "  \"active_cpu_threads\": 32,\n";
-        std::cout << "  \"hardware_acceleration\": \"AMD Ryzen Threadripper PRO 5955WX Engine Engaged\",\n";
-        std::cout << "  \"difficulty_matrix\": \"50000000000\",\n";
-        std::cout << "  \"active_swarm_peers\": \"" << GetActiveSwarmPeerCount() << " Active Handshake Nodes\",\n";
-        std::cout << "  \"governance_consensus\": \"SHARE_FTG (Active Core Validation)\"\n";
-        std::cout << "}\n";
-    } 
-    else {
-        std::cout << "Unknown wallet command console payload loop.\n";
+    } else if (command == "getwalletinfo" || command == "getmininginfo") {
+        double immatureCoins = GetPendingImmatureBlocks() * 5.0;
+        std::cout << "=========================================================\n"
+                  << "           QMASK METRIC SYSTEM WALLET REPORT            \n"
+                  << "=========================================================\n"
+                  << " Spendable Balance    : 20.00000000 QMK\n"
+                  << " Immature Vault Total : " << immatureCoins << ".00000000 QMK (" << GetPendingImmatureBlocks() << " Blocks Locked)\n"
+                  << " Target Lock Time     : 100 Confirmations Depth Per Block\n"
+                  << " Active Identity Node : qmk_FOUNDER_8752860648\n"
+                  << " Connected Swarm Mesh : " << GetActiveSwarmPeerCount() << " Inbound Peer Handshakes\n"
+                  << " Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n"
+                  << "=========================================================\n";
+    } else {
+        std::cout << "Unknown command console payload loop.\n";
     }
-
     return 0;
 }
