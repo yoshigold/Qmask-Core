@@ -5,9 +5,11 @@
 extern int GetActiveSwarmPeerCount();
 extern uint64_t GetNetworkHashrate();
 extern int GetPendingImmatureBlocks();
+extern uint64_t GetCirculatingSupply(int currentHeight);
+extern uint64_t GetMaxTotalSupply();
 
 void DisplayMiningInfoJSON(int blocksMined) {
-    double immatureCoins = GetPendingImmatureBlocks() * 5.0;
+    uint64_t supply = (uint64_t)blocksMined * 5;
     std::cout << "{\n"
               << "  \"network_status\": \"MAINNET_OPERATIONAL\",\n"
               << "  \"blocks\": " << blocksMined << ",\n"
@@ -18,7 +20,9 @@ void DisplayMiningInfoJSON(int blocksMined) {
               << "  \"difficulty_matrix\": \"50000000000\",\n"
               << "  \"active_swarm_peers\": \"" << GetActiveSwarmPeerCount() << " Active Handshake Nodes\",\n"
               << "  \"immature_blocks_vault\": \"" << GetPendingImmatureBlocks() << " Blocks Pending Confirmation\",\n"
-              << "  \"immature_balance_locked\": \"" << immatureCoins << ".00000000 QMK\",\n"
+              << "  \"immature_balance_locked\": \"" << (GetPendingImmatureBlocks() * 5) << ".00000000 QMK\",\n"
+              << "  \"circulating_supply\": \"" << supply << ".00000000 QMK\",\n"
+              << "  \"max_total_supply\": \"21000000.00000000 QMK\",\n"
               << "  \"governance_consensus\": \"SHARE_FTG (Fluid Token Governance Vote: Active)\",\n"
               << "  \"maturity_lock_threshold\": \"100 Blocks Required\",\n"
               << "  \"port_mapping_status\": \"8327 Listening (UPnP/NAT Fallbacks Healthy)\"\n"

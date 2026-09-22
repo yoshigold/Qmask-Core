@@ -25,3 +25,11 @@ void InitializeP2PNetworkListener() {
     std::cout << "[HOLE-PUNCH] NAT traversal successful. Bypassed router firewalls from inside-out!\n";
     std::cout << "[TELEMETRY] Enterprise Statistics Module engaged and tracking pipeline.\n";
 }
+
+uint64_t GetCirculatingSupply(int currentHeight) {
+    return (uint64_t)currentHeight * 5; // 5.00 QMK emitted per block
+}
+
+uint64_t GetMaxTotalSupply() {
+    return 21000000; // Hard cap set to 21 Million QMK tokens maximum
+}
