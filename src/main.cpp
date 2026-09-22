@@ -13,7 +13,7 @@ void InitializeP2PNetworkListener();
 #include "snapshot_bridge.cpp"
 
 std::atomic<bool> blockFound(false);
-uint64_t dynamicDifficulty = 50000000000ULL; // Initial seed difficulty
+uint64_t dynamicDifficulty = 50000000000ULL; 
 uint64_t lastRetargetTime = time(NULL);
 
 void MiningWorkerThread(int threadId, uint64_t targetDiff) {
@@ -27,33 +27,51 @@ void MiningWorkerThread(int threadId, uint64_t targetDiff) {
     }
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     InitializeSetupWizard(); InitializeP2PNetworkListener();
     QmaskColdMatrixStorage database; QmaskVolcanicWaveEngine waveEngine; QmaskSnapshotBridge snapshotBridge;
     int activeBlockHeight = database.LoadSavedBlockState();
-    int threadsToAllocate = 32;
     
-    std::cout << "[POWER UP] Pinning to exactly 32 Cache-Aligned physical CPU cores...\n";
+    // Detect hardware maximum threads dynamically as the baseline fallback
+    unsigned int maxHardwareThreads = std::thread::hardware_concurrency();
+    if (maxHardwareThreads == 0) maxHardwareThreads = 32; // Safety fallback for Threadripper PRO
+    
+    int threadsToAllocate = maxHardwareThreads;
+    
+    // Parse custom manual input arguments if provided on startup
+    if (argc > 1) {
+        try {
+            int customInput = std::stoi(argv[1]);
+            if (customInput > 0 && customInput <= (int)maxHardwareThreads) {
+                threadsToAllocate = customInput;
+            } else {
+                std::cout << "[WARNING] Input thread count out of bounds. Defaulting to max system capacity.\n";
+            }
+        } catch (...) {
+            std::cout << "[WARNING] Invalid thread argument string parsed. Defaulting to max system capacity.\n";
+        }
+    }
+    
+    std::cout << "[POWER UP] Engaging exactly " << threadsToAllocate << " Cache-Aligned physical CPU cores...\n";
     while (true) {
         blockFound = false; std::vector<std::thread> minerThreads;
         for (int i = 0; i < threadsToAllocate; ++i) minerThreads.push_back(std::thread(MiningWorkerThread, i, dynamicDifficulty));
         for (auto& t : minerThreads) if (t.joinable()) t.join();
         
         activeBlockHeight++;
+        std::cout << "[BLOCK VALIDATED] Mined Block Height: #" << activeBlockHeight << " | Difficulty: " << dynamicDifficulty << "\n";
         extern int currentBlockTrackingHeight;
         currentBlockTrackingHeight = activeBlockHeight;
-        std::cout << "[BLOCK VALIDATED] Mined Block Height: #" << activeBlockHeight << " | Difficulty: " << dynamicDifficulty << "\n";
         
-        // Dynamic Retargeting Algorithm every 10 blocks
         if (activeBlockHeight % 10 == 0) {
             uint64_t now = time(NULL);
             uint64_t actualTimeTaken = now - lastRetargetTime;
-            uint64_t expectedTimeTime = 10 * 60; // 10 blocks * 60 seconds = 600 seconds
+            uint64_t expectedTimeTime = 10 * 60; 
             
             if (actualTimeTaken < expectedTimeTime / 2) {
-                dynamicDifficulty *= 2; // Blocks are too fast, double the puzzle complexity
+                dynamicDifficulty *= 2; 
             } else if (actualTimeTaken > expectedTimeTime * 2) {
-                dynamicDifficulty /= 2; // Blocks are too slow, drop difficulty by half
+                dynamicDifficulty /= 2; 
             }
             if (dynamicDifficulty < 4000) dynamicDifficulty = 4000;
             lastRetargetTime = now;
