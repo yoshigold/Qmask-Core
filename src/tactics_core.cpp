@@ -34,6 +34,6 @@ void DisplayMiningInfoJSON(int blocksMined) {
               << "  \"governance_consensus\": \"SHARE_FTG (Fluid Token Governance Vote: Active)\",\n"
               << "  \"blocks_until_next_retarget\": \"" << blocksLeft << " Blocks Left Until Diff Step\",\n"
               << "  \"maturity_lock_threshold\": \"100 Blocks Required\",\n"
-              << "  \"port_mapping_status\": \"8327 Listening (UPnP/NAT Fallbacks Healthy)\"\n"
+              << "  \"port_mapping_status\": \"8327 Listening (UPnP/NAT Fallbacks Healthy)\",\n              << \"  \\\"snapshot_vault_status\\\": \\\"LOCKED (1,675,180.00 QMK Escrow Active)\\\",\\n\"\n              << \"  \\\"vesting_release_velocity\\\": \\\"0.00000000 QMK (Awaiting Ballot Maturity)\\\"\\n\" "
               << "}\n";
 }

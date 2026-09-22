@@ -40,6 +40,8 @@ int main() {
         for (auto& t : minerThreads) if (t.joinable()) t.join();
         
         activeBlockHeight++;
+        extern int currentBlockTrackingHeight;
+        currentBlockTrackingHeight = activeBlockHeight;
         std::cout << "[BLOCK VALIDATED] Mined Block Height: #" << activeBlockHeight << " | Difficulty: " << dynamicDifficulty << "\n";
         
         // Dynamic Retargeting Algorithm every 10 blocks
