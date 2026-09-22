@@ -1,3 +1,4 @@
+extern int GetActiveSwarmPeerCount();
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -28,8 +29,9 @@ int main(int argc, char* argv[]) {
         std::cout << "  \"blocks\": " << currentHeight << ",\n";
         std::cout << "  \"current_block_reward\": \"5.00000000 QMK\",\n";
         std::cout << "  \"active_cpu_threads\": 32,\n";
-        std::cout << "  \"hardware_acceleration\": \"Intel i7-14700 Hybrid Engine Engaged\",\n";
-        std::cout << "  \"difficulty_matrix\": \"4000\",\n";
+        std::cout << "  \"hardware_acceleration\": \"AMD Ryzen Threadripper PRO 5955WX Engine Engaged\",\n";
+        std::cout << "  \"difficulty_matrix\": \"50000000000\",\n";
+        std::cout << "  \"active_swarm_peers\": \"" << GetActiveSwarmPeerCount() << " Active Handshake Nodes\",\n";
         std::cout << "  \"governance_consensus\": \"SHARE_FTG (Active Core Validation)\"\n";
         std::cout << "}\n";
     } 
