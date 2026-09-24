@@ -2,6 +2,15 @@
 #include <string>
 #include <vector>
 
+// 🌟 LINKER PROTECTION: Define the class and static variables expected by block.cpp
+class NetParams {
+public:
+    static const size_t MAX_BLOCK_SIZE = 2000000; // 2MB Max Block Size constraint rule
+};
+
+// Define instantiation reference bounds
+const size_t NetParams::MAX_BLOCK_SIZE;
+
 namespace MONEU {
 
 class ProductionMainnetParams {
@@ -20,10 +29,10 @@ public:
         publicP2PPort = 8328;       
         privateEncryptedPort = 8329; 
         
-        // 🌟 LOCKED IN FOUNDER PREFERENCE: Default set straight to QMC
+        // Locked in your founder preference: Default set straight to QMC
         defaultProductionTicker = "QMC"; 
         
-        // 🗳️ UPDATED DECENTRALIZED REFERENDUM TICKER BALLOT
+        // Decentralised Referendum Ticker Ballot Options
         tickerReferendumBallot.push_back("QMC (Quantum Mask Coin / Classic Core Base)");
         tickerReferendumBallot.push_back("QMS (Quantum Mask Shadow Privacy Protocol)");
         tickerReferendumBallot.push_back("QMT (Quantum Mask Terminal Utility Layer)");
@@ -38,6 +47,7 @@ public:
         std::cout << " Primary P2P Base Port: " << publicP2PPort << " [Public Ledger Channel]\n";
         std::cout << " Secondary Mesh Port  : " << privateEncryptedPort << " [Private Shielded Channel]\n";
         std::cout << " Initial Block Height : #0 (Clean Genesis Blank Canvas)\n";
+        std::cout << " Maximum Block Limit  : " << NetParams::MAX_BLOCK_SIZE << " Bytes (2MB Cap)\n";
         std::cout << "---------------------------------------------------------\n";
         std::cout << " 🗳️ ACTIVE MAINNET GOVERNANCE TICKER REFERENDUM OPTIONS:\n";
         for (size_t i = 0; i < tickerReferendumBallot.size(); i++) {
