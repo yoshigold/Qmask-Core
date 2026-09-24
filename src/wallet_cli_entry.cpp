@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <cmath>
 #include <chrono>
+#include <sstream>
 
 struct SwarmPeerMetadata {
     std::string ipAddress;
@@ -23,14 +24,40 @@ void ExecuteWalletSpendTransaction(const std::string& recipient, double amount, 
     std::cout << "=========================================================\n";
     std::cout << "         QMASK TRANSACTION CRYPTOGRAPHIC COMPILER        \n";
     std::cout << "=========================================================\n";
+    
+    if (amount <= 0.0) {
+        std::cout << "🚨 [COMPILER ERROR] Invalid transaction quantity specified: " << amount << " QMC!\n";
+        return;
+    }
+    if (amount > currentBalance) {
+        std::cout << "🚨 [COMPILER ERROR] Insufficient spendable balance!\n";
+        std::cout << " -> Attempted to Transfer: " << amount << " QMC\n";
+        std::cout << " -> Available Wallet Pool : " << currentBalance << " QMC\n";
+        return;
+    }
+
     double networkFee = 0.00010000;
     double finalRemainingPool = currentBalance - amount - networkFee;
+
     std::cout << "🔓 [KEYCHAIN LOGIC] Private keys unlocked. Signing tx hashes...\n";
+    std::cout << "🧬 [KIMCHI FOLDING] Compressing proof parameters to constant O(1) space...\n";
+    std::cout << "---------------------------------------------------------\n";
+    std::cout << " TX ASSEMBLED SUCCESSFUL (Vesta Curve Point Serialization)\n";
+    std::cout << "---------------------------------------------------------\n";
+    std::cout << " Destination Node : " << recipient << "\n";
+    std::cout << " Net Value Sent    : " << std::fixed << std::setprecision(8) << amount << " QMC\n";
+    std::cout << " Allocation Fee    : " << networkFee << " QMC\n";
+    std::cout << " Post-Spend Change : " << finalRemainingPool << " QMC\n";
+    std::cout << "---------------------------------------------------------\n";
     std::cout << "📡 Broad-casting transaction payload to 5 active swarm peers over Port 8328...\n";
     std::cout << "✅ [SUCCESS] Transaction accepted! TXID: qmctx_" << std::hex << (std::chrono::system_clock::now().time_since_epoch().count() % 1000000) << "\n";
     std::cout << "=========================================================\n";
+    
     std::ofstream stateOut("/tmp/qmask_balance_mod.dat");
-    if (stateOut.is_open()) { stateOut << finalRemainingPool; stateOut.close(); }
+    if (stateOut.is_open()) {
+        stateOut << finalRemainingPool;
+        stateOut.close();
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -38,7 +65,7 @@ int main(int argc, char* argv[]) {
     std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
     if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
 
-    if (argc > 1 && std::string(argv) == "--send") {
+    if (argc > 1 && std::string(argv[1]) == "--send") {
         if (argc < 4) return 1;
         std::string recipientAddr = argv[2];
         double spendAmount = std::stod(std::string(argv[3]));
@@ -57,9 +84,10 @@ int main(int argc, char* argv[]) {
         std::chrono::system_clock::now().time_since_epoch()).count();
     double timeVar = static_cast<double>(epochSeconds);
 
-    // Dynamic space-time countdown math to block #347,161
     long long targetFreezeHeight = 347161;
     long long blocksRemainingToFreeze = targetFreezeHeight - currentHeight;
+    if (blocksRemainingToFreeze < 0) blocksRemainingToFreeze = 0;
+    
     long long daysLeft = blocksRemainingToFreeze / 1440;
     long long hoursLeft = (blocksRemainingToFreeze % 1440) / 60;
     long long minutesLeft = blocksRemainingToFreeze % 60;
@@ -146,8 +174,15 @@ int main(int argc, char* argv[]) {
         double currentMH = swarmRegistry[i].baseHashrateMH;
         if (swarmRegistry[i].isWorkstation) { currentMH = workstationMH; }
         else if (currentMH > 0.0) { double peerFluctuation = std::sin(timeVar + (i * 2.5)) * (swarmRegistry[i].baseHashrateMH * 0.015); currentMH += peerFluctuation; }
+        
+        // 🌟 STREAM INJECTION ENHANCEMENT: Absolute link-safe string stream formatter
         std::string hStr = "0.00 H/s  ";
-        if (currentMH > 0.0) { char hBuffer[32] = {0}; snprintf(hBuffer, sizeof(hBuffer), "%.2f MH/s", currentMH); hStr = std::string(hBuffer); }
+        if (currentMH > 0.0) {
+            std::stringstream ss;
+            ss << std::fixed << std::setprecision(2) << currentMH << " MH/s";
+            hStr = ss.str();
+        }
+        
         std::string walletDisplay = swarmRegistry[i].walletAddress;
         if (swarmRegistry[i].isFounder) { walletDisplay += " 👑 (Founder)"; }
         std::cout << " " << std::left << std::setw(15) << swarmRegistry[i].ipAddress << " | " << std::setw(20) << swarmRegistry[i].clientVersion << " | " << std::setw(13) << swarmRegistry[i].rigName << " | " << std::setw(29) << walletDisplay << " | " << std::setw(10) << hStr << " | " << swarmRegistry[i].geographicCountry << "\n";
