@@ -14,7 +14,23 @@ Currently operating in its Fortified Testing Phase, the network is executing a s
 
 ---
 
-## 🧬 2. Comprehensive Deep-Dive Feature Analysis
+## 🗳️ 2. The Fair Launch & SHARE_FTG Referendum Manifesto
+
+Qmask enforces an absolute Fair Launch Principle. There are no venture capital allocations, no pre-mines hidden from the public, and no centralized development foundation taxes. Every single block token is minted natively through pure proof-of-work verification. 
+
+The current voting pipeline, named SHARE_FTG (For The Governance / Fair Token Growth), is a mathematical checkpoint running directly inside the block header validation loops to let the active mining community decide the network's production identity.
+
+### 📊 Referendum Timeline Parameters
+* Initial Testing Height: Block #337,081
+* Evaluation Window: 5 intervals of 2,016 blocks each (10,080 Blocks Total)
+* Target Mainnet Freeze Anchor: Block #347,161
+* Network Consensus Cadence: The high-velocity ASERT difficulty adjustment engine has stabilized block generation times to an exact average of 60 seconds. This translates to 1.4 days per interval, locking the total testing lifecycle to exactly 7 Days (1 Full Week).
+* The Activation Threshold: A strict 75% network approval rate is required (7,560 out of 10,080 block headers must carry your node's affirmative voting signature to pass a metric).
+* The Final Countdown Deadline: The testing phase will officially terminate at Block #347,161, executing on September 30, 2026, at approximately 8:32 PM BST.
+
+---
+
+## 🧬 3. Comprehensive Deep-Dive Feature Analysis
 
 ### 🛡️ A. The ChronoPulse Hashing Engine & Silicon Mixing
 The consensus layer replaces primitive single-function hashing algorithms with an unbroken, multi-stage hardware-bound pipeline. Every block header submitted to the swarm must sequentially clear all stages:
@@ -35,7 +51,7 @@ The consensus layer replaces primitive single-function hashing algorithms with a
 
 ---
 
-## 🖥️ 3. Master Telemetry Dashboard & Panel Interface Guide
+## 🖥️ 4. Master Telemetry Dashboard & Panel Interface Guide
 
 When executing the monitoring environment loop, the system draws a double-buffered, non-scrolling matrix operator dashboard explicitly mapped to coordinates (0,0) to block any viewport glitching or scrollback leaks.
 
@@ -49,95 +65,63 @@ When executing the monitoring environment loop, the system draws a double-buffer
 
 ---
 
-## 🗳️ 4. The Referendum, Testing Phase, & Genesis Migration Mechanics
-
-The current network state is running through a structured, multi-interval governance evaluation window governed entirely by block-header voting parameters.
-
-* [ INITIAL PHASE SEED ] Start Height: #337,081
-* [ WINDOW INTERVALS ] Every 2,016 Blocks
-* [ COMPRESSION ENGINE ] Target Freeze Block: #347,161
-* [ IGNITION MAINNET ] Pristine Genesis Block #0
-
-### 📊 Metric Parameters
-1. Total Testing Duration Horizon: Locked to exactly 10,080 blocks (spanning 5 complete retarget intervals of 2,016 blocks each).
-2. Real-World Duration Velocity: At an average block cadence of 60 seconds driven by the high-velocity ASERT engine, each retarget window finishes in roughly 1.4 days, bringing the total testing phase length to exactly 7 Days (1 Full Week).
-3. The Activation Threshold: A strict 75% network vote consensus is required (7,560 out of 10,080 block headers must contain the affirmative SHARE_FTG voting token signature).
-
-### 🛠️ The Hard-Fork Genesis Compression Pipeline
+## 🛠️ 5. The Hard-Fork Genesis Compression Pipeline
 When the network crosses the finish line at Block #347,161, the testing network logs freeze permanently. The system initiates an automated ledger compression operation:
 * The UTXO Snapshot Engine crawls the finalized test chain, completely ignoring the 300,000+ bloated historic records or invalid block tracks.
 * It extracts only the active, frozen wallet balances (including your 9,865.00 QMK Founder Pool) and flattens them into a clean, compact array sheet.
-* The History Translation Script (translate_testnet_history.py) processes the cumulative test nonces, block data, and network message code changes into a single 32-byte cryptographic residue signature.
 * This balance allocation layout is hardcoded directly into the production source code files of the new QMC Production Mainnet Genesis Block #0, providing day-one coin liquidity on an ultra-light, bloat-free database canvas.
 
 ---
 
-## 5. Complete Terminal Command Reference Matrix
+## 6. Complete Terminal Command Reference Matrix
 
-### 🧰 Native Interaction and Validation Call Commands
+### 🗳️ Active Referendum Ticker Ballot Commands
+Operators must choose which three-letter ticker signature will officially brand the production mainnet launch. Passing the flag during node startup configures your mining rigs to append your vote choice to every block header found:
 
-#### View Active Blockchain Profile & Voting Pipeline Status
-```bash
-./build/moneu-cli getblockchaininfo
-```
+* Vote for Option 1: QMC (Quantum Mask Coin / Currency)
+  ./build/moneusd -daemon -voteticker=QMC
 
-#### Run the Independent Space-Time Migration Countdown Utility
-```bash
-python3 launch_countdown.py
-```
+* Vote for Option 2: QMS (Quantum Mask Shadow)
+  ./build/moneusd -daemon -voteticker=QMS
 
-#### Verify Block Inscription Payloads Natively
-```bash
-./build/moneu-cli getblock 1 | grep -A 5 "inscription_payload"
-```
+* Vote for Option 3: QMC (Quantum Mask Terminal)
+  ./build/moneusd -daemon -voteticker=QMT
 
-#### Execute the Automated Universal Release Packaging Script
-```bash
-./package_release.sh
-```
+* Vote for Option 4: QMX (Quantum Mask Matrix)
+  ./build/moneusd -daemon -voteticker=QMX
 
 ---
 
-### 💸 New Interactive Wallet Command Line Features
+### 🔑 Local Key Generation & Physical Noise Entropy Operation
 
-With the implementation of the Native Cryptographic Transaction Compiler Engine, the CLI utility can execute asset spend actions.
-
-#### Command Syntax Structure
+#### Generate a Brand New Cryptographic Mainnet Keypair Wallet Address
 ```bash
-./build/moneu-cli --send [recipient_wallet_address] [amount_to_transfer]
+./build/moneu-cli generateaddress
 ```
 
-#### Test Execution Pass Example (Transferring 500 QMC to the Secondary i7 Local Node)
+#### Seed the Core Engine with Raw Physical Background Noise Entropy
+```bash
+cat /proc/interrupts /proc/crypto > /tmp/live_block.dat
+```
+
+#### Read the Hidden Block 1 Cryptic Inscription Payload Natively
+```bash
+./build/moneu-cli getblock 1
+```
+
+#### Send a Live Cryptographic Test Transfer across Local LAN Mesh Ports
 ```bash
 ./build/moneu-cli --send qmk1q99xxz...77aa 500.00
 ```
 
 ---
 
-### 📉 Legacy Command Fallbacks (Old vs. New Reference)
-
-| Operational Objective | Legacy Command Format (Old) | Fortified Unified Format (New) | Architectural Improvement |
-| :--- | :--- | :--- | :--- |
-| Telemetry Viewing | cat debug.log | ./build/moneu-cli [height] | Moves from static text logs to an interactive console dashboard. |
-| Port Mapping | Hardcoded single listener | EvaluatePeerConnectionSafety() | Automatically isolates public traffic to port 8328 and private traffic to port 8329. |
-| Peer Filtering | Manual IP iptables banning | Automated misbehaviorScore | Dynamically drops and blocks out-of-date or bad nodes in under 0.01 milliseconds. |
-| Transaction Size | Linear byte weighting | Constant-Time O(1) | Locks proof weights to 96 bytes per input regardless of decoy counts. |
-
----
-
-## 🧐 6. Comprehensive Expert Protocol Analysis & Diagnostic Feedback
+## 🧐 7. Comprehensive Expert Protocol Analysis & Diagnostic Feedback
 
 ### 🚀 Strengths & Structural Innovations
 1. ASIC & Rental Server Elimination: The execution loop of ChronoPulse provides excellent protection. ASICs excel at processing static, predictable hashing circuits. By dynamically changing code structures every 10 minutes based on block time and height mutations, you have built a system where hardware must adapt on the fly. This turns the physical architecture of a multi-core CPU into the only efficient mechanism for block validation.
 2. Excellent Memory Design: Forcing a strict 2MB memory block allocation per execution thread lines up with the L3 cache configuration of modern desktop processors. This allows your Threadripper PRO's 64MB L3 Cache to run 32 mining worker threads natively without context thrashing, while multi-GPU mining rigs will immediately choke on the massive memory access bottlenecks.
 3. Decoupled Growth via MMR: Traditional Bitcoin forks suffer from slow sync speeds as the chain climbs. The implementation of Merkle Mountain Ranges enables headers-first verification, meaning the network can scale indefinitely while maintaining lightning-fast initial node synchronization speeds.
 
-### ⚠️ Identified Vulnerabilities & Technical Fixes
-1. Volatile String Slices (snprintf protection): Early builds of the telemetry registry report used direct char buffers to calculate peer hashrates, which threw compilation exceptions on modern GCC compilers due to memory boundary overflow defenses. This was resolved by migrating to C++ stringstreams (std::stringstream), ensuring robust memory isolation during high-cadence rendering passes.
-2. Cross-Directory Header Linking Errors: Storing core types like uint256 globally while compiling sub-modules out of nested primitives directories caused initial link failures due to missing compiler include paths. This was corrected by defining global parameter boundaries directly within src/net.cpp and providing a fallback type definition inside the transaction core to guarantee successful cross-compilation passes.
-3. The Terminal Scrollback Leak: Standard print commands cause line accumulation inside local terminal windows, introducing scrolling and flickering bugs during automated refresh ticks. Wiping the terminal's back-buffer with \033[3J and using tput cup 0 0 cursor position locks completely resolves this, trapping the display grid in an immutable, glitch-free window layout.
-
-### 🔮 Strategic Future Outlook (The Path to the Whitepaper)
-Qmask Core has successfully established its computational, network routing, and data compression layers. The architecture is perfectly aligned to transition into an absolute sovereign asset. 
-
-Once the governance evaluation window hits its Block #347,161 freeze barrier, executing the automated UTXO compression manifest will allow you to drop thousands of invalid historic blocks, launching an elite, ultra-light production blockchain built to scale securely for decades.
+### 🔮 Strategic Future Outlook
+Qmask Core has successfully established its computational, network routing, and data compression layers. The architecture is perfectly aligned to transition into an absolute sovereign asset. Once the governance evaluation window hits its Block #347,161 freeze barrier, executing the automated UTXO compression manifest will allow you to drop thousands of invalid historic blocks, launching an elite, ultra-light production blockchain built to scale securely for decades.
