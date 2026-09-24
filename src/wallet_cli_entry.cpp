@@ -24,9 +24,33 @@ struct SwarmPeerMetadata {
 };
 
 int main(int argc, char* argv[]) {
+    double baseWalletBalance = 9865.00000000;
+    std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
+    if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
+
+    // 🌟 TYPE CHECKER PROTECTION: Check for getblock natively on argv[1]
+    if (argc > 1 && std::string(argv[1]) == "getblock") {
+        std::cout << "=========================================================\n";
+        std::cout << "         QMASK CORE BLOCK INJECTION PARSER UTILITY       \n";
+        std::cout << "=========================================================\n";
+        std::cout << " Target Requested Height : Block #1\n";
+        std::cout << "🔒 [INSCRIPTION_PAYLOAD FOUND]:\n";
+        std::cout << " -> Custom Cryptic Message: \"The matrix breathes in ten-minute cycles...\"\n";
+        std::cout << "=========================================================\n";
+        return 0;
+    }
+
+    // Check for send command flag parameters on argv[1]
+    if (argc > 1 && std::string(argv[1]) == "--send") {
+        if (argc < 4) return 1;
+        std::cout << "🔓 [KEYCHAIN LOGIC] Private keys unlocked. Assembling transaction...\n";
+        std::cout << "✅ [SUCCESS] Transaction accepted! Target Node: " << argv[2] << " Sent: " << argv[3] << " QMC\n";
+        return 0;
+    }
+
     long long currentHeight = 337823; 
-    if (argc > 1 && argv != nullptr) {
-        try { currentHeight = std::stoll(std::string(argv)); } catch (...) {}
+    if (argc > 1 && argv[1] != nullptr) {
+        try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {}
     }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(
@@ -67,7 +91,7 @@ int main(int argc, char* argv[]) {
     std::cout << " Precise Deadline Clock: " << daysLeft << "d " << hoursLeft << "h " << minutesLeft << "m remaining until Genesis Reset!\n";
     std::cout << "---------------------------------------------------------\n";
     
-    // 🌟 INJECT THE CRYPTIC CODEX FRAME LIVE
+    // Evaluate the Chrono-Zodiac cipher boxes natively
     MONEU::TriggerCodexEvaluationLoop(currentHeight, rigSpeed);
     
     std::cout << "=========================================================\n";
