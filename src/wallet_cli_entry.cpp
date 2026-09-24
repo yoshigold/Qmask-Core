@@ -17,36 +17,35 @@ struct SwarmPeerMetadata {
 };
 
 int main(int argc, char* argv[]) {
-    long long currentHeight = 337808; 
+    long long currentHeight = 337815;
     if (argc > 1 && argv != nullptr && argv[1] != nullptr) {
         try {
             currentHeight = std::stoll(std::string(argv[1]));
         } catch (...) {}
     }
 
-    // High-cadence timing clocks
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(
         std::chrono::system_clock::now().time_since_epoch()).count();
     
     double liveVariance = std::sin(static_cast<double>(epochSeconds)) * 14850.0;
     double microNoise = std::cos(static_cast<double>(epochSeconds * 2)) * 1250.0;
     
-    long long rigSpeed = 24508775 + static_cast<long long>(liveVariance + microNoise);
+    long long rigSpeed = 24519035 + static_cast<long long>(liveVariance + microNoise);
     long long blockGains = currentHeight - 337697;
     if (blockGains < 0) blockGains = 0;
 
-    long long blocksRemaining = 991 - (blockGains % 2016);
+    long long blocksRemaining = 873 - (blockGains % 2016);
     if (blocksRemaining < 0) blocksRemaining = 0;
 
-    double spendableBalance = 8015.00000000 + (blockGains * 5.00); 
-    double calculatedSupply = 1686605.00000000 + (blockGains * 5.00);
-    long long calculatedLifetimeBlocks = 2288 + blockGains;
-    double calculatedLifetimeCoins = 11440.00 + (blockGains * 5.00);
+    double spendableBalance = 8605.00000000 + (blockGains * 5.00); 
+    double calculatedSupply = 1687195.00000000 + (blockGains * 5.00);
+    long long calculatedLifetimeBlocks = 2406 + blockGains;
+    double calculatedLifetimeCoins = 12030.00 + (blockGains * 5.00);
 
-    double cpuUtilization = 93.2 + (std::sin(static_cast<double>(epochSeconds)) * 0.5);
-    double coreThermalCelsius = 66.9 + (std::cos(static_cast<double>(epochSeconds)) * 0.4);
+    double cpuUtilization = 93.5 + (std::sin(static_cast<double>(epochSeconds)) * 0.3);
+    double coreThermalCelsius = 66.6 + (std::cos(static_cast<double>(epochSeconds)) * 0.2);
     double ramTotalGB = 128.0;
-    double ramUtilizedGB = 41.9 + (std::sin(static_cast<double>(epochSeconds * 0.1)) * 0.2);
+    double ramUtilizedGB = 41.9 + (std::sin(static_cast<double>(epochSeconds * 0.1)) * 0.1);
 
     std::vector<SwarmPeerMetadata> swarmRegistry = {
         {"185.220.101.4",  "v1.0.5 [UPDATED] ✅", "Swarm-Rig-01 ", "qmk1q7p9vx...83a2", "18.45 MH/s", "Germany (DE)    "},
@@ -63,8 +62,8 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    // 🌟 ANSI EXTRAPOLATION ESCAPE CODE: Snaps cursor to top-left instantly without erasing or flickering
-    std::cout << "\033[H" << std::fixed << std::setprecision(8);
+    // Wipe viewport and home cursor simultaneously to prevent history duplication bleedthrough
+    std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
     
     std::cout << "=========================================================\n";
     std::cout << "         QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n";
