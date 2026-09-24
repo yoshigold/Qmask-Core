@@ -47,10 +47,6 @@ int main(int argc, char* argv[]) {
         std::cout << "=========================================================\n";
         std::cout << "         QMASK CORE BLOCK INJECTION PARSER UTILITY       \n";
         std::cout << "=========================================================\n";
-        std::cout << " Target Requested Height : Block #1\n";
-        std::cout << "🔒 [INSCRIPTION_PAYLOAD FOUND]:\n";
-        std::cout << " -> Custom Cryptic Message: \"The matrix breathes in ten-minute cycles...\"\n";
-        std::cout << "=========================================================\n";
         return 0;
     }
 
@@ -81,14 +77,14 @@ int main(int argc, char* argv[]) {
     long long rigSpeed = 24532431 + static_cast<long long>(liveVariance + microNoise);
     double workstationMH = static_cast<double>(rigSpeed) / 1000000.0;
 
-    // 🌟 CRYPTOGRAPHIC REGISTRY MAP: Explicit wallet keys assigned securely per node
+    // 🌟 GEOGRAPHIC DATABASE MATRIX: Restored absolute country strings natively
     std::vector<SwarmPeerMetadata> swarmRegistry = {
         {"127.0.0.1",      "v1.0.5 [UPDATED] ✅", "Local-Host  ", "qmk1q00000...00aa", 0.00,  "Local Loopback ", false, false},  
         {"185.220.101.4",  "v1.0.5 [UPDATED] ✅", "Swarm-Rig-01 ", "qmk1q7p9vx...83a2", 18.45, "Germany (DE)    ", false, false},
         {"45.132.221.19",  "v1.0.5 [UPDATED] ✅", "Swarm-Rig-02 ", "qmk1qx5z4l...29f1", 22.10, "Netherlands (NL)", false, false},
         {"93.115.27.81",   "v1.0.5 [UPDATED] ✅", "Co-Op-Miner-A", "qmk1q2w8sm...44e7", 33.20, "Romania (RO)    ", false, false},
         {"192.168.1.147",  "v1.0.5 [UPDATED] ✅", "Intel-i7-Sec ", "qmk1q99xxz...77aa", 14.25, "Local LAN (UK)  ", false, false},
-        {"192.168.1.100",  "v1.0.5 [UPDATED] ✅", "Threadripper", "qmk1q595wx...55aa", 24.53, "Local Host (UK)", true,  true}
+        {"192.168.1.100",  "v1.0.5 [UPDATED] ✅", "Threadripper", "qmk1q595wx...55aa", 24.53, "United Kingdom  ", true,  true}
     };
 
     long long totalNetworkPower = rigSpeed;
@@ -117,48 +113,30 @@ int main(int argc, char* argv[]) {
 
     std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
     
-    std::cout << "=========================================================\n";
-    std::cout << "         QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n";
-    std::cout << "=========================================================\n";
+    std::cout << "========================================================================================\n";
+    std::cout << "                  QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n";
+    std::cout << "========================================================================================\n";
     std::cout << " Spendable Balance    : " << spendableBalance << " QMK\n";
-    std::cout << " Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n";
-    std::cout << " Target Lock Time     : 100 Confirmations Depth Per Block\n";
-    std::cout << " Circulating Supply   : " << calculatedSupply << " QMK\n";
-    std::cout << " Maximum Supply Cap   : 21000000.00000000 QMK\n";
-    std::cout << " Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n";
-    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << std::fixed << std::setprecision(2) << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
     std::cout << " Current Block Height : #" << currentHeight << "\n";
-    std::cout << " Blocks to Retarget   : " << blocksRemaining << " Blocks Remaining\n";
-    std::cout << " Connected Swarm Mesh : 5 Active Peer Handshakes\n";
-    std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved\n";
-    std::cout << " Miner Lifetime Coins : " << calculatedLifetimeCoins << " QMK Minted\n";
+    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << std::fixed << std::setprecision(2) << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
     std::cout << " Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n";
-    std::cout << "---------------------------------------------------------\n";
-    std::cout << "⏱️  AUTOMATED NATIVE BLOCK STOPWATCH MONITOR:\n";
-    long long currentVelocity = 58 + (epochSeconds % 3); 
-    std::cout << " Last Solved Block Velocity : " << currentVelocity << " Seconds Elapsed\n";
-    std::cout << " Consensus Stabilization Target: 60 Seconds [ASERT Active]\n";
-    std::cout << "---------------------------------------------------------\n";
+    std::cout << "----------------------------------------------------------------------------------------\n";
     std::cout << "⏳ MIGRATION T-ZERO MAINNET RESET COUNTDOWN:\n";
-    std::cout << " Target Freeze Anchor : Block #347161\n";
     std::cout << " Precise Deadline Clock: " << daysLeft << "d " << hoursLeft << "h " << minutesLeft << "m remaining until Genesis Reset!\n";
-    std::cout << "---------------------------------------------------------\n";
+    std::cout << "----------------------------------------------------------------------------------------\n";
     
     MONEU::TriggerCodexEvaluationLoop(currentHeight, rigSpeed);
     
-    std::cout << "=========================================================\n";
+    std::cout << "========================================================================================\n";
     std::cout << "         PRIMARY WORKSTATION PC HARDWARE DIAGNOSTICS\n";
-    std::cout << "=========================================================\n";
-    std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores)\n";
-    std::cout << " CPU Core Load    : " << cpuUtilization << " % [All Threads Pegged]\n";
-    std::cout << " CPU Thermal Die  : " << coreThermalCelsius << " °C [Liquid Cooling Steady]\n";
-    std::cout << " System Memory    : " << ramUtilizedGB << " GB / " << ramTotalGB << " GB Total (" << (ramUtilizedGB/ramTotalGB)*100.0 << "% Utilized)\n";
-    std::cout << " WSL OS Layer     : Ubuntu 24.04 LTS (Linux Kernel 5.15-WSL2)\n";
-    std::cout << "=========================================================\n";
-    std::cout << "      QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
-    std::cout << "=========================================================\n";
-    std::cout << " IP ADDRESS      | CLIENT VERSION       | RIG IDENTITY   | MINING WALLET ADDR            | HASHRATE  \n";
-    std::cout << "-----------------+----------------------+---------------+-------------------------------+------------\n";
+    std::cout << "========================================================================================\n";
+    std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Temp: " << coreThermalCelsius << " °C\n";
+    std::cout << " Memory Footprint : " << ramUtilizedGB << " GB / " << ramTotalGB << " GB Total (" << (ramUtilizedGB/ramTotalGB)*100.0 << "% Utilized)\n";
+    std::cout << "========================================================================================\n";
+    std::cout << "                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
+    std::cout << "========================================================================================\n";
+    std::cout << " IP ADDRESS      | CLIENT VERSION       | RIG IDENTITY   | MINING WALLET ADDR            | HASHRATE   | COUNTRY/ZONE\n";
+    std::cout << "-----------------+----------------------+---------------+-------------------------------+------------+---------------\n";
     for (size_t i = 0; i < swarmRegistry.size(); i++) {
         double currentMH = swarmRegistry[i].baseHashrateMH;
         if (swarmRegistry[i].isWorkstation) { currentMH = workstationMH; }
@@ -171,18 +149,19 @@ int main(int argc, char* argv[]) {
             hStr = ss.str();
         }
         
-        // 🌟 SIGNATURE ALIGNMENT ENFORCEMENT: Explicitly binds founder parameters to your exact key address string
         std::string walletDisplay = swarmRegistry[i].walletAddress;
         if (swarmRegistry[i].walletAddress == "qmk1q595wx...55aa" || swarmRegistry[i].isFounder) {
             walletDisplay += " 👑 (Founder)";
         }
         
+        // Remapped grid spacing format to fit country metrics cleanly inside bounds
         std::cout << " " << std::left << std::setw(15) << swarmRegistry[i].ipAddress << " | "
                   << std::setw(20) << swarmRegistry[i].clientVersion << " | "
                   << std::setw(13) << swarmRegistry[i].rigName << " | "
                   << std::setw(29) << walletDisplay << " | "
-                  << hStr << "\n";
+                  << std::setw(10) << hStr << " | "
+                  << swarmRegistry[i].geographicCountry << "\n";
     }
-    std::cout << "=========================================================\n";
+    std::cout << "========================================================================================\n";
     return 0;
 }
