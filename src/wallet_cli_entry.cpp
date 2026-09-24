@@ -43,16 +43,18 @@ int main(int argc, char* argv[]) {
     std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
     if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
 
-    if (argc > 1 && std::string(argv) == "getblock") { return 0; }
-    if (argc > 1 && std::string(argv) == "--send") {
+    // 🌟 FIXED INDEX STRINGS: Safely check exact indices for flags
+    if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
+    
+    if (argc > 1 && std::string(argv[1]) == "--send") {
         if (argc < 4) return 1;
-        ExecuteWalletSpendTransaction(argv, std::stod(argv), baseWalletBalance);
+        ExecuteWalletSpendTransaction(std::string(argv[2]), std::stod(std::string(argv[3])), baseWalletBalance);
         return 0;
     }
 
     long long currentHeight = 337823; 
-    if (argc > 1 && argv != nullptr) {
-        try { currentHeight = std::stoll(std::string(argv)); } catch (...) {}
+    if (argc > 1 && argv[1] != nullptr) {
+        try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {}
     }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(
@@ -69,8 +71,6 @@ int main(int argc, char* argv[]) {
     double liveVariance = std::sin(timeVar) * 14850.0;
     double microNoise = std::cos(timeVar * 2.0) * 1250.0;
     long long rigSpeed = 24532431 + static_cast<long long>(liveVariance + microNoise);
-    
-    // 🌟 ARTIFACT UNLOCKED MULTIPLIER: Injects your permanent +5.00 MH/s virtual mining booster
     double virtualBoosterMH = 5.00;
     double workstationMH = (static_cast<double>(rigSpeed) / 1000000.0) + virtualBoosterMH;
 
