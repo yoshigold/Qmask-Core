@@ -43,16 +43,18 @@ int main(int argc, char* argv[]) {
     std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
     if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
 
-    if (argc > 1 && std::string(argv) == "getblock") { return 0; }
-    if (argc > 1 && std::string(argv) == "--send") {
+    if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
+    
+    // 🌟 ARGUMENT ROUTER PROTECTION: Map array elements to handle spending flags safely
+    if (argc > 1 && std::string(argv[1]) == "--send") {
         if (argc < 4) return 1;
-        ExecuteWalletSpendTransaction(argv, std::stod(argv), baseWalletBalance);
+        ExecuteWalletSpendTransaction(std::string(argv[2]), std::stod(std::string(argv[3])), baseWalletBalance);
         return 0;
     }
 
     long long currentHeight = 337823; 
-    if (argc > 1 && argv != nullptr) {
-        try { currentHeight = std::stoll(std::string(argv)); } catch (...) {}
+    if (argc > 1 && argv[1] != nullptr) {
+        try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {}
     }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(
@@ -129,6 +131,7 @@ int main(int argc, char* argv[]) {
     std::cout << " Consensus Stabilization Target: 60 Seconds [ASERT Active]\n";
     std::cout << "----------------------------------------------------------------------------------------\n";
     std::cout << "⏳ MIGRATION T-ZERO MAINNET RESET COUNTDOWN:\n";
+    std::cout << " Target Freeze Anchor : Block #347161\n";
     std::cout << " Precise Deadline Clock: " << daysLeft << "d " << hoursLeft << "h " << minutesLeft << "m remaining until Genesis Reset!\n";
     std::cout << "----------------------------------------------------------------------------------------\n";
     
