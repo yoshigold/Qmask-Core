@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/moneud.dir/src/main.cpp.o CMakeFiles/moneud.dir/src/net.cpp.o CMakeFiles/moneud.dir/src/tactics_core.cpp.o CMakeFiles/moneud.dir/src/setup_wizard.cpp.o CMakeFiles/moneud.dir/src/wallet_guard.cpp.o CMakeFiles/moneud.dir/src/cold_matrix.cpp.o -o moneud 
