@@ -12,8 +12,9 @@ struct SwarmPeerMetadata {
     std::string clientVersion;
     std::string rigName;
     std::string walletAddress;
-    double baseHashrateMH; // Changed to double to allow dynamic micro-fluctuation math
+    double baseHashrateMH;
     std::string geographicCountry;
+    bool isFounder; // 👑 Flag to identify the master genesis keys
 };
 
 int main(int argc, char* argv[]) {
@@ -24,37 +25,32 @@ int main(int argc, char* argv[]) {
         } catch (...) {}
     }
 
-    // High-cadence timing clocks
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(
         std::chrono::system_clock::now().time_since_epoch()).count();
     double timeVar = static_cast<double>(epochSeconds);
 
-    // Primary Workstation Hashrate Calculations
     double liveVariance = std::sin(timeVar) * 14850.0;
     double microNoise = std::cos(timeVar * 2.0) * 1250.0;
     long long rigSpeed = 24532431 + static_cast<long long>(liveVariance + microNoise);
 
-    // 🌟 FULLY DYNAMIC SWARM REGISTRY DATA REFACTOR
+    // 🌟 INTEGRATED FOUNDER REGISTRY BOOLEAN FLAGS
     std::vector<SwarmPeerMetadata> swarmRegistry = {
-        {"185.220.101.4",  "v1.0.5 [UPDATED] ✅", "Swarm-Rig-01 ", "qmk1q7p9vx...83a2", 18.45, "Germany (DE)    "},
-        {"45.132.221.19",  "v1.0.5 [UPDATED] ✅", "Swarm-Rig-02 ", "qmk1qx5z4l...29f1", 22.10, "Netherlands (NL)"},
-        {"93.115.27.81",   "v1.0.5 [UPDATED] ✅", "Co-Op-Miner-A", "qmk1q2w8sm...44e7", 33.20, "Romania (RO)    "},
-        {"192.168.1.147",  "v1.0.5 [UPDATED] ✅", "Intel-i7-Sec ", "qmk1q99xxz...77aa", 14.25, "Local LAN (UK)  "},
-        {"198.51.100.54",  "v1.0.4 [STUCK] ⚠️  ", "Legacy-Node  ", "Unknown Wallet    ", 0.00,  "United States(US)"}
+        {"185.220.101.4",  "v1.0.5 [UPDATED] ✅", "Swarm-Rig-01 ", "qmk1q7p9vx...83a2", 18.45, "Germany (DE)    ", false},
+        {"45.132.221.19",  "v1.0.5 [UPDATED] ✅", "Swarm-Rig-02 ", "qmk1qx5z4l...29f1", 22.10, "Netherlands (NL)", false},
+        {"93.115.27.81",   "v1.0.5 [UPDATED] ✅", "Co-Op-Miner-A", "qmk1q2w8sm...44e7", 33.20, "Romania (RO)    ", false},
+        {"192.168.1.147",  "v1.0.5 [UPDATED] ✅", "Intel-i7-Sec ", "qmk1q99xxz...77aa", 14.25, "Local LAN (UK)  ", true}, // 👑 Marked as Founder Rig
+        {"198.51.100.54",  "v1.0.4 [STUCK] ⚠️  ", "Legacy-Node  ", "Unknown Wallet    ", 0.00,  "United States(US)", false}
     };
 
-    // Accumulate total network power dynamically based on live peer variations
     long long totalNetworkPower = rigSpeed;
     for (size_t i = 0; i < swarmRegistry.size(); i++) {
         if (swarmRegistry[i].clientVersion.find("STUCK") == std::string::npos) {
-            // Give each rig a unique wave signature so they fluctuate independently
             double peerFluctuation = std::sin(timeVar + (i * 2.5)) * (swarmRegistry[i].baseHashrateMH * 0.015);
             double dynamicMH = swarmRegistry[i].baseHashrateMH + peerFluctuation;
             totalNetworkPower += static_cast<long long>(dynamicMH * 1000000.0);
         }
     }
 
-    // Ledger accounting math
     long long blockGains = currentHeight - 337697;
     if (blockGains < 0) blockGains = 0;
     long long blocksRemaining = 747 - (blockGains % 2016);
@@ -104,25 +100,28 @@ int main(int argc, char* argv[]) {
     std::cout << "=========================================================\n";
     std::cout << "      QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
     std::cout << "=========================================================\n";
-    std::cout << " IP ADDRESS      | CLIENT VERSION       | RIG IDENTITY   | MINING WALLET ADDR | HASHRATE   | COUNTRY/ZONE\n";
-    std::cout << "-----------------+----------------------+---------------+--------------------+------------+---------------\n";
+    std::cout << " IP ADDRESS      | CLIENT VERSION       | RIG IDENTITY   | MINING WALLET ADDR            | HASHRATE   | COUNTRY/ZONE\n";
+    std::cout << "-----------------+----------------------+---------------+-------------------------------+------------+---------------\n";
     for (size_t i = 0; i < swarmRegistry.size(); i++) {
-        // Compute the matching live, fluctuating string inside the output loops
         std::string hashrateStr = "0.00 H/s  ";
         if (swarmRegistry[i].baseHashrateMH > 0.0) {
             double peerFluctuation = std::sin(timeVar + (i * 2.5)) * (swarmRegistry[i].baseHashrateMH * 0.015);
             double dynamicMH = swarmRegistry[i].baseHashrateMH + peerFluctuation;
-            
-            // Format double to string with 2 decimal places manually for stream precision
-            char buffer[32];
-            snprintf(buffer, sizeof(buffer), "%.2f MH/s", dynamicMH);
-            hashrateStr = std::string(buffer);
+            char hBuffer[32];
+            snprintf(hBuffer, sizeof(hBuffer), "%.2f MH/s", dynamicMH);
+            hashrateStr = std::string(hBuffer);
+        }
+
+        // Dynamically append the Founder tag if boolean target matches true
+        std::string walletDisplay = swarmRegistry[i].walletAddress;
+        if (swarmRegistry[i].isFounder) {
+            walletDisplay += " 👑 (Founder)";
         }
 
         std::cout << " " << std::left << std::setw(15) << swarmRegistry[i].ipAddress << " | "
                   << std::setw(20) << swarmRegistry[i].clientVersion << " | "
                   << std::setw(13) << swarmRegistry[i].rigName << " | "
-                  << std::setw(18) << swarmRegistry[i].walletAddress << " | "
+                  << std::setw(29) << walletDisplay << " | "
                   << std::setw(10) << hashrateStr << " | "
                   << swarmRegistry[i].geographicCountry << "\n";
     }
