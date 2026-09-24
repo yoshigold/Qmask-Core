@@ -10,10 +10,8 @@ namespace MONEU {
 
 class ChronoZodiacCodexEngine {
 private:
-    // ⚓ HISTORICAL GRAVITY WELL ANCHOR: The absolute structural signature of Moneu Block 0
     const std::string MONEU_GENESIS_ROOT = "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f";
 
-    // Enforces Fibonacci signature confirmation sequences
     bool IsFibonacciValue(long long value) {
         if (value < 0) return false;
         long long check1 = 5 * value * value + 4;
@@ -24,15 +22,14 @@ private:
     }
 
     std::string DetermineZodiacHouse(long long timestamp) {
-        // Deterministic celestial solar degree projection math
         int houseSelector = (timestamp % 12);
         std::vector<std::string> houses = {
-            "ARIES (The House of Ignition)",       "TAURUS (The Hardened Matrix)",
-            "GEMINI (The Dual-Port Fork)",         "CANCER (The Protective Shield)",
-            "LEO (The Sovereign Core)",            "VIRGO (The Pure Ledger Canvas)",
-            "LIBRA (The Balanced Conservation)",   "SCORPIO (The Shadow Sting)",
-            "SAGITTARIUS (The Chrono Vector)",     "CAPRICORN (The Silicon Mountain)",
-            "AQUARIUS (The Swarm Stream)",         "PISCES (The Infinite Deep)"
+            "ARIES (House of Ignition)",       "TAURUS (Hardened Matrix)",
+            "GEMINI (Dual-Port Fork)",         "CANCER (Protective Shield)",
+            "LEO (Sovereign Core)",            "VIRGO (Pure Ledger Canvas)",
+            "LIBRA (Balanced Conservation)",   "SCORPIO (Shadow Sting)",
+            "SAGITTARIUS (Chrono Vector)",     "CAPRICORN (Silicon Mountain)",
+            "AQUARIUS (Swarm Stream)",         "PISCES (Infinite Deep)"
         };
         return houses[houseSelector];
     }
@@ -45,20 +42,31 @@ public:
         std::string currentHouse = DetermineZodiacHouse(epochSeconds);
         std::stringstream codexDisplayStream;
 
-        codexDisplayStream << "🪐 [CHRONO-ZODIAC CIPHER CODEX ACTIVE]\n";
-        codexDisplayStream << " -> Celestial Alignment: " << currentHouse << "\n";
+        codexDisplayStream << "🪐 [CHRONO-ZODIAC CIPHER CODEX INTERFACE]\n";
+        codexDisplayStream << " -> Current House : " << currentHouse << "\n";
         
-        // 🔮 MYSTERIOUS UNLOCK CONDITION: Check if the network height nonces step into the Fibonacci matrix bounds
+        // 🎮 SIMPLIFIED BASIC USER METHOD: Dynamic Simple Alignment Tracker
+        long long simpleMatchFactor = (epochSeconds % 10);
+        codexDisplayStream << " -> Matcher Matrix: [";
+        for (int i = 0; i < 10; i++) {
+            if (i == simpleMatchFactor) codexDisplayStream << "⚡";
+            else codexDisplayStream << "-";
+        }
+        codexDisplayStream << "] ";
+        
+        if (simpleMatchFactor == 7) {
+            codexDisplayStream << "✨ [MATCH ALIGNMENT DETECTED! GLYPH FRAGMENT 1/4 SECURED] ✨\n";
+        } else {
+            codexDisplayStream << "(Waiting for alignment match...)\n";
+        }
+        
+        // 🔒 ADVANCED HARDCORE CIPHER SECTION
         long long localRiddleTrigger = blockHeight % 144; 
         if (IsFibonacciValue(localRiddleTrigger)) {
-            codexDisplayStream << "=========================================================\n";
-            codexDisplayStream << "⚠️  [CIPHER RIDDLE LOCKED AT GENESIS LINK LEVEL " << localRiddleTrigger << "]\n";
+            codexDisplayStream << "---------------------------------------------------------\n";
+            codexDisplayStream << "💀 [DEEP CIPHER DETECTED FOR EXPERT DECODERS]:\n";
             codexDisplayStream << "   \"The first born of Moneu anchors deep into the zero slot.\n";
-            codexDisplayStream << "    When the shadow lines shift on port 8330, the third matrix\n";
-            codexDisplayStream << "    will awaken the sleeping Xenomorph vector...\"\n";
-            codexDisplayStream << "=========================================================\n";
-        } else {
-            codexDisplayStream << " -> Codex Puzzle Track : Math sequences stable. Searching for next alignment vector...\n";
+            codexDisplayStream << "    Moneu Block 0 variables must modulate the Vesta Curve.\"\n";
         }
 
         return codexDisplayStream.str();
