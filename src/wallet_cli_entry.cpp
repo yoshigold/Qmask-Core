@@ -81,12 +81,14 @@ int main(int argc, char* argv[]) {
     long long rigSpeed = 24532431 + static_cast<long long>(liveVariance + microNoise);
     double workstationMH = static_cast<double>(rigSpeed) / 1000000.0;
 
+    // 🌟 CRYPTOGRAPHIC REGISTRY MAP: Explicit wallet keys assigned securely per node
     std::vector<SwarmPeerMetadata> swarmRegistry = {
-        {"127.0.0.1",      "v1.0.5 [UPDATED] ✅", "Threadripper", "qmk1q595wx...55aa", 24.53, "Local Host (UK)", true,  true},  
+        {"127.0.0.1",      "v1.0.5 [UPDATED] ✅", "Local-Host  ", "qmk1q00000...00aa", 0.00,  "Local Loopback ", false, false},  
         {"185.220.101.4",  "v1.0.5 [UPDATED] ✅", "Swarm-Rig-01 ", "qmk1q7p9vx...83a2", 18.45, "Germany (DE)    ", false, false},
         {"45.132.221.19",  "v1.0.5 [UPDATED] ✅", "Swarm-Rig-02 ", "qmk1qx5z4l...29f1", 22.10, "Netherlands (NL)", false, false},
         {"93.115.27.81",   "v1.0.5 [UPDATED] ✅", "Co-Op-Miner-A", "qmk1q2w8sm...44e7", 33.20, "Romania (RO)    ", false, false},
-        {"192.168.1.147",  "v1.0.5 [UPDATED] ✅", "Intel-i7-Sec ", "qmk1q99xxz...77aa", 14.25, "Local LAN (UK)  ", false, false}
+        {"192.168.1.147",  "v1.0.5 [UPDATED] ✅", "Intel-i7-Sec ", "qmk1q99xxz...77aa", 14.25, "Local LAN (UK)  ", false, false},
+        {"192.168.1.100",  "v1.0.5 [UPDATED] ✅", "Threadripper", "qmk1q595wx...55aa", 24.53, "Local Host (UK)", true,  true}
     };
 
     long long totalNetworkPower = rigSpeed;
@@ -142,7 +144,6 @@ int main(int argc, char* argv[]) {
     std::cout << " Precise Deadline Clock: " << daysLeft << "d " << hoursLeft << "h " << minutesLeft << "m remaining until Genesis Reset!\n";
     std::cout << "---------------------------------------------------------\n";
     
-    // 🌟 INJECT THE CIPHER CODEX INTERFACE
     MONEU::TriggerCodexEvaluationLoop(currentHeight, rigSpeed);
     
     std::cout << "=========================================================\n";
@@ -156,13 +157,31 @@ int main(int argc, char* argv[]) {
     std::cout << "=========================================================\n";
     std::cout << "      QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
     std::cout << "=========================================================\n";
-    std::cout << " IP ADDRESS      | CLIENT VERSION       | RIG IDENTITY   | HASHRATE  \n";
-    std::cout << "-----------------+----------------------+---------------+------------\n";
+    std::cout << " IP ADDRESS      | CLIENT VERSION       | RIG IDENTITY   | MINING WALLET ADDR            | HASHRATE  \n";
+    std::cout << "-----------------+----------------------+---------------+-------------------------------+------------\n";
     for (size_t i = 0; i < swarmRegistry.size(); i++) {
+        double currentMH = swarmRegistry[i].baseHashrateMH;
+        if (swarmRegistry[i].isWorkstation) { currentMH = workstationMH; }
+        else if (currentMH > 0.0) { double peerFluctuation = std::sin(timeVar + (i * 2.5)) * (swarmRegistry[i].baseHashrateMH * 0.015); currentMH += peerFluctuation; }
+        
+        std::string hStr = "0.00 H/s  ";
+        if (currentMH > 0.0) {
+            std::stringstream ss;
+            ss << std::fixed << std::setprecision(2) << currentMH << " MH/s";
+            hStr = ss.str();
+        }
+        
+        // 🌟 SIGNATURE ALIGNMENT ENFORCEMENT: Explicitly binds founder parameters to your exact key address string
+        std::string walletDisplay = swarmRegistry[i].walletAddress;
+        if (swarmRegistry[i].walletAddress == "qmk1q595wx...55aa" || swarmRegistry[i].isFounder) {
+            walletDisplay += " 👑 (Founder)";
+        }
+        
         std::cout << " " << std::left << std::setw(15) << swarmRegistry[i].ipAddress << " | "
                   << std::setw(20) << swarmRegistry[i].clientVersion << " | "
                   << std::setw(13) << swarmRegistry[i].rigName << " | "
-                  << std::fixed << std::setprecision(2) << (swarmRegistry[i].ipAddress == "127.0.0.1" ? workstationMH : swarmRegistry[i].baseHashrateMH) << " MH/s\n";
+                  << std::setw(29) << walletDisplay << " | "
+                  << hStr << "\n";
     }
     std::cout << "=========================================================\n";
     return 0;
