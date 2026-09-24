@@ -43,18 +43,16 @@ int main(int argc, char* argv[]) {
     std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
     if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
 
-    if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
-    
-    // 🌟 ARGUMENT ROUTER PROTECTION: Map array elements to handle spending flags safely
-    if (argc > 1 && std::string(argv[1]) == "--send") {
+    if (argc > 1 && std::string(argv) == "getblock") { return 0; }
+    if (argc > 1 && std::string(argv) == "--send") {
         if (argc < 4) return 1;
-        ExecuteWalletSpendTransaction(std::string(argv[2]), std::stod(std::string(argv[3])), baseWalletBalance);
+        ExecuteWalletSpendTransaction(argv, std::stod(argv), baseWalletBalance);
         return 0;
     }
 
     long long currentHeight = 337823; 
-    if (argc > 1 && argv[1] != nullptr) {
-        try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {}
+    if (argc > 1 && argv != nullptr) {
+        try { currentHeight = std::stoll(std::string(argv)); } catch (...) {}
     }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(
@@ -71,7 +69,10 @@ int main(int argc, char* argv[]) {
     double liveVariance = std::sin(timeVar) * 14850.0;
     double microNoise = std::cos(timeVar * 2.0) * 1250.0;
     long long rigSpeed = 24532431 + static_cast<long long>(liveVariance + microNoise);
-    double workstationMH = static_cast<double>(rigSpeed) / 1000000.0;
+    
+    // 🌟 ARTIFACT UNLOCKED MULTIPLIER: Injects your permanent +5.00 MH/s virtual mining booster
+    double virtualBoosterMH = 5.00;
+    double workstationMH = (static_cast<double>(rigSpeed) / 1000000.0) + virtualBoosterMH;
 
     std::vector<SwarmPeerMetadata> swarmRegistry = {
         {"127.0.0.1",      "v1.0.5 [UPDATED] ✅", "Local-Host  ", "qmk1q00000...00aa", 0.00,  "Local Loopback ", false, false},  
@@ -82,7 +83,7 @@ int main(int argc, char* argv[]) {
         {"192.168.1.100",  "v1.0.5 [UPDATED] ✅", "Threadripper", "qmk1q595wx...55aa", 24.53, "United Kingdom  ", true,  true}
     };
 
-    long long totalNetworkPower = rigSpeed;
+    long long totalNetworkPower = rigSpeed + static_cast<long long>(virtualBoosterMH * 1000000.0);
     for (size_t i = 0; i < swarmRegistry.size(); i++) {
         if (!swarmRegistry[i].isWorkstation) {
             double peerFluctuation = std::sin(timeVar + (i * 2.5)) * (swarmRegistry[i].baseHashrateMH * 0.015);
@@ -142,6 +143,7 @@ int main(int argc, char* argv[]) {
     std::cout << "========================================================================================\n";
     std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Temp: " << coreThermalCelsius << " °C\n";
     std::cout << " Memory Footprint : " << ramUtilizedGB << " GB / " << ramTotalGB << " GB Total (" << (ramUtilizedGB/ramTotalGB)*100.0 << "% Utilized)\n";
+    std::cout << "👑 ACTIVE ARTIFACT INVENTORY : [1/1] Moneu-Origin-Zodiac-Token Loaded (+5.00 MH/s Speed Pack Active)\n";
     std::cout << "========================================================================================\n";
     std::cout << "                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
     std::cout << "========================================================================================\n";
