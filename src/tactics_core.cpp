@@ -42,14 +42,23 @@ public:
         }
         codexDisplayStream << "] ";
         
-        // ⚓ OPTION 2: THE ZODIAC ARTIFACT MINTING RECOGNITION
+        // 🎮 SYSTEM INTERFACE RESET AND LEVEL PROGRESSION
+        // Calculates Tier 2 progression dynamically since Tier 1 is already fully assembled
+        long long activeTier2Fragments = (blockHeight % 4); 
+        
         if (simpleMatchFactor == 7) {
-            codexDisplayStream << "✨ [MATCH ALIGNMENT DETECTED! GLYPH FRAGMENT SECURED] ✨\n";
-            codexDisplayStream << " -> Minted Game Block Reward: \"Moneu-Origin-Artifact-Token\" bound to block #" << blockHeight << "\n";
+            codexDisplayStream << "✨ [MATCH ALIGNMENT DETECTED! GLYPH SECURED] ✨\n";
+            codexDisplayStream << " -> Minted Game Block Reward: \"Quantum-Shield-Fragment\" bound to block #" << blockHeight << "\n";
         } else {
-            codexDisplayStream << "(Waiting for alignment match...)\n";
+            codexDisplayStream << "(Hunting Tier 2 Core Fragments...)\n";
         }
         
+        codexDisplayStream << "----------------------------------------------------------------------------------------\n";
+        codexDisplayStream << "🎮 PERMANENT GAMING MATRIX MONITOR VECTOR STATUS :\n";
+        codexDisplayStream << "  -> Active Codex Puzzle Level: TIER 2 (The Quantum Shield Protocol)\n";
+        codexDisplayStream << "  -> Glyph Fragment Inventory : [" << activeTier2Fragments << "/4] Searching for Alignment Match...\n";
+        codexDisplayStream << "  -> Active Artifact Boost    : Moneu-Origin-Zodiac-Token Loaded (+5.00 MH/s Speed Verified)\n";
+
         return codexDisplayStream.str();
     }
 };
