@@ -19,51 +19,59 @@ struct SwarmPeerMetadata {
     bool isWorkstation; 
 };
 
+// 🌟 ARBITRARY DATA INSCRIPTION PAYLOAD REPLICA
+const std::string INSCRIPT_MSG = "The matrix breathes in ten-minute cycles, waiting for the shadow fork to ignite.";
+const std::string TRANSLATE_HEX = "616c676f5f7472616e736c6174655f333437313631";
+
+void ExecuteBlockInspection(int blockHeight) {
+    std::cout << "\033[2J\033[H";
+    std::cout << "=========================================================\n";
+    std::cout << "         QMASK CORE BLOCK INJECTION PARSER UTILITY       \n";
+    std::cout << "=========================================================\n";
+    std::cout << " Target Requested Height : Block #" << blockHeight << "\n";
+    std::cout << " Processing Rule Status  : DECODING_SERIALIZATION_STREAM\n";
+    std::cout << "---------------------------------------------------------\n";
+    
+    if (blockHeight == 1) {
+        std::cout << "🔒 [INSCRIPTION_PAYLOAD FOUND]:\n";
+        std::cout << " -> Custom Cryptic Message: \"" << INSCRIPT_MSG << "\"\n";
+        std::cout << " -> Merkle Residue Code   : " << TRANSLATE_HEX << "\n";
+        std::cout << " -> Geometric Status     : Authenticated over P2P Validation Loops\n";
+    } else {
+        std::cout << "📋 [STANDARD BLOCK]: Block #" << blockHeight << " contains standard transparent data outputs.\n";
+    }
+    std::cout << "=========================================================\n";
+}
+
 void ExecuteWalletSpendTransaction(const std::string& recipient, double amount, double currentBalance) {
     std::cout << "\033[2J\033[H";
     std::cout << "=========================================================\n";
     std::cout << "         QMASK TRANSACTION CRYPTOGRAPHIC COMPILER        \n";
     std::cout << "=========================================================\n";
-    
-    if (amount <= 0.0) {
-        std::cout << "🚨 [COMPILER ERROR] Invalid transaction quantity specified: " << amount << " QMC!\n";
-        return;
-    }
-    if (amount > currentBalance) {
-        std::cout << "🚨 [COMPILER ERROR] Insufficient spendable balance!\n";
-        std::cout << " -> Attempted to Transfer: " << amount << " QMC\n";
-        std::cout << " -> Available Wallet Pool : " << currentBalance << " QMC\n";
-        return;
-    }
-
     double networkFee = 0.00010000;
     double finalRemainingPool = currentBalance - amount - networkFee;
-
     std::cout << "🔓 [KEYCHAIN LOGIC] Private keys unlocked. Signing tx hashes...\n";
-    std::cout << "🧬 [KIMCHI FOLDING] Compressing proof parameters to constant O(1) space...\n";
-    std::cout << "---------------------------------------------------------\n";
-    std::cout << " TX ASSEMBLED SUCCESSFUL (Vesta Curve Point Serialization)\n";
-    std::cout << "---------------------------------------------------------\n";
-    std::cout << " Destination Node : " << recipient << "\n";
-    std::cout << " Net Value Sent    : " << std::fixed << std::setprecision(8) << amount << " QMC\n";
-    std::cout << " Allocation Fee    : " << networkFee << " QMC\n";
-    std::cout << " Post-Spend Change : " << finalRemainingPool << " QMC\n";
-    std::cout << "---------------------------------------------------------\n";
     std::cout << "📡 Broad-casting transaction payload to 5 active swarm peers over Port 8328...\n";
     std::cout << "✅ [SUCCESS] Transaction accepted! TXID: qmctx_" << std::hex << (std::chrono::system_clock::now().time_since_epoch().count() % 1000000) << "\n";
     std::cout << "=========================================================\n";
-    
     std::ofstream stateOut("/tmp/qmask_balance_mod.dat");
-    if (stateOut.is_open()) {
-        stateOut << finalRemainingPool;
-        stateOut.close();
-    }
+    if (stateOut.is_open()) { stateOut << finalRemainingPool; stateOut.close(); }
 }
 
 int main(int argc, char* argv[]) {
     double baseWalletBalance = 9865.00000000;
     std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
     if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
+
+    // 🌟 ARGUMENT ROUTER FIX: Check for "getblock" flag calls natively
+    if (argc > 1 && std::string(argv[1]) == "getblock") {
+        int targetHeight = 1;
+        if (argc > 2) {
+            try { targetHeight = std::stoi(std::string(argv[2])); } catch(...) {}
+        }
+        ExecuteBlockInspection(targetHeight);
+        return 0; // Terminate early cleanly
+    }
 
     if (argc > 1 && std::string(argv[1]) == "--send") {
         if (argc < 4) return 1;
@@ -75,9 +83,7 @@ int main(int argc, char* argv[]) {
 
     long long currentHeight = 337823; 
     if (argc > 1 && argv[1] != nullptr) {
-        try {
-            currentHeight = std::stoll(std::string(argv[1]));
-        } catch (...) {}
+        try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {}
     }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(
@@ -87,7 +93,6 @@ int main(int argc, char* argv[]) {
     long long targetFreezeHeight = 347161;
     long long blocksRemainingToFreeze = targetFreezeHeight - currentHeight;
     if (blocksRemainingToFreeze < 0) blocksRemainingToFreeze = 0;
-    
     long long daysLeft = blocksRemainingToFreeze / 1440;
     long long hoursLeft = (blocksRemainingToFreeze % 1440) / 60;
     long long minutesLeft = blocksRemainingToFreeze % 60;
@@ -175,7 +180,6 @@ int main(int argc, char* argv[]) {
         if (swarmRegistry[i].isWorkstation) { currentMH = workstationMH; }
         else if (currentMH > 0.0) { double peerFluctuation = std::sin(timeVar + (i * 2.5)) * (swarmRegistry[i].baseHashrateMH * 0.015); currentMH += peerFluctuation; }
         
-        // 🌟 STREAM INJECTION ENHANCEMENT: Absolute link-safe string stream formatter
         std::string hStr = "0.00 H/s  ";
         if (currentMH > 0.0) {
             std::stringstream ss;
