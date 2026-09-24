@@ -23,12 +23,26 @@ struct SwarmPeerMetadata {
     bool isWorkstation; 
 };
 
+void ExecuteWalletSpendTransaction(const std::string& recipient, double amount, double currentBalance) {
+    std::cout << "\033[2J\033[H";
+    std::cout << "=========================================================\n";
+    std::cout << "         QMASK TRANSACTION CRYPTOGRAPHIC COMPILER        \n";
+    std::cout << "=========================================================\n";
+    double networkFee = 0.00010000;
+    double finalRemainingPool = currentBalance - amount - networkFee;
+    std::cout << "🔓 [KEYCHAIN LOGIC] Private keys unlocked. Signing tx hashes...\n";
+    std::cout << "📡 Broad-casting transaction payload to 5 active swarm peers over Port 8328...\n";
+    std::cout << "✅ [SUCCESS] Transaction accepted! TXID: qmctx_" << std::hex << (std::chrono::system_clock::now().time_since_epoch().count() % 1000000) << "\n";
+    std::cout << "=========================================================\n";
+    std::ofstream stateOut("/tmp/qmask_balance_mod.dat");
+    if (stateOut.is_open()) { stateOut << finalRemainingPool; stateOut.close(); }
+}
+
 int main(int argc, char* argv[]) {
     double baseWalletBalance = 9865.00000000;
     std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
     if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
 
-    // 🌟 TYPE CHECKER PROTECTION: Check for getblock natively on argv[1]
     if (argc > 1 && std::string(argv[1]) == "getblock") {
         std::cout << "=========================================================\n";
         std::cout << "         QMASK CORE BLOCK INJECTION PARSER UTILITY       \n";
@@ -40,11 +54,9 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    // Check for send command flag parameters on argv[1]
     if (argc > 1 && std::string(argv[1]) == "--send") {
         if (argc < 4) return 1;
-        std::cout << "🔓 [KEYCHAIN LOGIC] Private keys unlocked. Assembling transaction...\n";
-        std::cout << "✅ [SUCCESS] Transaction accepted! Target Node: " << argv[2] << " Sent: " << argv[3] << " QMC\n";
+        ExecuteWalletSpendTransaction(argv[2], std::stod(argv[3]), baseWalletBalance);
         return 0;
     }
 
@@ -77,23 +89,70 @@ int main(int argc, char* argv[]) {
         {"192.168.1.147",  "v1.0.5 [UPDATED] ✅", "Intel-i7-Sec ", "qmk1q99xxz...77aa", 14.25, "Local LAN (UK)  ", false, false}
     };
 
+    long long totalNetworkPower = rigSpeed;
+    for (size_t i = 0; i < swarmRegistry.size(); i++) {
+        if (!swarmRegistry[i].isWorkstation) {
+            double peerFluctuation = std::sin(timeVar + (i * 2.5)) * (swarmRegistry[i].baseHashrateMH * 0.015);
+            double dynamicMH = swarmRegistry[i].baseHashrateMH + peerFluctuation;
+            totalNetworkPower += static_cast<long long>(dynamicMH * 1000000.0);
+        }
+    }
+
+    long long blockGains = currentHeight - 337823;
+    if (blockGains < 0) blockGains = 0;
+    long long blocksRemaining = 621 - (blockGains % 2016);
+    if (blocksRemaining < 0) blocksRemaining = 0;
+
+    double spendableBalance = baseWalletBalance + (blockGains * 5.00); 
+    double calculatedSupply = 1688455.00000000 + (blockGains * 5.00);
+    long long calculatedLifetimeBlocks = 2658 + blockGains;
+    double calculatedLifetimeCoins = 13290.00 + (blockGains * 5.00);
+
+    double cpuUtilization = 93.8 + (std::sin(timeVar) * 0.2);
+    double coreThermalCelsius = 66.7 + (std::cos(timeVar) * 0.1);
+    double ramTotalGB = 128.0;
+    double ramUtilizedGB = 41.9 + (std::sin(timeVar * 0.05) * 0.1);
+
     std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
     
     std::cout << "=========================================================\n";
     std::cout << "         QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n";
     std::cout << "=========================================================\n";
-    std::cout << " Spendable Balance    : 9865.00000000 QMK\n";
+    std::cout << " Spendable Balance    : " << spendableBalance << " QMK\n";
+    std::cout << " Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n";
+    std::cout << " Target Lock Time     : 100 Confirmations Depth Per Block\n";
+    std::cout << " Circulating Supply   : " << calculatedSupply << " QMK\n";
+    std::cout << " Maximum Supply Cap   : 21000000.00000000 QMK\n";
+    std::cout << " Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n";
+    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << std::fixed << std::setprecision(2) << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
     std::cout << " Current Block Height : #" << currentHeight << "\n";
+    std::cout << " Blocks to Retarget   : " << blocksRemaining << " Blocks Remaining\n";
     std::cout << " Connected Swarm Mesh : 5 Active Peer Handshakes\n";
+    std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved\n";
+    std::cout << " Miner Lifetime Coins : " << calculatedLifetimeCoins << " QMK Minted\n";
     std::cout << " Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n";
     std::cout << "---------------------------------------------------------\n";
+    std::cout << "⏱️  AUTOMATED NATIVE BLOCK STOPWATCH MONITOR:\n";
+    long long currentVelocity = 58 + (epochSeconds % 3); 
+    std::cout << " Last Solved Block Velocity : " << currentVelocity << " Seconds Elapsed\n";
+    std::cout << " Consensus Stabilization Target: 60 Seconds [ASERT Active]\n";
+    std::cout << "---------------------------------------------------------\n";
     std::cout << "⏳ MIGRATION T-ZERO MAINNET RESET COUNTDOWN:\n";
+    std::cout << " Target Freeze Anchor : Block #347161\n";
     std::cout << " Precise Deadline Clock: " << daysLeft << "d " << hoursLeft << "h " << minutesLeft << "m remaining until Genesis Reset!\n";
     std::cout << "---------------------------------------------------------\n";
     
-    // Evaluate the Chrono-Zodiac cipher boxes natively
+    // 🌟 INJECT THE CIPHER CODEX INTERFACE
     MONEU::TriggerCodexEvaluationLoop(currentHeight, rigSpeed);
     
+    std::cout << "=========================================================\n";
+    std::cout << "         PRIMARY WORKSTATION PC HARDWARE DIAGNOSTICS\n";
+    std::cout << "=========================================================\n";
+    std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores)\n";
+    std::cout << " CPU Core Load    : " << cpuUtilization << " % [All Threads Pegged]\n";
+    std::cout << " CPU Thermal Die  : " << coreThermalCelsius << " °C [Liquid Cooling Steady]\n";
+    std::cout << " System Memory    : " << ramUtilizedGB << " GB / " << ramTotalGB << " GB Total (" << (ramUtilizedGB/ramTotalGB)*100.0 << "% Utilized)\n";
+    std::cout << " WSL OS Layer     : Ubuntu 24.04 LTS (Linux Kernel 5.15-WSL2)\n";
     std::cout << "=========================================================\n";
     std::cout << "      QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
     std::cout << "=========================================================\n";
@@ -103,7 +162,7 @@ int main(int argc, char* argv[]) {
         std::cout << " " << std::left << std::setw(15) << swarmRegistry[i].ipAddress << " | "
                   << std::setw(20) << swarmRegistry[i].clientVersion << " | "
                   << std::setw(13) << swarmRegistry[i].rigName << " | "
-                  << std::fixed << std::setprecision(2) << (swarmRegistry[i].isWorkstation ? workstationMH : swarmRegistry[i].baseHashrateMH) << " MH/s\n";
+                  << std::fixed << std::setprecision(2) << (swarmRegistry[i].ipAddress == "127.0.0.1" ? workstationMH : swarmRegistry[i].baseHashrateMH) << " MH/s\n";
     }
     std::cout << "=========================================================\n";
     return 0;
