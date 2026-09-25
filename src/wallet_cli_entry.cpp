@@ -26,16 +26,26 @@ struct SwarmPeerMetadata {
 
 int main(int argc, char* argv[]) {
     double baseWalletBalance = 9865.00000000;
-    std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
-    if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
+    std::ifstream balanceIn("/tmp/qmask_balance_mod.dat");
+    if (balanceIn.is_open()) { balanceIn >> baseWalletBalance; balanceIn.close(); }
+
+    // 💾 READ LIVE GAME MEMORY CACHE DIRECTLY FROM THE SEPARATE GAME NETWORK STORAGE
+    int gameX = 4, gameY = 2, monsterLvl = 12, glyphs = 4;
+    int d1 = 0, d2 = 0, rx = 8, ry = 3, rc = 0, combat = 0, ehp = 100, php = 100;
+    double vaultQmtmBalance = 132.50000000;
+    int shop = 0;
+
+    std::ifstream gameStateIn("game_state.dat");
+    if (gameStateIn.is_open()) {
+        gameStateIn >> gameX >> gameY >> monsterLvl >> glyphs >> d1 >> d2 >> rx >> ry >> rc >> combat >> ehp >> php >> vaultQmtmBalance >> shop;
+        gameStateIn.close();
+    }
 
     if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
     
     if (argc > 1 && std::string(argv[1]) == "--game-panel") {
         char inputChar = ' ';
-        if (argc > 2 && argv[2] != nullptr) {
-            inputChar = argv[2][0];
-        }
+        if (argc > 2) { inputChar = argv[2][0]; }
         std::cout << "\033[2J\033[H";
         MONEU::RunGameConsoleEngineFrame(inputChar);
         return 0;
@@ -57,10 +67,21 @@ int main(int argc, char* argv[]) {
     long long hoursLeft = (blocksRemainingToFreeze % 1440) / 60;
     long long minutesLeft = blocksRemainingToFreeze % 60;
 
+    // 🌟 AUTOMATED ADAPTIVE HASHRATE MULTIPLIER SCALING
+    double virtualBoosterMH = 5.00;
+    std::string trophyName = "🪐 [MONEU_ORIGIN_TOKEN]";
+    
+    if (monsterLvl >= 20) {
+        virtualBoosterMH = 25.00;
+        trophyName = "👑 [KRAKEN_SOVEREIGN_REGINA] (MAX_TIER)";
+    } else if (monsterLvl >= 12) {
+        virtualBoosterMH = 12.50;
+        trophyName = "⚡ [QUANTUM_SHIELD_KEY] (TIER_2)";
+    }
+
     double liveVariance = std::sin(timeVar) * 14850.0;
     double microNoise = std::cos(timeVar * 2.0) * 1250.0;
     long long rigSpeed = 24532431 + static_cast<long long>(liveVariance + microNoise);
-    double virtualBoosterMH = 5.00;
     double workstationMH = (static_cast<double>(rigSpeed) / 1000000.0) + virtualBoosterMH;
 
     std::vector<SwarmPeerMetadata> swarmRegistry = {
@@ -95,7 +116,6 @@ int main(int argc, char* argv[]) {
     double baseTransactionFeeQmc = 0.00010000 + (std::sin(timeVar * 0.1) * 0.00000015);
     double dynamicCurrentBlockSizeKb = 34.25 + (std::abs(std::cos(timeVar)) * 12.80);
 
-    // 🌟 TYPE-SAFE UTF-8 VECTOR OVERRIDE: Uses full multi-byte string tracks to prevent overflows
     std::vector<std::string> feePulseString = {"-","-","-","-","-","-","-","-","-","-","-","-"};
     int feeShuffleIndex = (int)(epochSeconds % 12);
     if (feeShuffleIndex >= 0 && feeShuffleIndex < 12) feePulseString[feeShuffleIndex] = "⚡";
@@ -115,25 +135,24 @@ int main(int argc, char* argv[]) {
     std::cout << " Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n";
     std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << std::fixed << std::setprecision(2) << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
     std::cout << " Current Block Height : #" << currentHeight << "\n";
+    std::cout << " Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb\n";
+    std::cout << " Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n";
     std::cout << " Blocks to Retarget   : " << blocksRemaining << " Blocks Remaining\n";
     std::cout << " Connected Swarm Mesh : 5 Active Peer Handshakes\n";
     std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved | Lifetime Mined: " << calculatedLifetimeCoins << " QMC\n";
     std::cout << " Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n";
     std::cout << "----------------------------------------------------------------------------------------\n";
     std::cout << "📊 KINETIC BASE LAYER PROTOCOL MATRIX LIVE VISUALS:\n";
-    
     std::cout << "  -> Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb  👉  [";
     for(const auto& s : feePulseString) std::cout << s;
     std::cout << "]\n";
-    
-    std::cout << "  -> Live Target Block Size: " << std::fixed << std::setprecision(2) << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb  👉  [";
+    std::cout << "  -> Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb  👉  [";
     for(int i=0; i<10; i++) {
         if(i == blockShuffleIndex) std::cout << "🧱";
         else if(i < activeFilledSegments) std::cout << "▓";
         else std::cout << "░";
     }
     std::cout << "]\n";
-
     std::cout << "----------------------------------------------------------------------------------------\n";
     std::cout << "⏱️  AUTOMATED NATIVE BLOCK STOPWATCH MONITOR:\n";
     long long currentVelocity = 58 + (epochSeconds % 3); 
@@ -147,9 +166,9 @@ int main(int argc, char* argv[]) {
     MONEU::TriggerCodexEvaluationLoop(currentHeight, rigSpeed);
     
     std::cout << "----------------------------------------------------------------------------------------\n";
-    std::cout << "🎮 PERMANENT GAMING MATRIX MONITOR VECTOR STATUS :\n";
-    std::cout << "  -> Glyph Fragment Inventory : [4/4] Completed (Assembled via Proof-of-Alignment)\n";
-    std::cout << "  -> Active Artifact Boost    : Moneu-Origin-Zodiac-Token Loaded (+5.00 MH/s Speed Verified)\n";
+    std::cout << "👑 SOVEREIGN MULTI-CHAIN TROPHY CASE & GAME VAULT DISPLAY BALANCE :\n";
+    std::cout << "  -> Active Collectible Trophy: " << trophyName << " (+ " << std::fixed << std::setprecision(2) << virtualBoosterMH << " MH/s Booster Active!)\n";
+    std::cout << "  💰 ON-CHAIN GAME TOKEN LIQUID HOLDINGS : " << std::fixed << std::setprecision(8) << vaultQmtmBalance << " QMTM\n";
     std::cout << "========================================================================================\n";
     std::cout << "         PRIMARY WORKSTATION PC HARDWARE DIAGNOSTICS\n";
     std::cout << "========================================================================================\n";
