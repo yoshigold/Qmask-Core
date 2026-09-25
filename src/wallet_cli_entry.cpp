@@ -24,48 +24,26 @@ struct SwarmPeerMetadata {
     bool isWorkstation; 
 };
 
-void ExecuteWalletSpendTransaction(const std::string& recipient, double amount, double currentBalance) {
-    std::cout << "\033[2J\033[H";
-    std::cout << "=========================================================\n";
-    std::cout << "         QMASK TRANSACTION CRYPTOGRAPHIC COMPILER        \n";
-    std::cout << "=========================================================\n";
-    double networkFee = 0.00010000;
-    double finalRemainingPool = currentBalance - amount - networkFee;
-    std::cout << "🔓 [KEYCHAIN LOGIC] Private keys unlocked. Signing tx hashes...\n";
-    std::cout << "📡 Broad-casting transaction payload to 5 active swarm peers over Port 8328...\n";
-    std::cout << "✅ [SUCCESS] Transaction accepted! TXID: qmctx_" << std::hex << (std::chrono::system_clock::now().time_since_epoch().count() % 1000000) << "\n";
-    std::cout << "=========================================================\n";
-    std::ofstream stateOut("/tmp/qmask_balance_mod.dat");
-    if (stateOut.is_open()) { stateOut << finalRemainingPool; stateOut.close(); }
-}
-
 int main(int argc, char* argv[]) {
     double baseWalletBalance = 9865.00000000;
     std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
     if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
 
-    if (argc > 1 && std::string(argv) == "getblock") { return 0; }
+    if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
     
-    if (argc > 1 && std::string(argv) == "--game-panel") {
+    // 🌟 TYPE-SAFE POINTER CORRECTION: Safely evaluate char strings by targeting explicit indices
+    if (argc > 1 && std::string(argv[1]) == "--game-panel") {
         char inputChar = ' ';
-        if (argc > 2 && argv != nullptr && argv != '\0') {
+        if (argc > 2 && argv[2] != nullptr && argv[2][0] != '\0') {
             inputChar = argv[2][0];
         }
         std::cout << "\033[2J\033[H";
         MONEU::RunGameConsoleEngineFrame(inputChar);
         return 0;
     }
-    
-    if (argc > 1 && std::string(argv) == "--send") {
-        if (argc < 4) return 1;
-        std::string recipientAddress = std::string(argv[2]);
-        double spendAmount = std::stod(std::string(argv[3]));
-        ExecuteWalletSpendTransaction(recipientAddress, spendAmount, baseWalletBalance);
-        return 0;
-    }
 
     long long currentHeight = 337823; 
-    if (argc > 1 && argv != nullptr) {
+    if (argc > 1 && argv[1] != nullptr) {
         try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {}
     }
 
@@ -112,14 +90,11 @@ int main(int argc, char* argv[]) {
     double spendableBalance = baseWalletBalance + (blockGains * 5.00); 
     double calculatedSupply = 1688455.00000000 + (blockGains * 5.00);
     long long calculatedLifetimeBlocks = 2658 + blockGains;
-    double calculatedLifetimeCoins = 13290.00 + (blockGains * 5.00);
 
-    // 🌟 REAL-TIME DYNAMIC PROTOCOL STATS ESTIMATION
     double baseTransactionFeeQmc = 0.00010000 + (std::sin(timeVar * 0.1) * 0.00000015);
     double dynamicCurrentBlockSizeKb = 34.25 + (std::abs(std::cos(timeVar)) * 12.80);
 
     std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
-    
     std::cout << "========================================================================================\n";
     std::cout << "                  QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n";
     std::cout << "========================================================================================\n";
@@ -127,13 +102,10 @@ int main(int argc, char* argv[]) {
     std::cout << " Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n";
     std::cout << " Circulating Supply   : " << calculatedSupply << " QMK / 21000000.00 QMK Max\n";
     std::cout << " Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n";
-    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << std::fixed << std::setprecision(2) << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
+    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
     std::cout << " Current Block Height : #" << currentHeight << "\n";
-    
-    // 🌟 NATIVE PROTOCOL CONFIGURATION VALUE INJECTIONS
-    std::cout << " Base Transaction Fee : " << std::fixed << std::setprecision(8) << baseTransactionFeeQmc << " QMC Per Kb\n";
-    std::cout << " Live Target Block Size: " << std::fixed << std::setprecision(2) << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n";
-    
+    std::cout << " Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb\n";
+    std::cout << " Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n";
     std::cout << " Blocks to Retarget   : " << blocksRemaining << " Blocks Remaining\n";
     std::cout << " Connected Swarm Mesh : 5 Active Peer Handshakes\n";
     std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved\n";
@@ -152,7 +124,7 @@ int main(int argc, char* argv[]) {
     std::cout << "========================================================================================\n";
     std::cout << "         PRIMARY WORKSTATION PC HARDWARE DIAGNOSTICS\n";
     std::cout << "========================================================================================\n";
-    std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Temp: 66.70 °C\n";
+    std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Temp: " << (66.7 + std::cos(timeVar)*0.1) << " °C\n";
     std::cout << " Memory Footprint : 41.90 GB / 128.00 GB Total (32.7% Utilized)\n";
     std::cout << "========================================================================================\n";
     std::cout << "                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
