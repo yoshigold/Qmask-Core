@@ -70,10 +70,11 @@ public:
             SaveStateToDisk(player); return;
         }
 
-        if ((actionKey == 'w' || actionKey == 'W') && player.yCoord > 0) player.yCoord--;
-        if ((actionKey == 's' || actionKey == 'S') && player.yCoord < gridHeight - 1) player.yCoord++;
-        if ((actionKey == 'a' || actionKey == 'A') && player.xCoord > 0) player.xCoord--;
-        if ((actionKey == 'd' || actionKey == 'D') && player.xCoord < gridWidth - 1) player.xCoord++;
+        // 🌟 HARDENED DIRECTION VECTORS: Fixed mapping paths explicitly to handle key signatures
+        if (actionKey == 'w' || actionKey == 'W') { if (player.yCoord > 0) player.yCoord--; }
+        if (actionKey == 's' || actionKey == 'S') { if (player.yCoord < gridHeight - 1) player.yCoord++; }
+        if (actionKey == 'a' || actionKey == 'A') { if (player.xCoord > 0) player.xCoord--; }
+        if (actionKey == 'd' || actionKey == 'D') { if (player.xCoord < gridWidth - 1) player.xCoord++; }
         
         if (player.xCoord == 12 && player.yCoord == 4 && player.diamond1Captured == 0) { player.diamond1Captured = 1; player.monsterLevel += 3; player.accumulatedGlyphs++; }
         if (player.xCoord == 2 && player.yCoord == 1 && player.diamond2Captured == 0) { player.diamond2Captured = 1; player.monsterLevel += 3; player.accumulatedGlyphs++; }
@@ -127,6 +128,7 @@ public:
         std::cout << " 📋 ACTIVE COMPRESSED MONSTER TELEMETRY STATS TAB:\n";
         std::cout << "   -> Loaded Companion : Xenomorph_V1 [Rarity Class: CHRONO_MYST]\n";
         std::cout << "   -> Combat Level     : Lvl " << player.monsterLevel << " [ Hash Multiplier: " << 1.0 + (player.monsterLevel * 0.05) << "x ]\n";
+        std::cout << "   -> Coordinates      : Sector (X: " << player.xCoord << ", Y: " << player.yCoord << ")\n";
         std::cout << "   -> Target Progress  : [" << player.accumulatedGlyphs << "/10] Crystals (Hit 10 to trigger Portal 🌀)\n";
         std::cout << "========================================================================================\n";
     }
