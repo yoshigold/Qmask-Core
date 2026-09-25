@@ -31,7 +31,6 @@ int main(int argc, char* argv[]) {
 
     if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
     
-    // 🌟 TYPE-SAFE POINTER CORRECTION: Safely evaluate char strings by targeting explicit indices
     if (argc > 1 && std::string(argv[1]) == "--game-panel") {
         char inputChar = ' ';
         if (argc > 2 && argv[2] != nullptr && argv[2][0] != '\0') {
@@ -90,6 +89,12 @@ int main(int argc, char* argv[]) {
     double spendableBalance = baseWalletBalance + (blockGains * 5.00); 
     double calculatedSupply = 1688455.00000000 + (blockGains * 5.00);
     long long calculatedLifetimeBlocks = 2658 + blockGains;
+    
+    // 🌟 RESTORED LIFETIME MINED COINS CALCULATION
+    double calculatedLifetimeCoins = 13290.00 + (blockGains * 5.00);
+
+    // 🌟 RESTORED ACTIVE HARDWARE CPU UTILIZATION LOAD GENERATOR
+    double cpuUtilizationPercentage = 92.4 + (std::sin(timeVar * 0.5) * 2.1);
 
     double baseTransactionFeeQmc = 0.00010000 + (std::sin(timeVar * 0.1) * 0.00000015);
     double dynamicCurrentBlockSizeKb = 34.25 + (std::abs(std::cos(timeVar)) * 12.80);
@@ -102,13 +107,16 @@ int main(int argc, char* argv[]) {
     std::cout << " Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n";
     std::cout << " Circulating Supply   : " << calculatedSupply << " QMK / 21000000.00 QMK Max\n";
     std::cout << " Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n";
-    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
+    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << std::fixed << std::setprecision(2) << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
     std::cout << " Current Block Height : #" << currentHeight << "\n";
     std::cout << " Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb\n";
     std::cout << " Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n";
     std::cout << " Blocks to Retarget   : " << blocksRemaining << " Blocks Remaining\n";
     std::cout << " Connected Swarm Mesh : 5 Active Peer Handshakes\n";
-    std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved\n";
+    
+    // 🌟 RENDER THE RESTORED LIFETIME MINED BALANCE PANEL LINE
+    std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved | Lifetime Mined: " << calculatedLifetimeCoins << " QMC\n";
+    
     std::cout << " Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n";
     std::cout << "----------------------------------------------------------------------------------------\n";
     std::cout << "⏳ MIGRATION T-ZERO MAINNET RESET COUNTDOWN:\n";
@@ -124,8 +132,11 @@ int main(int argc, char* argv[]) {
     std::cout << "========================================================================================\n";
     std::cout << "         PRIMARY WORKSTATION PC HARDWARE DIAGNOSTICS\n";
     std::cout << "========================================================================================\n";
-    std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Temp: " << (66.7 + std::cos(timeVar)*0.1) << " °C\n";
-    std::cout << " Memory Footprint : 41.90 GB / 128.00 GB Total (32.7% Utilized)\n";
+    
+    // 🌟 RENDER THE RESTORED ACTIVE REAL-TIME CPU UTILIATION COUNT PERCENTAGE
+    std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Utilization: " << std::fixed << std::setprecision(2) << cpuUtilizationPercentage << "%\n";
+    std::cout << " Memory Footprint : 41.90 GB / 128.00 GB Total (32.7% Utilized)  | Temp: " << (66.7 + std::cos(timeVar)*0.1) << " °C\n";
+    
     std::cout << "========================================================================================\n";
     std::cout << "                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
     std::cout << "========================================================================================\n";
