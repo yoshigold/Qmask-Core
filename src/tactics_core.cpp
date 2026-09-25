@@ -25,7 +25,7 @@ struct PlayerPositionState {
     int playerMonsterHP;  
     double persistentBankWalletQmtm; 
     int inShopMode;       
-    double persistentEnergyJoules; // 🌟 THE NEW THERMODYNAMIC BATTERY CORE
+    double persistentEnergyJoules; 
 };
 
 class QmaskTacticMonsterEngine {
@@ -65,7 +65,6 @@ public:
         PlayerPositionState player = LoadStateFromDisk();
         srand(time(NULL) + actionKey);
 
-        // Accumulate baseline work joules for executing a physical terminal action stroke
         if (actionKey != ' ') {
             player.persistentEnergyJoules += 250.00;
         }
@@ -92,7 +91,7 @@ public:
             else { 
                 player.inCombatMode = 0; player.monsterLevel += 2; 
                 player.persistentBankWalletQmtm += 2.50; 
-                player.persistentEnergyJoules += 1500.00; // Battle bonus energy injection
+                player.persistentEnergyJoules += 1500.00; 
             }
             SaveStateToDisk(player); return;
         }
@@ -119,9 +118,17 @@ public:
             }
         }
 
+        // 🌀 SOVEREIGN NON-VOLATILE TRANSITION LOGIC
+        // We clear coordinates and local progress markers, but explicitly KEEP the current wallet values intact!
         if (player.accumulatedGlyphs >= 10 && player.xCoord == 8 && player.yCoord == 3) { 
-            player.accumulatedGlyphs = 0; player.diamond1Captured = 0; player.diamond2Captured = 0; player.monsterLevel += 10; 
+            double balanceBackup = player.persistentBankWalletQmtm;
+            double energyBackup = player.persistentEnergyJoules;
+            int levelBackup = player.monsterLevel;
+            
+            // Hard reset space matrix configurations
+            player = {4, 2, levelBackup + 10, 0, 0, 0, 8, 3, 0, 0, 100, 100, balanceBackup, 0, energyBackup};
         }
+        
         if (actionKey != ' ' && (rand() % 100 < 8)) { player.inCombatMode = 1; player.enemyMonsterHP = 40 + (rand() % 40); player.playerMonsterHP = 100; }
         SaveStateToDisk(player);
     }
