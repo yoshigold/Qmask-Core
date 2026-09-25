@@ -29,12 +29,12 @@ int main(int argc, char* argv[]) {
     std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
     if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
 
-    if (argc > 1 && std::string(argv) == "getblock") { return 0; }
+    if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
     
-    if (argc > 1 && std::string(argv) == "--game-panel") {
+    if (argc > 1 && std::string(argv[1]) == "--game-panel") {
         char inputChar = ' ';
-        if (argc > 2 && argv != nullptr && argv != '\0') {
-            inputChar = argv;
+        if (argc > 2 && argv[2] != nullptr) {
+            inputChar = argv[2][0];
         }
         std::cout << "\033[2J\033[H";
         MONEU::RunGameConsoleEngineFrame(inputChar);
@@ -42,8 +42,8 @@ int main(int argc, char* argv[]) {
     }
 
     long long currentHeight = 337823; 
-    if (argc > 1 && argv != nullptr) {
-        try { currentHeight = std::stoll(std::string(argv)); } catch (...) {}
+    if (argc > 1 && argv[1] != nullptr) {
+        try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {}
     }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(
@@ -91,10 +91,7 @@ int main(int argc, char* argv[]) {
     long long calculatedLifetimeBlocks = 2658 + blockGains;
     double calculatedLifetimeCoins = 13290.00 + (blockGains * 5.00);
     double cpuUtilizationPercentage = 92.4 + (std::sin(timeVar * 0.5) * 2.1);
-
-    // 🌟 RESTORED ASERT TARGET AVERAGE BLOCK CADENCE ESTIMATE
     double averageBlockTimeCadenceSec = 60.00 + (std::sin(timeVar * 0.02) * 0.14);
-
     double baseTransactionFeeQmc = 0.00010000 + (std::sin(timeVar * 0.1) * 0.00000015);
     double dynamicCurrentBlockSizeKb = 34.25 + (std::abs(std::cos(timeVar)) * 12.80);
 
@@ -106,7 +103,7 @@ int main(int argc, char* argv[]) {
     std::cout << " Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n";
     std::cout << " Circulating Supply   : " << calculatedSupply << " QMK / 21000000.00 QMK Max\n";
     std::cout << " Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n";
-    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << std::fixed << std::setprecision(2) << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
+    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
     std::cout << " Current Block Height : #" << currentHeight << "\n";
     std::cout << " Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb\n";
     std::cout << " Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n";
@@ -118,10 +115,7 @@ int main(int argc, char* argv[]) {
     std::cout << "⏱️  AUTOMATED NATIVE BLOCK STOPWATCH MONITOR:\n";
     long long currentVelocity = 58 + (epochSeconds % 3); 
     std::cout << " Last Solved Block Velocity : " << currentVelocity << " Seconds Elapsed\n";
-    
-    // 🌟 RENDER THE RESTORED AVERAGE BLOCK TIME CADENCE PANEL LINE
     std::cout << " Consensus Stabilization Target: " << std::fixed << std::setprecision(2) << averageBlockTimeCadenceSec << " Seconds Average [ASERT Engine Active]\n";
-    
     std::cout << "----------------------------------------------------------------------------------------\n";
     std::cout << "⏳ MIGRATION T-ZERO MAINNET RESET COUNTDOWN:\n";
     std::cout << " Precise Deadline Clock: " << daysLeft << "d " << hoursLeft << "h " << minutesLeft << "m remaining until Genesis Reset!\n";
