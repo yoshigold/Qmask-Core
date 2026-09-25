@@ -24,7 +24,7 @@ struct PlayerPositionState {
     int enemyMonsterHP;   
     int playerMonsterHP;  
     double persistentBankWalletQmtm; 
-    int inShopMode;       // 🛒 0 = Off, 1 = Active Shop Menu
+    int inShopMode;       
 };
 
 class QmaskTacticMonsterEngine {
@@ -34,7 +34,7 @@ private:
     const std::string STATE_FILE = "game_state.dat";
 
     PlayerPositionState LoadStateFromDisk() {
-        PlayerPositionState state = {4, 2, 12, 4, 0, 0, 8, 3, 0, 0, 100, 100, 0.0, 0}; 
+        PlayerPositionState state = {4, 2, 12, 4, 0, 0, 8, 3, 0, 0, 100, 100, 32.50, 0}; 
         std::ifstream fileIn(STATE_FILE);
         if (fileIn.is_open()) {
             fileIn >> state.xCoord >> state.yCoord >> state.monsterLevel >> state.accumulatedGlyphs 
@@ -64,27 +64,20 @@ public:
         PlayerPositionState player = LoadStateFromDisk();
         srand(time(NULL) + actionKey);
 
-        // 🛒 OPTION 1: MERCHANT STORE VENDOR ROUTER
         if (player.inShopMode == 1) {
-            if (actionKey == '1') { // Purchase high-tier XP injector
+            if (actionKey == '1') {
                 if (player.persistentBankWalletQmtm >= 15.00) {
                     player.persistentBankWalletQmtm -= 15.00;
-                    player.monsterLevel += 5; // Immediate +5 level inject
+                    player.monsterLevel += 5; 
                 }
             } else if (actionKey == '2' || actionKey == 'p' || actionKey == 'P') {
-                player.inShopMode = 0; // Exit shop
+                player.inShopMode = 0;
             }
-            SaveStateToDisk(player);
-            return;
+            SaveStateToDisk(player); return;
         }
 
-        // Toggle shop front via P key press
         if (actionKey == 'p' || actionKey == 'P') {
-            if (player.inCombatMode == 0) {
-                player.inShopMode = 1;
-                SaveStateToDisk(player);
-                return;
-            }
+            if (player.inCombatMode == 0) { player.inShopMode = 1; SaveStateToDisk(player); return; }
         }
 
         if (player.inCombatMode == 1) {
@@ -129,25 +122,20 @@ public:
 
     void RenderInteractiveGameViewport() {
         PlayerPositionState player = LoadStateFromDisk();
-
-        // 🌟 OPTION 3: THE MONSTER EVOLUTION MATRIX PROFILE CHECKER
         std::string activeNameProfile = "Xenomorph_V1 [CHRONO_MYST]";
-        if (player.monsterLevel >= 20) {
-            activeNameProfile = "👑 KRAKEN_SOVEREIGN_X 👑 [QUANTUM_GOD_TIER]";
-        }
+        if (player.monsterLevel >= 20) { activeNameProfile = "👑 KRAKEN_SOVEREIGN_X 👑 [QUANTUM_GOD_TIER]"; }
 
         std::cout << "========================================================================================\n";
         std::cout << "   🎭 QMASK TACTICAL MONSTER ADVENTURE ENGINE (QMTM SEPARATE GAME NETWORK) 🎭          \n";
         std::cout << "========================================================================================\n";
 
-        // 🛒 RENDER VENDOR INTERFACE CANVAS
         if (player.inShopMode == 1) {
             std::cout << "🛒 [QMASK PROTOCOL STORE FRONT] Spend your vault QMTM balances on network buffs!\n";
             std::cout << "----------------------------------------------------------------------------------------\n";
             std::cout << "   1. Purchase High-Tier XP Injector (Cost: 15.00 QMTM | Grants +5 Combat Levels)\n";
             std::cout << "   2. Close Merchant Store and Return to Sector Exploration Grid Map\n";
             std::cout << "----------------------------------------------------------------------------------------\n";
-            std::cout << "   💰 CURRENT VAULT BALANCE: " << std::fixed << std::setprecision(2) << player.persistentBankWalletQmtm << " QMTM\n";
+            std::cout << "   💰 CURRENT STORE WALLET BALANCE: " << std::fixed << std::setprecision(2) << player.persistentBankWalletQmtm << " QMTM\n";
             std::cout << "========================================================================================\n";
             return;
         }
@@ -184,8 +172,8 @@ public:
         std::cout << "   -> Loaded Companion : " << activeNameProfile << "\n";
         std::cout << "   -> Combat Level     : Lvl " << player.monsterLevel << " [ Hash Multiplier: " << 1.0 + (player.monsterLevel * 0.05) << "x ]\n";
         std::cout << "   -> Coordinates      : Sector (X: " << player.xCoord << ", Y: " << player.yCoord << ")\n";
-        std::cout << "   -> Level Tracker    : [" << player.accumulatedGlyphs << "/10] Crystals (Hit 10 to trigger Portal 🌀)\n";
-        std::cout << "   💰 PERMANENT METRIC SOVEREIGN GAME VAULT ACC BALANCE: " << player.persistentBankWalletQmtm << " QMTM\n";
+        std::cout << "   -> Stage Exploration: Tier 2 Sector Grid Progress [" << player.accumulatedGlyphs << "/10 Nodes Verified]\n";
+        std::cout << "   💰 PERMANENT METRIC SOVEREIGN GAME VAULT ACC BALANCE: " << std::fixed << std::setprecision(8) << player.persistentBankWalletQmtm << " QMTM\n";
         std::cout << "========================================================================================\n";
     }
 };
