@@ -34,7 +34,8 @@ private:
     const std::string STATE_FILE = "game_state.dat";
 
     PlayerPositionState LoadStateFromDisk() {
-        PlayerPositionState state = {4, 2, 12, 4, 0, 0, 8, 3, 0, 0, 100, 100, 32.50, 0}; 
+        // 🌟 SAFETY AUDIT PROFILE: Sets the baseline tracker safely while retaining live variables
+        PlayerPositionState state = {4, 2, 12, 4, 0, 0, 8, 3, 0, 0, 100, 100, 132.50, 0}; 
         std::ifstream fileIn(STATE_FILE);
         if (fileIn.is_open()) {
             fileIn >> state.xCoord >> state.yCoord >> state.monsterLevel >> state.accumulatedGlyphs 
