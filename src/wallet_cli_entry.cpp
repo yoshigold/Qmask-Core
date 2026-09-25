@@ -29,12 +29,12 @@ int main(int argc, char* argv[]) {
     std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
     if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
 
-    if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
+    if (argc > 1 && std::string(argv) == "getblock") { return 0; }
     
-    if (argc > 1 && std::string(argv[1]) == "--game-panel") {
+    if (argc > 1 && std::string(argv) == "--game-panel") {
         char inputChar = ' ';
-        if (argc > 2 && argv[2] != nullptr) {
-            inputChar = argv[2][0];
+        if (argc > 2 && argv != nullptr) {
+            inputChar = argv;
         }
         std::cout << "\033[2J\033[H";
         MONEU::RunGameConsoleEngineFrame(inputChar);
@@ -42,8 +42,8 @@ int main(int argc, char* argv[]) {
     }
 
     long long currentHeight = 337823; 
-    if (argc > 1 && argv[1] != nullptr) {
-        try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {}
+    if (argc > 1 && argv != nullptr) {
+        try { currentHeight = std::stoll(std::string(argv)); } catch (...) {}
     }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(
@@ -95,6 +95,17 @@ int main(int argc, char* argv[]) {
     double baseTransactionFeeQmc = 0.00010000 + (std::sin(timeVar * 0.1) * 0.00000015);
     double dynamicCurrentBlockSizeKb = 34.25 + (std::abs(std::cos(timeVar)) * 12.80);
 
+    // 🌟 KINETIC VISUAL 1: UNIQUE AUTO-SHUFFLING NETWORK FEE OSCILLATOR
+    int feeShuffleIndex = (int)(epochSeconds % 12);
+    std::string feePulseString = "------------";
+    if (feeShuffleIndex >= 0 && feeShuffleIndex < 12) feePulseString[feeShuffleIndex] = '⚡';
+
+    // 🌟 KINETIC VISUAL 2: DYNAMIC COMPRESSED MEMORY BAR WITH MOVING BLOCK ANCHOR
+    int activeFilledSegments = (int)(dynamicCurrentBlockSizeKb / 10.0);
+    if (activeFilledSegments > 10) activeFilledSegments = 10;
+    if (activeFilledSegments < 1) activeFilledSegments = 1;
+    int blockShuffleIndex = (int)((epochSeconds + 3) % 10);
+
     std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
     std::cout << "========================================================================================\n";
     std::cout << "                  QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n";
@@ -103,14 +114,27 @@ int main(int argc, char* argv[]) {
     std::cout << " Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n";
     std::cout << " Circulating Supply   : " << calculatedSupply << " QMK / 21000000.00 QMK Max\n";
     std::cout << " Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n";
-    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
+    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << std::fixed << std::setprecision(2) << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
     std::cout << " Current Block Height : #" << currentHeight << "\n";
-    std::cout << " Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb\n";
-    std::cout << " Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n";
     std::cout << " Blocks to Retarget   : " << blocksRemaining << " Blocks Remaining\n";
     std::cout << " Connected Swarm Mesh : 5 Active Peer Handshakes\n";
     std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved | Lifetime Mined: " << calculatedLifetimeCoins << " QMC\n";
     std::cout << " Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n";
+    std::cout << "----------------------------------------------------------------------------------------\n";
+    std::cout << "📊 KINETIC BASE LAYER PROTOCOL MATRIX LIVE VISUALS:\n";
+    
+    // Renders the moving network fee pulse loop wave
+    std::cout << "  -> Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb  👉  [" << feePulseString << "]\n";
+    
+    // Renders the dynamic block memory density bar with its moving index block token
+    std::cout << "  -> Live Target Block Size: " << std::fixed << std::setprecision(2) << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb  👉  [";
+    for(int i=0; i<10; i++) {
+        if(i == blockShuffleIndex) std::cout << "🧱";
+        else if(i < activeFilledSegments) std::cout << "▓";
+        else std::cout << "░";
+    }
+    std::cout << "]\n";
+
     std::cout << "----------------------------------------------------------------------------------------\n";
     std::cout << "⏱️  AUTOMATED NATIVE BLOCK STOPWATCH MONITOR:\n";
     long long currentVelocity = 58 + (epochSeconds % 3); 
@@ -124,7 +148,7 @@ int main(int argc, char* argv[]) {
     MONEU::TriggerCodexEvaluationLoop(currentHeight, rigSpeed);
     
     std::cout << "----------------------------------------------------------------------------------------\n";
-    std::cout << "🎮 PERMANENT GAMING MATRIX MONITOR VECTOR STATUS :\n";
+    std::cout << "实用 INJECTION TARGET VECTOR STATUS :\n";
     std::cout << "  -> Glyph Fragment Inventory : [4/4] Completed (Assembled via Proof-of-Alignment)\n";
     std::cout << "  -> Active Artifact Boost    : Moneu-Origin-Zodiac-Token Loaded (+5.00 MH/s Speed Verified)\n";
     std::cout << "========================================================================================\n";
