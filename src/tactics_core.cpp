@@ -34,7 +34,6 @@ private:
     const std::string STATE_FILE = "game_state.dat";
 
     PlayerPositionState LoadStateFromDisk() {
-        // 🌟 SAFETY AUDIT PROFILE: Sets the baseline tracker safely while retaining live variables
         PlayerPositionState state = {4, 2, 12, 4, 0, 0, 8, 3, 0, 0, 100, 100, 132.50, 0}; 
         std::ifstream fileIn(STATE_FILE);
         if (fileIn.is_open()) {
@@ -87,10 +86,7 @@ public:
             else if (actionKey == '3' || player.playerMonsterHP <= 0) { player.inCombatMode = 0; SaveStateToDisk(player); return; }
 
             if (player.enemyMonsterHP > 0) { player.playerMonsterHP -= (8 + (rand() % 10)); }
-            else { 
-                player.inCombatMode = 0; player.monsterLevel += 2; 
-                player.persistentBankWalletQmtm += 2.50; 
-            }
+            else { player.inCombatMode = 0; player.monsterLevel += 2; player.persistentBankWalletQmtm += 2.50; }
             SaveStateToDisk(player); return;
         }
 
@@ -99,24 +95,17 @@ public:
         if (actionKey == 'a' || actionKey == 'A') { if (player.xCoord > 0) player.xCoord--; }
         if (actionKey == 'd' || actionKey == 'D') { if (player.xCoord < gridWidth - 1) player.xCoord++; }
         
-        if (player.xCoord == 12 && player.yCoord == 4 && player.diamond1Captured == 0) { 
-            player.diamond1Captured = 1; player.monsterLevel += 3; player.accumulatedGlyphs++; player.persistentBankWalletQmtm += 1.50; 
-        }
-        if (player.xCoord == 2 && player.yCoord == 1 && player.diamond2Captured == 0) { 
-            player.diamond2Captured = 1; player.monsterLevel += 3; player.accumulatedGlyphs++; player.persistentBankWalletQmtm += 1.50; 
-        }
+        if (player.xCoord == 12 && player.yCoord == 4 && player.diamond1Captured == 0) { player.diamond1Captured = 1; player.monsterLevel += 3; player.accumulatedGlyphs++; player.persistentBankWalletQmtm += 1.50; }
+        if (player.xCoord == 2 && player.yCoord == 1 && player.diamond2Captured == 0) { player.diamond2Captured = 1; player.monsterLevel += 3; player.accumulatedGlyphs++; player.persistentBankWalletQmtm += 1.50; }
 
         if (player.diamond1Captured == 1 && player.diamond2Captured == 1) {
             if (player.xCoord == player.randDiamondX && player.yCoord == player.randDiamondY && player.randDiamondCaptured == 0) {
-                player.randDiamondCaptured = 1; player.monsterLevel += 5; player.accumulatedGlyphs++;
-                player.persistentBankWalletQmtm += 3.00; 
+                player.randDiamondCaptured = 1; player.monsterLevel += 5; player.accumulatedGlyphs++; player.persistentBankWalletQmtm += 3.00; 
                 player.randDiamondX = (rand() % (gridWidth - 2)) + 1; player.randDiamondY = (rand() % (gridHeight - 2)) + 1; player.randDiamondCaptured = 0; 
             }
         }
 
-        if (player.accumulatedGlyphs >= 10 && player.xCoord == 8 && player.yCoord == 3) { 
-            player.accumulatedGlyphs = 0; player.diamond1Captured = 0; player.diamond2Captured = 0; player.monsterLevel += 10; 
-        }
+        if (player.accumulatedGlyphs >= 10 && player.xCoord == 8 && player.yCoord == 3) { player.accumulatedGlyphs = 0; player.diamond1Captured = 0; player.diamond2Captured = 0; player.monsterLevel += 10; }
         if (actionKey != ' ' && (rand() % 100 < 8)) { player.inCombatMode = 1; player.enemyMonsterHP = 40 + (rand() % 40); player.playerMonsterHP = 100; }
         SaveStateToDisk(player);
     }
@@ -211,19 +200,19 @@ public:
 
         codexDisplayStream << "🪐 [CHRONO-ZODIAC CIPHER CODEX INTERFACE]\n";
         codexDisplayStream << " -> Current House : " << currentHouse << "\n";
-        long long simpleMatchFactor = (epochSeconds % 10);
-        codexDisplayStream << " -> Matcher Matrix: [";
-        for (int i = 0; i < 10; i++) {
-            if (i == simpleMatchFactor) codexDisplayStream << "⚡";
-            else codexDisplayStream << "-";
-        }
-        codexDisplayStream << "] ";
         
-        long long activeTier2Fragments = (blockHeight % 4); 
-        if (simpleMatchFactor == 7) {
-            codexDisplayStream << "✨ [MATCH ALIGNMENT DETECTED! GLYPH SECURED] ✨\n";
+        // 🌟 UN-STUCK OVERRIDE ENGINE: Calculates rolling remainders safely without freezing at 4/4
+        long long activeTier2Fragments = (blockHeight % 4);
+        if (activeTier2Fragments == 0 && blockHeight > 337823) {
+            codexDisplayStream << " -> Matcher Matrix: [⚡⚡⚡--⚡⚡⚡--] ✨ TIER 3 ADVANCEMENT ARMED ✨\n";
         } else {
-            codexDisplayStream << "(Hunting Tier 2 Core Fragments...)\n";
+            codexDisplayStream << " -> Matcher Matrix: [";
+            long long simpleMatchFactor = (epochSeconds % 10);
+            for (int i = 0; i < 10; i++) {
+                if (i == simpleMatchFactor) codexDisplayStream << "⚡";
+                else codexDisplayStream << "-";
+            }
+            codexDisplayStream << "] (Hunting Tier 3 Codex Fragments... [" << activeTier2Fragments << "/4])\n";
         }
         return codexDisplayStream.str();
     }
