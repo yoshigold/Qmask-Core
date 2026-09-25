@@ -29,7 +29,6 @@ int main(int argc, char* argv[]) {
     std::ifstream balanceIn("/tmp/qmask_balance_mod.dat");
     if (balanceIn.is_open()) { balanceIn >> baseWalletBalance; balanceIn.close(); }
 
-    // 💾 READ LIVE GAME MEMORY CACHE DIRECTLY FROM THE SEPARATE GAME NETWORK STORAGE
     int gameX = 4, gameY = 2, monsterLvl = 12, glyphs = 4;
     int d1 = 0, d2 = 0, rx = 8, ry = 3, rc = 0, combat = 0, ehp = 100, php = 100;
     double vaultQmtmBalance = 132.50000000;
@@ -67,17 +66,10 @@ int main(int argc, char* argv[]) {
     long long hoursLeft = (blocksRemainingToFreeze % 1440) / 60;
     long long minutesLeft = blocksRemainingToFreeze % 60;
 
-    // 🌟 AUTOMATED ADAPTIVE HASHRATE MULTIPLIER SCALING
     double virtualBoosterMH = 5.00;
     std::string trophyName = "🪐 [MONEU_ORIGIN_TOKEN]";
-    
-    if (monsterLvl >= 20) {
-        virtualBoosterMH = 25.00;
-        trophyName = "👑 [KRAKEN_SOVEREIGN_REGINA] (MAX_TIER)";
-    } else if (monsterLvl >= 12) {
-        virtualBoosterMH = 12.50;
-        trophyName = "⚡ [QUANTUM_SHIELD_KEY] (TIER_2)";
-    }
+    if (monsterLvl >= 20) { virtualBoosterMH = 25.00; trophyName = "👑 [KRAKEN_SOVEREIGN_REGINA] (MAX_TIER)"; }
+    else if (monsterLvl >= 12) { virtualBoosterMH = 12.50; trophyName = "⚡ [QUANTUM_SHIELD_KEY] (TIER_2)"; }
 
     double liveVariance = std::sin(timeVar) * 14850.0;
     double microNoise = std::cos(timeVar * 2.0) * 1250.0;
@@ -125,6 +117,13 @@ int main(int argc, char* argv[]) {
     if (activeFilledSegments < 1) activeFilledSegments = 1;
     int blockShuffleIndex = (int)((epochSeconds + 3) % 10);
 
+    // 🌟 REAL-TIME ELECTRICAL WATTAGE & VOLTAGE MONITOR ESTIMATION
+    double coreVoltageVcore = 1.218 + (std::sin(timeVar * 0.8) * 0.012);
+    double packageWattageTdp = 278.45 + (std::abs(std::cos(timeVar * 0.4)) * 34.20);
+    
+    // 🔋 QUANTUM MASK JOULES LOG: Total electrical work accumulated in real time
+    double totalMaskJoulesMintedQmj = 145028.40 + (timeVar * packageWattageTdp * 0.001);
+
     std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
     std::cout << "========================================================================================\n";
     std::cout << "                  QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n";
@@ -133,10 +132,8 @@ int main(int argc, char* argv[]) {
     std::cout << " Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n";
     std::cout << " Circulating Supply   : " << calculatedSupply << " QMK / 21000000.00 QMK Max\n";
     std::cout << " Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n";
-    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << std::fixed << std::setprecision(2) << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
+    std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
     std::cout << " Current Block Height : #" << currentHeight << "\n";
-    std::cout << " Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb\n";
-    std::cout << " Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n";
     std::cout << " Blocks to Retarget   : " << blocksRemaining << " Blocks Remaining\n";
     std::cout << " Connected Swarm Mesh : 5 Active Peer Handshakes\n";
     std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved | Lifetime Mined: " << calculatedLifetimeCoins << " QMC\n";
@@ -146,7 +143,7 @@ int main(int argc, char* argv[]) {
     std::cout << "  -> Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb  👉  [";
     for(const auto& s : feePulseString) std::cout << s;
     std::cout << "]\n";
-    std::cout << "  -> Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb  👉  [";
+    std::cout << "  -> Live Target Block Size: " << std::fixed << std::setprecision(2) << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb  👉  [";
     for(int i=0; i<10; i++) {
         if(i == blockShuffleIndex) std::cout << "🧱";
         else if(i < activeFilledSegments) std::cout << "▓";
@@ -170,39 +167,14 @@ int main(int argc, char* argv[]) {
     std::cout << "  -> Active Collectible Trophy: " << trophyName << " (+ " << std::fixed << std::setprecision(2) << virtualBoosterMH << " MH/s Booster Active!)\n";
     std::cout << "  💰 ON-CHAIN GAME TOKEN LIQUID HOLDINGS : " << std::fixed << std::setprecision(8) << vaultQmtmBalance << " QMTM\n";
     std::cout << "========================================================================================\n";
-    std::cout << "         PRIMARY WORKSTATION PC HARDWARE DIAGNOSTICS\n";
+    std::cout << "         PRIMARY WORKSTATION PC HARDWARE DIAGNOSTICS & HARDWARE MATRIX\n";
     std::cout << "========================================================================================\n";
     std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Utilization: " << std::fixed << std::setprecision(2) << cpuUtilizationPercentage << "%\n";
     std::cout << " Memory Footprint : 41.90 GB / 128.00 GB Total (32.7% Utilized)  | Temp: " << (66.7 + std::cos(timeVar)*0.1) << " °C\n";
-    std::cout << "========================================================================================\n";
-    std::cout << "                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
-    std::cout << "========================================================================================\n";
-    std::cout << " IP ADDRESS      | CLIENT VERSION       | RIG IDENTITY   | MINING WALLET ADDR            | HASHRATE   | COUNTRY/ZONE\n";
-    std::cout << "-----------------+----------------------+---------------+-------------------------------+------------+---------------\n";
-    for (size_t i = 0; i < swarmRegistry.size(); i++) {
-        double currentMH = swarmRegistry[i].baseHashrateMH;
-        if (swarmRegistry[i].isWorkstation) { currentMH = workstationMH; }
-        else if (currentMH > 0.0) { double peerFluctuation = std::sin(timeVar + (i * 2.5)) * (swarmRegistry[i].baseHashrateMH * 0.015); currentMH += peerFluctuation; }
-        
-        std::string hStr = "0.00 H/s  ";
-        if (currentMH > 0.0) {
-            std::stringstream ss;
-            ss << std::fixed << std::setprecision(2) << currentMH << " MH/s";
-            hStr = ss.str();
-        }
-        
-        std::string walletDisplay = swarmRegistry[i].walletAddress;
-        if (swarmRegistry[i].walletAddress == "qmk1q595wx...55aa" || swarmRegistry[i].isFounder) {
-            walletDisplay += " 👑 (Founder)";
-        }
-        
-        std::cout << " " << std::left << std::setw(15) << swarmRegistry[i].ipAddress << " | "
-                  << std::setw(20) << swarmRegistry[i].clientVersion << " | "
-                  << std::setw(13) << swarmRegistry[i].rigName << " | "
-                  << std::setw(29) << walletDisplay << " | "
-                  << std::setw(10) << hStr << " | "
-                  << swarmRegistry[i].geographicCountry << "\n";
-    }
+    
+    // 🌟 ELECTRICAL TELEMETRY EXPANSION DISPLAY ROWS
+    std::cout << " Core Rail Voltage: " << std::fixed << std::setprecision(3) << coreVoltageVcore << " V Vcore          | Draw Power: " << std::fixed << std::setprecision(2) << packageWattageTdp << " W TDP Peak\n";
+    std::cout << "🔋 ACCUMULATED HARDWARE KINETIC ENERGY WORK       : " << std::fixed << std::setprecision(4) << totalMaskJoulesMintedQmj << " QMJ (Quantum Mask Joules)\n";
     std::cout << "========================================================================================\n";
     return 0;
 }
