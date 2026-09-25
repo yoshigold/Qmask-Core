@@ -10,6 +10,7 @@
 
 namespace MONEU {
     void TriggerCodexEvaluationLoop(long long height, long long hashrate);
+    void RunGameConsoleEngineFrame(char inputCommand);
 }
 
 struct SwarmPeerMetadata {
@@ -23,34 +24,20 @@ struct SwarmPeerMetadata {
     bool isWorkstation; 
 };
 
-void ExecuteWalletSpendTransaction(const std::string& recipient, double amount, double currentBalance) {
-    std::cout << "\033[2J\033[H";
-    std::cout << "=========================================================\n";
-    std::cout << "         QMASK TRANSACTION CRYPTOGRAPHIC COMPILER        \n";
-    std::cout << "=========================================================\n";
-    double networkFee = 0.00010000;
-    double finalRemainingPool = currentBalance - amount - networkFee;
-    std::cout << "🔓 [KEYCHAIN LOGIC] Private keys unlocked. Signing tx hashes...\n";
-    std::cout << "📡 Broad-casting transaction payload to 5 active swarm peers over Port 8328...\n";
-    std::cout << "✅ [SUCCESS] Transaction accepted! TXID: qmctx_" << std::hex << (std::chrono::system_clock::now().time_since_epoch().count() % 1000000) << "\n";
-    std::cout << "=========================================================\n";
-    std::ofstream stateOut("/tmp/qmask_balance_mod.dat");
-    if (stateOut.is_open()) { stateOut << finalRemainingPool; stateOut.close(); }
-}
-
 int main(int argc, char* argv[]) {
     double baseWalletBalance = 9865.00000000;
     std::ifstream stateIn("/tmp/qmask_balance_mod.dat");
     if (stateIn.is_open()) { stateIn >> baseWalletBalance; stateIn.close(); }
 
-    // 🌟 TYPE-SAFE INDEX PROTECTION: Convert explicit elements to string vectors before processing
     if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
     
-    if (argc > 1 && std::string(argv[1]) == "--send") {
-        if (argc < 4) return 1;
-        std::string recipientAddress = std::string(argv[2]);
-        double spendAmount = std::stod(std::string(argv[3]));
-        ExecuteWalletSpendTransaction(recipientAddress, spendAmount, baseWalletBalance);
+    if (argc > 1 && std::string(argv[1]) == "--game-panel") {
+        char inputChar = ' ';
+        if (argc > 2 && argv[2] != nullptr && argv[2][0] != '\0') {
+            inputChar = argv[2][0];
+        }
+        std::cout << "\033[2J\033[H";
+        MONEU::RunGameConsoleEngineFrame(inputChar);
         return 0;
     }
 
@@ -104,11 +91,6 @@ int main(int argc, char* argv[]) {
     long long calculatedLifetimeBlocks = 2658 + blockGains;
     double calculatedLifetimeCoins = 13290.00 + (blockGains * 5.00);
 
-    double cpuUtilization = 93.8 + (std::sin(timeVar) * 0.2);
-    double coreThermalCelsius = 66.7 + (std::cos(timeVar) * 0.1);
-    double ramTotalGB = 128.0;
-    double ramUtilizedGB = 41.9 + (std::sin(timeVar * 0.05) * 0.1);
-
     std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
     
     std::cout << "========================================================================================\n";
@@ -134,7 +116,6 @@ int main(int argc, char* argv[]) {
     std::cout << " Consensus Stabilization Target: 60 Seconds [ASERT Active]\n";
     std::cout << "----------------------------------------------------------------------------------------\n";
     std::cout << "⏳ MIGRATION T-ZERO MAINNET RESET COUNTDOWN:\n";
-    std::cout << " Target Freeze Anchor : Block #347161\n";
     std::cout << " Precise Deadline Clock: " << daysLeft << "d " << hoursLeft << "h " << minutesLeft << "m remaining until Genesis Reset!\n";
     std::cout << "----------------------------------------------------------------------------------------\n";
     
@@ -148,8 +129,8 @@ int main(int argc, char* argv[]) {
     std::cout << "========================================================================================\n";
     std::cout << "         PRIMARY WORKSTATION PC HARDWARE DIAGNOSTICS\n";
     std::cout << "========================================================================================\n";
-    std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Temp: " << coreThermalCelsius << " °C\n";
-    std::cout << " Memory Footprint : " << ramUtilizedGB << " GB / " << ramTotalGB << " GB Total (" << (ramUtilizedGB/ramTotalGB)*100.0 << "% Utilized)\n";
+    std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Temp: " << (66.7 + std::cos(timeVar)*0.1) << " °C\n";
+    std::cout << " Memory Footprint : 41.90 GB / 128.00 GB Total (32.7% Utilized)\n";
     std::cout << "========================================================================================\n";
     std::cout << "                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
     std::cout << "========================================================================================\n";

@@ -13,14 +13,13 @@ namespace MONEU {
 struct PlayerPositionState {
     int xCoord;
     int yCoord;
-    std::string activeMonsterName;
     int monsterLevel;
     int accumulatedGlyphs;
-    bool diamond1Captured;
-    bool diamond2Captured;
+    int diamond1Captured;
+    int diamond2Captured;
     int randDiamondX;
     int randDiamondY;
-    bool randDiamondCaptured;
+    int randDiamondCaptured;
 };
 
 class QmaskTacticMonsterEngine {
@@ -30,8 +29,7 @@ private:
     const std::string STATE_FILE = "game_state.dat";
 
     PlayerPositionState LoadStateFromDisk() {
-        // Initial setup structure defaults if no save cache is active
-        PlayerPositionState state = {4, 2, "Xenomorph_V1", 12, 4, false, false, 8, 3, false}; 
+        PlayerPositionState state = {4, 2, 12, 4, 0, 0, 8, 3, 0}; 
         std::ifstream fileIn(STATE_FILE);
         if (fileIn.is_open()) {
             fileIn >> state.xCoord >> state.yCoord >> state.monsterLevel >> state.accumulatedGlyphs 
@@ -61,31 +59,29 @@ public:
         if ((actionKey == 'a' || actionKey == 'A') && player.xCoord > 0) player.xCoord--;
         if ((actionKey == 'd' || actionKey == 'D') && player.xCoord < gridWidth - 1) player.xCoord++;
         
-        // 💎 COGNITIVE COLLISION VERIFICATION PASS
-        if (player.xCoord == 12 && player.yCoord == 4 && !player.diamond1Captured) {
-            player.diamond1Captured = true;
+        // 💎 Diamond Collision Node checks
+        if (player.xCoord == 12 && player.yCoord == 4 && player.diamond1Captured == 0) {
+            player.diamond1Captured = 1;
             player.monsterLevel += 3; 
             player.accumulatedGlyphs++;
         }
-        if (player.xCoord == 2 && player.yCoord == 1 && !player.diamond2Captured) {
-            player.diamond2Captured = true;
+        if (player.xCoord == 2 && player.yCoord == 1 && player.diamond2Captured == 0) {
+            player.diamond2Captured = 1;
             player.monsterLevel += 3; 
             player.accumulatedGlyphs++;
         }
 
-        // 🪐 OPTION 1: AUTOMATED ADAPTIVE RANDOM RESPAWN MULTIPLIER
-        // If both original static crystals are secured, evaluate the dynamic canvas targets
-        if (player.diamond1Captured && player.diamond2Captured) {
-            if (player.xCoord == player.randDiamondX && player.yCoord == player.randDiamondY && !player.randDiamondCaptured) {
-                player.randDiamondCaptured = true;
-                player.monsterLevel += 5; // Elite level boost reward allocation
+        // 🔥 Dynamic Wildfire Matrix Respawns
+        if (player.diamond1Captured == 1 && player.diamond2Captured == 1) {
+            if (player.xCoord == player.randDiamondX && player.yCoord == player.randDiamondY && player.randDiamondCaptured == 0) {
+                player.randDiamondCaptured = 1;
+                player.monsterLevel += 5; 
                 player.accumulatedGlyphs++;
                 
-                // Spin up true hardware system entropy clocks to drop a new target instantly
                 srand(time(NULL));
                 player.randDiamondX = (rand() % (gridWidth - 2)) + 1;
                 player.randDiamondY = (rand() % (gridHeight - 2)) + 1;
-                player.randDiamondCaptured = false; 
+                player.randDiamondCaptured = 0; 
             }
         }
 
@@ -106,12 +102,12 @@ public:
             for (int x = 0; x < gridWidth; x++) {
                 if (x == player.xCoord && y == player.yCoord) {
                     std::cout << "👾 "; 
-                } else if (x == 12 && y == 4 && !player.diamond1Captured) {
+                } else if (x == 12 && y == 4 && player.diamond1Captured == 0) {
                     std::cout << "💎 "; 
-                } else if (x == 2 && y == 1 && !player.diamond2Captured) {
+                } else if (x == 2 && y == 1 && player.diamond2Captured == 0) {
                     std::cout << "💎 "; 
-                } else if (player.diamond1Captured && player.diamond2Captured && x == player.randDiamondX && y == player.randDiamondY && !player.randDiamondCaptured) {
-                    std::cout << "🔥 "; // Render the newly spawned random high-value experience node
+                } else if (player.diamond1Captured == 1 && player.diamond2Captured == 1 && x == player.randDiamondX && y == player.randDiamondY && player.randDiamondCaptured == 0) {
+                    std::cout << "🔥 "; 
                 } else {
                     std::cout << ".  ";
                 }
@@ -121,7 +117,7 @@ public:
 
         std::cout << "----------------------------------------------------------------------------------------\n";
         std::cout << " 📋 ACTIVE COMPRESSED MONSTER TELEMETRY STATS TAB:\n";
-        std::cout << "   -> Loaded Companion : " << player.activeMonsterName << " [Rarity Class: CHRONO_MYST]\n";
+        std::cout << "   -> Loaded Companion : Xenomorph_V1 [Rarity Class: CHRONO_MYST]\n";
         std::cout << "   -> Combat Level     : Lvl " << player.monsterLevel << " [Virtual Hash Multiplier: " << std::fixed << std::setprecision(2) << 1.0 + (player.monsterLevel * 0.05) << "x]\n";
         std::cout << "   -> Coordinates      : Sector (X: " << player.xCoord << ", Y: " << player.yCoord << ")\n";
         std::cout << "   -> Active Inventory : [" << player.accumulatedGlyphs << "] Captured Cryptographic Loot Nodes\n";
@@ -178,12 +174,6 @@ public:
             codexDisplayStream << "(Hunting Tier 2 Core Fragments...)\n";
         }
         
-        codexDisplayStream << "----------------------------------------------------------------------------------------\n";
-        codexDisplayStream << "🎮 PERMANENT GAMING MATRIX MONITOR VECTOR STATUS :\n";
-        codexDisplayStream << "  -> Active Codex Puzzle Level: TIER 2 (The Quantum Shield Protocol)\n";
-        codexDisplayStream << "  -> Glyph Fragment Inventory : [" << activeTier2Fragments << "/4] Searching for Alignment Match...\n";
-        codexDisplayStream << "  -> Active Artifact Boost    : Moneu-Origin-Zodiac-Token Loaded (+5.00 MH/s Speed Verified)\n";
-
         return codexDisplayStream.str();
     }
 };
