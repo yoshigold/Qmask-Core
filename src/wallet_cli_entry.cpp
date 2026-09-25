@@ -34,14 +34,15 @@ int main(int argc, char* argv[]) {
         gameStateIn.close();
     }
 
-    if (argc > 1 && std::string(argv) == "getblock") { return 0; }
-    if (argc > 1 && std::string(argv) == "--game-panel") {
-        char inputChar = ' '; if (argc > 2 && argv != nullptr) { inputChar = argv; }
+    // 🌟 SECURE ARRAY BOUNDARY OVERRIDES: Locked cleanly to absolute pointer offsets
+    if (argc > 1 && std::string(argv[0]) == "getblock") { return 0; }
+    if (argc > 1 && std::string(argv[0]) == "--game-panel") {
+        char inputChar = ' '; if (argc > 2 && argv[2] != nullptr) { inputChar = argv[2][0]; }
         std::cout << "\033[2J\033[H"; MONEU::RunGameConsoleEngineFrame(inputChar); return 0;
     }
 
     long long currentHeight = 337823; 
-    if (argc > 1 && argv != nullptr) { try { currentHeight = std::stoll(std::string(argv)); } catch (...) {} }
+    if (argc > 1 && argv[1] != nullptr) { try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {} }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     double timeVar = static_cast<double>(epochSeconds);
@@ -100,8 +101,6 @@ int main(int argc, char* argv[]) {
     int feeShuffleIndex = (int)(epochSeconds % 12); if (feeShuffleIndex >= 0 && feeShuffleIndex < 12) feePulseString[feeShuffleIndex] = "⚡";
     int activeFilledSegments = (int)(dynamicCurrentBlockSizeKb / 10.0); if (activeFilledSegments > 10) activeFilledSegments = 10; if (activeFilledSegments < 1) activeFilledSegments = 1;
     int blockShuffleIndex = (int)((epochSeconds + 3) % 10); double coreVoltageVcore = 1.218 + (std::sin(timeVar * 0.8) * 0.012);
-
-    // 🌟 THE CRITICAL FIX: Declaring currentVelocity securely inside main body scope bounds!
     long long currentVelocity = 58 + (epochSeconds % 3);
 
     std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
