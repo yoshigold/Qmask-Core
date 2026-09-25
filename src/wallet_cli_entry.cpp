@@ -40,18 +40,21 @@ int main(int argc, char* argv[]) {
         gameStateIn.close();
     }
 
-    if (argc > 1 && std::string(argv) == "getblock") { return 0; }
+    // 🌟 THE CRITICAL FIX: Explicitly target array index [1] to satisfy standard string conversion requirements
+    if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
     
-    if (argc > 1 && std::string(argv) == "--game-panel") {
+    if (argc > 1 && std::string(argv[1]) == "--game-panel") {
         char inputChar = ' ';
-        if (argc > 2) { inputChar = argv[2][0]; }
+        if (argc > 2 && argv[2] != nullptr) {
+            inputChar = argv[2][0];
+        }
         std::cout << "\033[2J\033[H";
         MONEU::RunGameConsoleEngineFrame(inputChar);
         return 0;
     }
 
     long long currentHeight = 337823; 
-    if (argc > 1 && argv != nullptr) {
+    if (argc > 1 && argv[1] != nullptr) {
         try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {}
     }
 
@@ -167,8 +170,6 @@ int main(int argc, char* argv[]) {
     std::cout << " Memory Footprint : 41.90 GB / 128.00 GB Total (32.7% Utilized)  | Temp: " << (66.7 + std::cos(timeVar)*0.1) << " °C\n";
     std::cout << " Core Rail Voltage: " << std::fixed << std::setprecision(3) << coreVoltageVcore << " V Vcore          | Draw Power: " << std::fixed << std::setprecision(2) << packageWattageTdp << " W TDP Peak\n";
     std::cout << "🔋 ACCUMULATED HARDWARE KINETIC ENERGY WORK       : " << std::fixed << std::setprecision(4) << totalMaskJoulesMintedQmj << " QMJ (Quantum Mask Joules)\n";
-    
-    // 🌟 REMOVED EARLY RETURN BUG: Registry rendering block now follows the diagnostics fluidly!
     std::cout << "========================================================================================\n";
     std::cout << "                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
     std::cout << "========================================================================================\n";
