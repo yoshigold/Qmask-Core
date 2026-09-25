@@ -29,9 +29,10 @@ int main(int argc, char* argv[]) {
     std::ifstream balanceIn("/tmp/qmask_balance_mod.dat");
     if (balanceIn.is_open()) { balanceIn >> baseWalletBalance; balanceIn.close(); }
 
+    // 💾 PURE 15-COLUMN BLOCKCHAIN SINGLE SOURCE OF TRUTH REFERENCE SIGNATURE
     int gameX = 4, gameY = 2, monsterLvl = 35, glyphs = 6;
     int d1 = 0, d2 = 0, rx = 8, ry = 3, rc = 0, combat = 0, ehp = 100, php = 100;
-    double vaultQmtmBalance = 385.50000000;
+    double vaultQmtmBalance = 385.50000000; 
     int shop = 0;
     double energyJoules = 185240.00;
 
@@ -45,9 +46,7 @@ int main(int argc, char* argv[]) {
     
     if (argc > 1 && std::string(argv[1]) == "--game-panel") {
         char inputChar = ' ';
-        if (argc > 2 && argv[2] != nullptr) {
-            inputChar = argv[2][0];
-        }
+        if (argc > 2 && argv[2] != nullptr) { inputChar = argv[2][0]; }
         std::cout << "\033[2J\033[H";
         MONEU::RunGameConsoleEngineFrame(inputChar);
         return 0;
@@ -133,9 +132,14 @@ int main(int argc, char* argv[]) {
     std::cout << " Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n";
     std::cout << " Total Network Power  : " << totalNetworkPower << " H/s (" << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n";
     std::cout << " Current Block Height : #" << currentHeight << "\n";
+    std::cout << " Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb\n";
+    std::cout << " Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n";
     std::cout << " Blocks to Retarget   : " << blocksRemaining << " Blocks Remaining\n";
     std::cout << " Connected Swarm Mesh : 5 Active Peer Handshakes\n";
+    
+    // 🌟 THE RESTORED LINE: Anchors your continuous lifetime coin gains back to screen matrix paths
     std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved | Lifetime Mined: " << calculatedLifetimeCoins << " QMC\n";
+    
     std::cout << " Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n";
     std::cout << "----------------------------------------------------------------------------------------\n";
     std::cout << "📊 KINETIC BASE LAYER PROTOCOL MATRIX LIVE VISUALS:\n";
