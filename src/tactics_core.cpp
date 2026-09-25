@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iomanip>
 #include <fstream>
+#include <cstdlib>
 
 namespace MONEU {
 
@@ -17,6 +18,9 @@ struct PlayerPositionState {
     int accumulatedGlyphs;
     bool diamond1Captured;
     bool diamond2Captured;
+    int randDiamondX;
+    int randDiamondY;
+    bool randDiamondCaptured;
 };
 
 class QmaskTacticMonsterEngine {
@@ -26,10 +30,13 @@ private:
     const std::string STATE_FILE = "game_state.dat";
 
     PlayerPositionState LoadStateFromDisk() {
-        PlayerPositionState state = {4, 2, "Xenomorph_V1", 12, 4, false, false}; 
+        // Initial setup structure defaults if no save cache is active
+        PlayerPositionState state = {4, 2, "Xenomorph_V1", 12, 4, false, false, 8, 3, false}; 
         std::ifstream fileIn(STATE_FILE);
         if (fileIn.is_open()) {
-            fileIn >> state.xCoord >> state.yCoord >> state.monsterLevel >> state.accumulatedGlyphs >> state.diamond1Captured >> state.diamond2Captured;
+            fileIn >> state.xCoord >> state.yCoord >> state.monsterLevel >> state.accumulatedGlyphs 
+                   >> state.diamond1Captured >> state.diamond2Captured 
+                   >> state.randDiamondX >> state.randDiamondY >> state.randDiamondCaptured;
             fileIn.close();
         }
         return state;
@@ -38,7 +45,9 @@ private:
     void SaveStateToDisk(const PlayerPositionState& state) {
         std::ofstream fileOut(STATE_FILE);
         if (fileOut.is_open()) {
-            fileOut << state.xCoord << " " << state.yCoord << " " << state.monsterLevel << " " << state.accumulatedGlyphs << " " << state.diamond1Captured << " " << state.diamond2Captured;
+            fileOut << state.xCoord << " " << state.yCoord << " " << state.monsterLevel << " " << state.accumulatedGlyphs << " " 
+                    << state.diamond1Captured << " " << state.diamond2Captured << " "
+                    << state.randDiamondX << " " << state.randDiamondY << " " << state.randDiamondCaptured;
             fileOut.close();
         }
     }
@@ -52,22 +61,32 @@ public:
         if ((actionKey == 'a' || actionKey == 'A') && player.xCoord > 0) player.xCoord--;
         if ((actionKey == 'd' || actionKey == 'D') && player.xCoord < gridWidth - 1) player.xCoord++;
         
-        // 💎 DIAMOND COLLISION MATRIX LOGIC
-        // Check Node 1: Coordinates (12, 4)
+        // 💎 COGNITIVE COLLISION VERIFICATION PASS
         if (player.xCoord == 12 && player.yCoord == 4 && !player.diamond1Captured) {
             player.diamond1Captured = true;
-            player.monsterLevel += 3; // Immediate +3 level boost reward!
+            player.monsterLevel += 3; 
             player.accumulatedGlyphs++;
         }
-        // Check Node 2: Coordinates (2, 1)
         if (player.xCoord == 2 && player.yCoord == 1 && !player.diamond2Captured) {
             player.diamond2Captured = true;
-            player.monsterLevel += 3; // Immediate +3 level boost reward!
+            player.monsterLevel += 3; 
             player.accumulatedGlyphs++;
         }
 
-        if (rand() % 15 == 7) {
-            player.monsterLevel++;
+        // 🪐 OPTION 1: AUTOMATED ADAPTIVE RANDOM RESPAWN MULTIPLIER
+        // If both original static crystals are secured, evaluate the dynamic canvas targets
+        if (player.diamond1Captured && player.diamond2Captured) {
+            if (player.xCoord == player.randDiamondX && player.yCoord == player.randDiamondY && !player.randDiamondCaptured) {
+                player.randDiamondCaptured = true;
+                player.monsterLevel += 5; // Elite level boost reward allocation
+                player.accumulatedGlyphs++;
+                
+                // Spin up true hardware system entropy clocks to drop a new target instantly
+                srand(time(NULL));
+                player.randDiamondX = (rand() % (gridWidth - 2)) + 1;
+                player.randDiamondY = (rand() % (gridHeight - 2)) + 1;
+                player.randDiamondCaptured = false; 
+            }
         }
 
         SaveStateToDisk(player);
@@ -91,6 +110,8 @@ public:
                     std::cout << "💎 "; 
                 } else if (x == 2 && y == 1 && !player.diamond2Captured) {
                     std::cout << "💎 "; 
+                } else if (player.diamond1Captured && player.diamond2Captured && x == player.randDiamondX && y == player.randDiamondY && !player.randDiamondCaptured) {
+                    std::cout << "🔥 "; // Render the newly spawned random high-value experience node
                 } else {
                     std::cout << ".  ";
                 }
@@ -103,7 +124,7 @@ public:
         std::cout << "   -> Loaded Companion : " << player.activeMonsterName << " [Rarity Class: CHRONO_MYST]\n";
         std::cout << "   -> Combat Level     : Lvl " << player.monsterLevel << " [Virtual Hash Multiplier: " << std::fixed << std::setprecision(2) << 1.0 + (player.monsterLevel * 0.05) << "x]\n";
         std::cout << "   -> Coordinates      : Sector (X: " << player.xCoord << ", Y: " << player.yCoord << ")\n";
-        std::cout << "   -> Captured Nodes   : [" << (player.diamond1Captured + player.diamond2Captured) << "/2] Cryptographic Crystals Collected\n";
+        std::cout << "   -> Active Inventory : [" << player.accumulatedGlyphs << "] Captured Cryptographic Loot Nodes\n";
         std::cout << "========================================================================================\n";
     }
 };
