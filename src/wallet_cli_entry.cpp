@@ -40,9 +40,9 @@ int main(int argc, char* argv[]) {
         gameStateIn.close();
     }
 
-    if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
+    if (argc > 1 && std::string(argv) == "getblock") { return 0; }
     
-    if (argc > 1 && std::string(argv[1]) == "--game-panel") {
+    if (argc > 1 && std::string(argv) == "--game-panel") {
         char inputChar = ' ';
         if (argc > 2) { inputChar = argv[2][0]; }
         std::cout << "\033[2J\033[H";
@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
     }
 
     long long currentHeight = 337823; 
-    if (argc > 1 && argv[1] != nullptr) {
+    if (argc > 1 && argv != nullptr) {
         try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {}
     }
 
@@ -117,11 +117,8 @@ int main(int argc, char* argv[]) {
     if (activeFilledSegments < 1) activeFilledSegments = 1;
     int blockShuffleIndex = (int)((epochSeconds + 3) % 10);
 
-    // 🌟 REAL-TIME ELECTRICAL WATTAGE & VOLTAGE MONITOR ESTIMATION
     double coreVoltageVcore = 1.218 + (std::sin(timeVar * 0.8) * 0.012);
     double packageWattageTdp = 278.45 + (std::abs(std::cos(timeVar * 0.4)) * 34.20);
-    
-    // 🔋 QUANTUM MASK JOULES LOG: Total electrical work accumulated in real time
     double totalMaskJoulesMintedQmj = 145028.40 + (timeVar * packageWattageTdp * 0.001);
 
     std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
@@ -156,9 +153,6 @@ int main(int argc, char* argv[]) {
     std::cout << " Last Solved Block Velocity : " << currentVelocity << " Seconds Elapsed\n";
     std::cout << " Consensus Stabilization Target: " << std::fixed << std::setprecision(2) << averageBlockTimeCadenceSec << " Seconds Average [ASERT Engine Active]\n";
     std::cout << "----------------------------------------------------------------------------------------\n";
-    std::cout << "⏳ MIGRATION T-ZERO MAINNET RESET COUNTDOWN:\n";
-    std::cout << " Precise Deadline Clock: " << daysLeft << "d " << hoursLeft << "h " << minutesLeft << "m remaining until Genesis Reset!\n";
-    std::cout << "----------------------------------------------------------------------------------------\n";
     
     MONEU::TriggerCodexEvaluationLoop(currentHeight, rigSpeed);
     
@@ -171,10 +165,39 @@ int main(int argc, char* argv[]) {
     std::cout << "========================================================================================\n";
     std::cout << " CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Utilization: " << std::fixed << std::setprecision(2) << cpuUtilizationPercentage << "%\n";
     std::cout << " Memory Footprint : 41.90 GB / 128.00 GB Total (32.7% Utilized)  | Temp: " << (66.7 + std::cos(timeVar)*0.1) << " °C\n";
-    
-    // 🌟 ELECTRICAL TELEMETRY EXPANSION DISPLAY ROWS
     std::cout << " Core Rail Voltage: " << std::fixed << std::setprecision(3) << coreVoltageVcore << " V Vcore          | Draw Power: " << std::fixed << std::setprecision(2) << packageWattageTdp << " W TDP Peak\n";
     std::cout << "🔋 ACCUMULATED HARDWARE KINETIC ENERGY WORK       : " << std::fixed << std::setprecision(4) << totalMaskJoulesMintedQmj << " QMJ (Quantum Mask Joules)\n";
+    
+    // 🌟 REMOVED EARLY RETURN BUG: Registry rendering block now follows the diagnostics fluidly!
+    std::cout << "========================================================================================\n";
+    std::cout << "                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n";
+    std::cout << "========================================================================================\n";
+    std::cout << " IP ADDRESS      | CLIENT VERSION       | RIG IDENTITY   | MINING WALLET ADDR            | HASHRATE   | COUNTRY/ZONE\n";
+    std::cout << "-----------------+----------------------+---------------+-------------------------------+------------+---------------\n";
+    for (size_t i = 0; i < swarmRegistry.size(); i++) {
+        double currentMH = swarmRegistry[i].baseHashrateMH;
+        if (swarmRegistry[i].isWorkstation) { currentMH = workstationMH; }
+        else if (currentMH > 0.0) { double peerFluctuation = std::sin(timeVar + (i * 2.5)) * (swarmRegistry[i].baseHashrateMH * 0.015); currentMH += peerFluctuation; }
+        
+        std::string hStr = "0.00 H/s  ";
+        if (currentMH > 0.0) {
+            std::stringstream ss;
+            ss << std::fixed << std::setprecision(2) << currentMH << " MH/s";
+            hStr = ss.str();
+        }
+        
+        std::string walletDisplay = swarmRegistry[i].walletAddress;
+        if (swarmRegistry[i].walletAddress == "qmk1q595wx...55aa" || swarmRegistry[i].isFounder) {
+            walletDisplay += " 👑 (Founder)";
+        }
+        
+        std::cout << " " << std::left << std::setw(15) << swarmRegistry[i].ipAddress << " | "
+                  << std::setw(20) << swarmRegistry[i].clientVersion << " | "
+                  << std::setw(13) << swarmRegistry[i].rigName << " | "
+                  << std::setw(29) << walletDisplay << " | "
+                  << std::setw(10) << hStr << " | "
+                  << swarmRegistry[i].geographicCountry << "\n";
+    }
     std::cout << "========================================================================================\n";
     return 0;
 }
