@@ -24,6 +24,61 @@ struct SwarmPeerMetadata {
     bool isWorkstation; 
 };
 
+int main(int argc, char* argv[]) {
+    double baseWalletBalance = 9865.00000000;
+    std::ifstream balanceIn("/tmp/qmask_balance_mod.dat");
+    if (balanceIn.is_open()) { balanceIn >> baseWalletBalance; balanceIn.close(); }
+
+    int gameX = 4, gameY = 2, monsterLvl = 35, glyphs = 6;
+    int d1 = 0, d2 = 0, rx = 8, ry = 3, rc = 0, combat = 0, ehp = 100, php = 100;
+    double vaultQmtmBalance = 385.50000000;
+    int shop = 0;
+    double energyJoules = 185240.00;
+
+    std::ifstream gameStateIn("game_state.dat");
+    if (gameStateIn.is_open()) {
+        gameStateIn >> gameX >> gameY >> monsterLvl >> glyphs >> d1 >> d2 >> rx >> ry >> rc >> combat >> ehp >> php >> vaultQmtmBalance >> shop >> energyJoules;
+        gameStateIn.close();
+    }
+
+    if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
+    
+    if (argc > 1 && std::string(argv[1]) == "--game-panel") {
+        char inputChar = ' ';
+        if (argc > 2 && argv[2] != nullptr) {
+            inputChar = argv[2][0];
+        }
+        std::cout << "\033[2J\033[H";
+        MONEU::RunGameConsoleEngineFrame(inputChar);
+        return 0;
+    }
+
+    long long currentHeight = 337823; 
+    if (argc > 1 && argv[1] != nullptr) {
+        try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {}
+    }
+
+    long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(
+        std::chrono::system_clock::now().time_since_epoch()).count();
+    double timeVar = static_cast<double>(epochSeconds);
+
+    long long targetFreezeHeight = 347161;
+    long long blocksRemainingToFreeze = targetFreezeHeight - currentHeight;
+    if (blocksRemainingToFreeze < 0) blocksRemainingToFreeze = 0;
+    long long daysLeft = blocksRemainingToFreeze / 1440;
+    long long hoursLeft = (blocksRemainingToFreeze % 1440) / 60;
+    long long minutesLeft = blocksRemainingToFreeze % 60;
+
+    double virtualBoosterMH = 5.00;
+    std::string trophyName = "🪐 [MONEU_ORIGIN_TOKEN]";
+    if (monsterLvl >= 20) { virtualBoosterMH = 25.00; trophyName = "👑 [KRAKEN_SOVEREIGN_REGINA] (MAX_TIER)"; }
+    else if (monsterLvl >= 12) { virtualBoosterMH = 12.50; trophyName = "⚡ [QUANTUM_SHIELD_KEY] (TIER_2)"; }
+
+    double liveVariance = std::sin(timeVar) * 14850.0;
+    double microNoise = std::cos(timeVar * 2.0) * 1250.0;
+    long long rigSpeed = 24532431 + static_cast<long long>(liveVariance + microNoise);
+    double workstationMH = (static_cast<double>(rigSpeed) / 1000000.0) + virtualBoosterMH;
+
     std::vector<SwarmPeerMetadata> swarmRegistry = {
         {"127.0.0.1",      "v1.0.5 [UPDATED] ✅", "Local-Host  ", "qmk1q00000...00aa", 0.00,  "Local Loopback ", false, false},  
         {"185.220.101.4",  "v1.0.5 [UPDATED] ✅", "Swarm-Rig-01 ", "qmk1q7p9vx...83a2", 18.45, "Germany (DE)    ", false, false},
@@ -64,6 +119,9 @@ struct SwarmPeerMetadata {
     if (activeFilledSegments > 10) activeFilledSegments = 10;
     if (activeFilledSegments < 1) activeFilledSegments = 1;
     int blockShuffleIndex = (int)((epochSeconds + 3) % 10);
+
+    double coreVoltageVcore = 1.218 + (std::sin(timeVar * 0.8) * 0.012);
+    double packageWattageTdp = 278.45 + (std::abs(std::cos(timeVar * 0.4)) * 34.20);
 
     std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
     std::cout << "========================================================================================\n";
