@@ -23,6 +23,7 @@ struct PlayerPositionState {
     int inCombatMode;     
     int enemyMonsterHP;   
     int playerMonsterHP;  
+    double persistentBankWalletQmtm; // 🌟 THE UN-ALTERABLE CORE VAULT ACCOUNT SAVINGS BLOCK
 };
 
 class QmaskTacticMonsterEngine {
@@ -32,13 +33,14 @@ private:
     const std::string STATE_FILE = "game_state.dat";
 
     PlayerPositionState LoadStateFromDisk() {
-        PlayerPositionState state = {4, 2, 12, 4, 0, 0, 8, 3, 0, 0, 100, 100}; 
+        PlayerPositionState state = {4, 2, 12, 4, 0, 0, 8, 3, 0, 0, 100, 100, 0.0}; 
         std::ifstream fileIn(STATE_FILE);
         if (fileIn.is_open()) {
             fileIn >> state.xCoord >> state.yCoord >> state.monsterLevel >> state.accumulatedGlyphs 
                    >> state.diamond1Captured >> state.diamond2Captured 
                    >> state.randDiamondX >> state.randDiamondY >> state.randDiamondCaptured
-                   >> state.inCombatMode >> state.enemyMonsterHP >> state.playerMonsterHP;
+                   >> state.inCombatMode >> state.enemyMonsterHP >> state.playerMonsterHP
+                   >> state.persistentBankWalletQmtm;
             fileIn.close();
         }
         return state;
@@ -50,7 +52,8 @@ private:
             fileOut << state.xCoord << " " << state.yCoord << " " << state.monsterLevel << " " << state.accumulatedGlyphs << " " 
                     << state.diamond1Captured << " " << state.diamond2Captured << " "
                     << state.randDiamondX << " " << state.randDiamondY << " " << state.randDiamondCaptured << " "
-                    << state.inCombatMode << " " << state.enemyMonsterHP << " " << state.playerMonsterHP;
+                    << state.inCombatMode << " " << state.enemyMonsterHP << " " << state.playerMonsterHP << " "
+                    << state.persistentBankWalletQmtm;
             fileOut.close();
         }
     }
@@ -66,33 +69,47 @@ public:
             else if (actionKey == '3' || player.playerMonsterHP <= 0) { player.inCombatMode = 0; SaveStateToDisk(player); return; }
 
             if (player.enemyMonsterHP > 0) { player.playerMonsterHP -= (8 + (rand() % 10)); }
-            else { player.inCombatMode = 0; player.monsterLevel += 2; player.accumulatedGlyphs += 2; }
+            else { 
+                player.inCombatMode = 0; 
+                player.monsterLevel += 2; 
+                player.persistentBankWalletQmtm += 2.50; // 💰 Award combat tokens straight to vault
+            }
             SaveStateToDisk(player); return;
         }
 
-        // 🌟 HARDENED DIRECTION VECTORS: Fixed mapping paths explicitly to handle key signatures
         if (actionKey == 'w' || actionKey == 'W') { if (player.yCoord > 0) player.yCoord--; }
         if (actionKey == 's' || actionKey == 'S') { if (player.yCoord < gridHeight - 1) player.yCoord++; }
         if (actionKey == 'a' || actionKey == 'A') { if (player.xCoord > 0) player.xCoord--; }
         if (actionKey == 'd' || actionKey == 'D') { if (player.xCoord < gridWidth - 1) player.xCoord++; }
         
-        if (player.xCoord == 12 && player.yCoord == 4 && player.diamond1Captured == 0) { player.diamond1Captured = 1; player.monsterLevel += 3; player.accumulatedGlyphs++; }
-        if (player.xCoord == 2 && player.yCoord == 1 && player.diamond2Captured == 0) { player.diamond2Captured = 1; player.monsterLevel += 3; player.accumulatedGlyphs++; }
+        if (player.xCoord == 12 && player.yCoord == 4 && player.diamond1Captured == 0) { 
+            player.diamond1Captured = 1; player.monsterLevel += 3; player.accumulatedGlyphs++;
+            player.persistentBankWalletQmtm += 1.50; // 💰 Secure crystal reward to vault
+        }
+        if (player.xCoord == 2 && player.yCoord == 1 && player.diamond2Captured == 0) { 
+            player.diamond2Captured = 1; player.monsterLevel += 3; player.accumulatedGlyphs++;
+            player.persistentBankWalletQmtm += 1.50; // 💰 Secure crystal reward to vault
+        }
 
         if (player.diamond1Captured == 1 && player.diamond2Captured == 1) {
             if (player.xCoord == player.randDiamondX && player.yCoord == player.randDiamondY && player.randDiamondCaptured == 0) {
                 player.randDiamondCaptured = 1; player.monsterLevel += 5; player.accumulatedGlyphs++;
+                player.persistentBankWalletQmtm += 3.00; // 💰 Secure fire element reward to vault
                 player.randDiamondX = (rand() % (gridWidth - 2)) + 1; player.randDiamondY = (rand() % (gridHeight - 2)) + 1; player.randDiamondCaptured = 0; 
             }
         }
 
-        if (player.accumulatedGlyphs >= 10 && player.xCoord == 8 && player.yCoord == 3) { player.accumulatedGlyphs = 0; player.diamond1Captured = 0; player.diamond2Captured = 0; player.monsterLevel += 10; }
+        // 🌀 PORTAL SAFETY ENVELOPE: Clear layout triggers but protect the persistent wallet data completely
+        if (player.accumulatedGlyphs >= 10 && player.xCoord == 8 && player.yCoord == 3) { 
+            player.accumulatedGlyphs = 0; player.diamond1Captured = 0; player.diamond2Captured = 0; player.monsterLevel += 10; 
+        }
         if (actionKey != ' ' && (rand() % 100 < 8)) { player.inCombatMode = 1; player.enemyMonsterHP = 40 + (rand() % 40); player.playerMonsterHP = 100; }
         SaveStateToDisk(player);
     }
 
     void RenderInteractiveGameViewport() {
         PlayerPositionState player = LoadStateFromDisk();
+
         std::cout << "========================================================================================\n";
         std::cout << "   🎭 QMASK TACTICAL MONSTER ADVENTURE ENGINE (QMTM SEPARATE GAME NETWORK) 🎭          \n";
         std::cout << "========================================================================================\n";
@@ -129,7 +146,8 @@ public:
         std::cout << "   -> Loaded Companion : Xenomorph_V1 [Rarity Class: CHRONO_MYST]\n";
         std::cout << "   -> Combat Level     : Lvl " << player.monsterLevel << " [ Hash Multiplier: " << 1.0 + (player.monsterLevel * 0.05) << "x ]\n";
         std::cout << "   -> Coordinates      : Sector (X: " << player.xCoord << ", Y: " << player.yCoord << ")\n";
-        std::cout << "   -> Target Progress  : [" << player.accumulatedGlyphs << "/10] Crystals (Hit 10 to trigger Portal 🌀)\n";
+        std::cout << "   -> Level Tracker    : [" << player.accumulatedGlyphs << "/10] Crystals (Hit 10 to trigger Portal 🌀)\n";
+        std::cout << "   💰 PERMANENT METRIC SOVEREIGN GAME VAULT ACC BALANCE: " << std::fixed << std::setprecision(8) << player.persistentBankWalletQmtm << " QMTM\n";
         std::cout << "========================================================================================\n";
     }
 };
