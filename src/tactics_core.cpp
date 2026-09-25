@@ -35,7 +35,7 @@ private:
     const std::string STATE_FILE = "game_state.dat";
 
     PlayerPositionState LoadStateFromDisk() {
-        PlayerPositionState state = {4, 2, 12, 4, 0, 0, 8, 3, 0, 0, 100, 100, 132.50, 0, 145028.40}; 
+        PlayerPositionState state = {4, 2, 35, 6, 0, 0, 8, 3, 0, 0, 100, 100, 185.50, 0, 185240.00}; 
         std::ifstream fileIn(STATE_FILE);
         if (fileIn.is_open()) {
             fileIn >> state.xCoord >> state.yCoord >> state.monsterLevel >> state.accumulatedGlyphs 
