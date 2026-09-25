@@ -34,11 +34,16 @@ int main(int argc, char* argv[]) {
         gameStateIn.close();
     }
 
-    // 🌟 SECURE ARRAY BOUNDARY OVERRIDES: Locked cleanly to absolute pointer offsets
-    if (argc > 1 && std::string(argv[0]) == "getblock") { return 0; }
-    if (argc > 1 && std::string(argv[0]) == "--game-panel") {
-        char inputChar = ' '; if (argc > 2 && argv[2] != nullptr) { inputChar = argv[2][0]; }
-        std::cout << "\033[2J\033[H"; MONEU::RunGameConsoleEngineFrame(inputChar); return 0;
+    // 🌟 THE DEFINITIVE ROUTING FIX: Target argv[1] explicitly to separate game flags from height variables
+    if (argc > 1 && std::string(argv[1]) == "getblock") { return 0; }
+    if (argc > 1 && std::string(argv[1]) == "--game-panel") {
+        char inputChar = ' '; 
+        if (argc > 2 && argv[2] != nullptr && argv[2][0] != '\0') { 
+            inputChar = argv[2][0]; 
+        }
+        std::cout << "\033[2J\033[H"; 
+        MONEU::RunGameConsoleEngineFrame(inputChar); 
+        return 0;
     }
 
     long long currentHeight = 337823; 
