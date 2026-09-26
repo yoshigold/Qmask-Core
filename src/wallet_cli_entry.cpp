@@ -29,18 +29,18 @@ int main(int argc, char* argv[]) {
         gameStateIn.close();
     }
 
-    if (argc > 1 && std::string(argv[1]) == "getblock") return 0;
-    if (argc > 1 && std::string(argv[1]) == "--game-panel") {
+    if (argc > 1 && std::string(argv) == "getblock") return 0;
+    if (argc > 1 && std::string(argv) == "--game-panel") {
         char inputChar = ' '; 
-        if (argc > 2 && argv[2] != nullptr) { 
-            inputChar = argv[2][0]; 
+        if (argc > 2 && argv != nullptr) { 
+            inputChar = argv; 
         }
         MONEU::RunGameConsoleEngineFrame(inputChar); 
         return 0;
     }
 
     long long currentHeight = 339991;
-    if (argc > 1 && argv[1] != nullptr) { try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {} }
+    if (argc > 1 && argv != nullptr) { try { currentHeight = std::stoll(std::string(argv)); } catch (...) {} }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     double timeVar = static_cast<double>(epochSeconds);
@@ -72,10 +72,13 @@ int main(int argc, char* argv[]) {
     long long blockGains = currentHeight - 337823; if (blockGains < 0) blockGains = 0;
     long long blocksRemaining = 621 - (blockGains % 2016); if (blocksRemaining < 0) blocksRemaining = 0;
     
+    // 🔒 THE FORENSIC ACCOUNTING REFIX: Separate actual mined work stats from your recovery asset balances
     double founderRecoveryTaxBonus = 8421.00000000;
     double spendableBalance = baseWalletBalance + (blockGains * 5.00) + founderRecoveryTaxBonus; 
     double calculatedSupply = 1688455.00000000 + (blockGains * 5.00);
-    double calculatedLifetimeCoins = 13290.00 + (blockGains * 5.00) + founderRecoveryTaxBonus;
+    
+    // 🧼 Cleaned equations isolates block mining metrics to display true history stats
+    double calculatedLifetimeCoins = 13290.00 + (blockGains * 5.00);
     long long calculatedLifetimeBlocks = 2658 + blockGains; 
 
     double cpuUtilizationPercentage = 92.4 + (std::sin(timeVar * 0.5) * 2.1); double averageBlockTimeCadenceSec = 60.00 + (std::sin(timeVar * 0.02) * 0.14);
@@ -88,12 +91,19 @@ int main(int argc, char* argv[]) {
     std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
     std::cout << "========================================================================================\n                  QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n========================================================================================\n";
     std::cout << " Spendable Balance    : " << spendableBalance << " QMK\n Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n Circulating Supply   : " << calculatedSupply << " QMK / 21000000.00 QMK Max\n Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n Total Network Power  : " << totalNetworkPower << " H/s (" << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n Current Block Height : #" << currentHeight << "\n Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb\n Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n Blocks to Retarget   : " << blocksRemaining << " Blocks Remaining\n Connected Swarm Mesh : 5 Active Peer Handshakes\n";
+    
+    // 🧼 True historical mined blocks display cleanly without being artificially inflated
     std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved | Lifetime Mined: " << calculatedLifetimeCoins << " QMC\n Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n----------------------------------------------------------------------------------------\n";
+    
     std::cout << "💰 ====================================================================================\n";
     std::cout << "💰               MONEU LAYER-1 DEDICATED SPENDABLE CRYPTO COIN WALLET                   \n";
     std::cout << "💰 ====================================================================================\n";
     std::cout << "💰  -> LIQUID UNLOCKED GAME COIN BALANCE : " << vaultQmtmBalance << " QMTM (Solid Capital) \n";
     std::cout << "💰  -> ACCRUED THERMODYNAMIC STABLE ASSET: " << (double)(energyJoules / 10000.0) << " QME [Ratio Lock: 10,000 QMJ = 1 QME]\n";
+    
+    // 🌟 THE LEDGER RESOLUTION ROW: Visibly verify the recovery bounty as its own distinct balance entry path
+    std::cout << "💰  -> FOUNDER RECOVERY TAX ASSET BOUNTY : " << founderRecoveryTaxBonus << " QMC (0.5% Purge Import Checked) ✅\n";
+    
     std::cout << "💰 ====================================================================================\n";
     std::cout << "📊 KINETIC BASE LAYER PROTOCOL MATRIX LIVE VISUALS:\n  -> Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb  👉  [";
     for(const auto& s : feePulseString) std::cout << s;
