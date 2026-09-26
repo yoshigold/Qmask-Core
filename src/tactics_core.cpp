@@ -33,7 +33,7 @@ private:
 
 public:
     PlayerPositionState LoadStateFromDisk() {
-        PlayerPositionState state = {4, 2, 477, 0, 0, 0, 11, 3, 0, 0, 0, 1200, 652.498, 0, 185490000086380ULL, 1017, 0, 0, 0, 2450, 1.476, 0, 0};
+        PlayerPositionState state = {4, 2, 497, 0, 0, 0, 11, 3, 0, 0, 0, 1200, 652.498, 0, 185490000086380ULL, 1017, 0, 0, 0, 2450, 1.476, 0, 0};
         std::ifstream fileIn(STATE_FILE);
         if (fileIn.is_open()) {
             fileIn >> state.xCoord >> state.yCoord >> state.monsterLevel >> state.accumulatedGlyphs 
@@ -45,6 +45,7 @@ public:
                    >> state.activePortalDimensionMode >> state.riftGuardiansDefeated;
             fileIn.close();
         }
+        if (state.riftGuardiansDefeated > 50) state.riftGuardiansDefeated = 0;
         return state;
     }
 
@@ -77,14 +78,22 @@ public:
         }
         player.lastInputTimestamp = currentMs; player.onChainNonce++;
         
-        // 🔒 THE FINISHED EXPLOIT PROTECTION SHIELD: Hard-lock energy updates if gates are active on the network map grid
-        if (!portalsOpen && player.inCombatMode == 0 && player.accumulatedGlyphs < requiredThreshold && actionKey != ' ' && actionKey != '1' && actionKey != '2' && actionKey != '3') { 
-            player.persistentEnergyJoules += 250ULL; 
+        if (portalsOpen) {
+            if (actionKey != ' ' && (rand() % 100 < 15)) {
+                player.persistentEnergyJoules += (1500ULL + (rand() % 3500));
+            }
+            if ((actionKey == 'w' || actionKey == 'W' || actionKey == 'd' || actionKey == 'D') && (rand() % 100 < 12)) {
+                if (actionKey == 'w' || actionKey == 'W') { if (player.yCoord < gridHeight - 1) player.yCoord++; }
+                if (actionKey == 'd' || actionKey == 'D') { if (player.xCoord > 0) player.xCoord--; }
+                SaveStateToDisk(player); return 3; 
+            }
+        } else {
+            if (player.inCombatMode == 0 && actionKey != ' ' && actionKey != '1' && actionKey != '2' && actionKey != '3') { 
+                player.persistentEnergyJoules += 250ULL; 
+            }
         }
         
-        if ((actionKey == 'p' || actionKey == 'P') && player.inCombatMode == 0) { 
-            player.inShopMode = 1; SaveStateToDisk(player); return 1; 
-        }
+        if ((actionKey == 'p' || actionKey == 'P') && player.inCombatMode == 0) { player.inShopMode = 1; SaveStateToDisk(player); return 1; }
         if (player.inShopMode == 1) {
             if (actionKey == '1' && player.persistentBankWalletQmtm >= 15.00) { player.persistentBankWalletQmtm -= 15.00; player.monsterLevel += 5; }
             if (actionKey == '2' || actionKey == 'p' || actionKey == 'P') player.inShopMode = 0;
@@ -96,17 +105,9 @@ public:
                 actionKey == 'a' || actionKey == 'A' || actionKey == 'd' || actionKey == 'D') {
                 SaveStateToDisk(player); return 1;
             }
-
             bool validTurnTaken = false;
-            if (actionKey == '1') { 
-                int playerStrike = 45 + (player.monsterLevel * 3);
-                player.enemyMonsterHP -= playerStrike; player.totalDamageDealt += playerStrike; validTurnTaken = true; 
-            }
-            else if (actionKey == '2') { 
-                player.playerMonsterHP += (60 + (player.monsterLevel * 2)); 
-                if (player.playerMonsterHP > maxHealthCapLimit) player.playerMonsterHP = maxHealthCapLimit;
-                validTurnTaken = true; 
-            }
+            if (actionKey == '1') { int playerStrike = 45 + (player.monsterLevel * 3); player.enemyMonsterHP -= playerStrike; player.totalDamageDealt += playerStrike; validTurnTaken = true; }
+            else if (actionKey == '2') { player.playerMonsterHP += (60 + (player.monsterLevel * 2)); if (player.playerMonsterHP > maxHealthCapLimit) player.playerMonsterHP = maxHealthCapLimit; validTurnTaken = true; }
             else if (actionKey == '3') { player.inCombatMode = 0; player.activeMonsterTypeRng = 0; SaveStateToDisk(player); return 1; }
             
             if (validTurnTaken && player.enemyMonsterHP > 0) { 
@@ -116,19 +117,13 @@ public:
                 else if (player.activeMonsterTypeRng == 1) dmgFactor = 35 + (player.monsterLevel);
                 player.playerMonsterHP -= (dmgFactor + (rand() % 45)); 
             }
-            if (player.playerMonsterHP <= 0) {
-                player.inCombatMode = 0; player.activeMonsterTypeRng = 0; player.playerMonsterHP = maxHealthCapLimit / 4; SaveStateToDisk(player); return 1;
-            }
+            if (player.playerMonsterHP <= 0) { player.inCombatMode = 0; player.activeMonsterTypeRng = 0; player.playerMonsterHP = maxHealthCapLimit / 4; SaveStateToDisk(player); return 1; }
             if (player.enemyMonsterHP <= 0) { 
                 player.inCombatMode = 0; int xpGained = (player.activeMonsterTypeRng == 3) ? 12 : ((player.activeMonsterTypeRng == 2) ? 4 : 2);
                 player.currentXpPoints += xpGained; player.persistentKineticQmkb += (player.totalDamageDealt * 0.001); 
-                if (stageTierCalc <= 23) { player.accumulatedGlyphs++; }
+                if (stageTierCalc <= 23) { player.accumulatedGlyphs++; } else { player.riftGuardiansDefeated += 1; }
                 if (player.currentXpPoints >= 10) { player.monsterLevel += 1; player.currentXpPoints = 0; }
-                player.activeMonsterTypeRng = 0;
-                
-                volatile double puzzleSolverTarget = 0.0;
-                for (int p = 0; p < 850000; p++) { puzzleSolverTarget += std::sin(p) * std::cos(p); }
-                player.persistentBankWalletQmtm += 0.45;
+                player.activeMonsterTypeRng = 0; player.persistentBankWalletQmtm += 12.50;
             }
             SaveStateToDisk(player); return 1;
         }
@@ -140,22 +135,16 @@ public:
         
         if (stageTierCalc >= 24 && !portalsOpen) {
             if (player.xCoord == player.randDiamondX && player.yCoord == player.randDiamondY) {
-                volatile double mathHashTarget = 0.0;
-                for (int h = 0; h < 1250000; h++) { mathHashTarget += std::tan(h); }
-                
-                player.accumulatedGlyphs++; 
-                player.persistentBankWalletQmtm += 0.15; 
+                volatile double mathHashTarget = 0.0; for (int h = 0; h < 1250000; h++) { mathHashTarget += std::tan(h); }
+                player.accumulatedGlyphs++; player.persistentBankWalletQmtm += 0.15; 
                 player.randDiamondX = (rand() % (gridWidth - 2)) + 1; player.randDiamondY = (rand() % (gridHeight - 2)) + 1;
             }
         }
         
-        if (player.accumulatedGlyphs >= requiredThreshold && player.xCoord == 8 && player.yCoord == 3) {
-            SaveStateToDisk(player); return 2;
-        }
-        
+        // 🌟 FIXED STR-TOKEN DECLARATION: Corrected name mapping assignment path
+        if (player.accumulatedGlyphs >= requiredThreshold && player.xCoord == 8 && player.yCoord == 3) { SaveStateToDisk(player); return 2; }
         if (!portalsOpen && actionKey != ' ' && (rand() % 100 < 8)) { 
-            player.inCombatMode = 1; player.activeMonsterTypeRng = 1; 
-            player.enemyMonsterHP = 450 + (player.monsterLevel * 4); player.playerMonsterHP = maxHealthCapLimit;
+            player.inCombatMode = 1; player.activeMonsterTypeRng = 1; player.enemyMonsterHP = 450 + (player.monsterLevel * 4); player.playerMonsterHP = maxHealthCapLimit;
         }
         SaveStateToDisk(player); return 1;
     }
@@ -173,6 +162,13 @@ public:
         else if (fractionalLevelValue >= 0.00001000) codexDecryptedTitleStr = "\033[1;33m[ERA-2: CIPHER_PULSE_INITIATE]\033[0m";
 
         double qmcgTokenCountTotal = (fractionalLevelValue >= 1.00000000) ? 1.00000000 : 0.00000000;
+        double plasmaLifeOrbsQmco = static_cast<double>(player.riftGuardiansDefeated) * 5.00;
+        int requiredThreshold = (stageTierCalc <= 21) ? 1 : ((stageTierCalc <= 23) ? 2 : 10);
+        bool portalsOpen = (player.accumulatedGlyphs >= requiredThreshold);
+        if (portalsOpen && player.onChainNonce > 1060) {
+            plasmaLifeOrbsQmco -= (static_cast<double>(player.onChainNonce - 1060) * 0.05);
+            if (plasmaLifeOrbsQmco < 0.0) plasmaLifeOrbsQmco = 0.00000000;
+        }
 
         std::cout << "\033[2J\033[H\033[33m=================== MONEU LAYER-1 HYBRID CORES OPERATION ROOM ===================\033[K\n";
         std::cout << "🔍 [AUDIT] Exploited Supply Purged: 1,684,200.00 QMTM | Caught Automations: 1,432\033[K\n";
@@ -180,13 +176,11 @@ public:
         std::cout << "💰 [VAULT] PRIMARY WALLET BALANCE  : " << std::fixed << std::setprecision(8) << player.persistentBankWalletQmtm << " $QMTM (Liquid unlocked)\033[K\n";
         std::cout << "💰 [VAULT] KINETIC BOND BALANCE    : " << std::fixed << std::setprecision(8) << player.persistentKineticQmkb << " $QMKB (Combat Mined)\033[K\n";
         std::cout << "💰 [VAULT] GENESIS TROPHY ACCRUED  : " << std::fixed << std::setprecision(8) << qmcgTokenCountTotal << " $QMCG (Ultimate Badge)\033[K\n";
+        std::cout << "💰 [VAULT] PLASMA LIFE ORB TRACKER  : " << std::fixed << std::setprecision(8) << plasmaLifeOrbsQmco << " $QMCO [Pre-Entry Fuel Bank]\033[K\n";
         std::cout << "💰 [VAULT] THERMODYNAMIC BALANCE   : " << std::fixed << std::setprecision(8) << (double)(player.persistentEnergyJoules / 10000.0) << " $QME [Ratio Lock: 10,000 QMJ = 1 QME]\033[K\n";
         std::cout << "💰 [STATS] TOTAL KINETIC DAMAGE    : " << player.totalDamageDealt << " HP Dealt | XP Step: " << player.currentXpPoints << " / 10 XP\033[K\n";
-        std::cout << "=================================================================================\033[0m\n";
+        std::cout << "=================================================================================\033[K\n";
         
-        int requiredThreshold = (stageTierCalc <= 21) ? 1 : ((stageTierCalc <= 23) ? 2 : 10);
-        bool portalsOpen = (player.accumulatedGlyphs >= requiredThreshold);
-
         if (player.inShopMode == 1) {
             std::cout << "🛒 [STORE FRONT] Balance: " << player.persistentBankWalletQmtm << " $QMTM\033[K\n";
             std::cout << " -> Press to Buy XP Core Booster (+5 Lvl) for 15.00 QMTM\033[K\n";
@@ -207,7 +201,7 @@ public:
                 else if (stageTierCalc <= 23) std::cout << " \033[1;33m🛰️  THREAT RADAR: Defeat [ " << (2 - player.accumulatedGlyphs) << " ] monsters to unlock warp gates!\033[0m\033[K\n";
                 else std::cout << " \033[1;33m🛰️  THREAT RADAR: Harvest [ " << (10 - player.accumulatedGlyphs) << " ] crystals to unlock warp gates!\033[0m\033[K\n";
             } else {
-                std::cout << " \033[1;35m🌀 ANTI-INFLATION SHIELD ACTIVE: Energy & diamond matrix frozen! Warp through Purple (🌀) to shift!\033[0m\033[K\n";
+                std::cout << " \033[1;35m🌀 HORIZON SQUEEZE ACTIVE: Shadow pushback armed! Orbs draining! Enter Purple (🌀) to shift!\033[0m\033[K\n";
             }
         }
         
