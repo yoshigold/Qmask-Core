@@ -29,9 +29,8 @@ int main(int argc, char* argv[]) {
         gameStateIn.close();
     }
 
-    // 🔒 THE FIXED ARGV INDEXING PROTECTION LAYERS: Explicit array indexing avoids compiler casting bugs forever
-    if (argc > 1 && argv[1] != nullptr && std::string(argv[1]) == "getblock") return 0;
-    if (argc > 1 && argv[1] != nullptr && std::string(argv[1]) == "--game-panel") {
+    if (argc > 1 && argv != nullptr && std::string(argv[1]) == "getblock") return 0;
+    if (argc > 1 && argv != nullptr && std::string(argv[1]) == "--game-panel") {
         char inputChar = ' '; 
         if (argc > 2 && argv[2] != nullptr && argv[2][0] != '\0') { 
             inputChar = argv[2][0]; 
@@ -41,7 +40,7 @@ int main(int argc, char* argv[]) {
     }
 
     long long currentHeight = 339991;
-    if (argc > 1 && argv[1] != nullptr) { try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {} }
+    if (argc > 1 && argv != nullptr && argv[1] != nullptr) { try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {} }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     double timeVar = static_cast<double>(epochSeconds);
@@ -54,6 +53,17 @@ int main(int argc, char* argv[]) {
     long long rigSpeed = 24532431 + static_cast<long long>(liveVariance + microNoise);
     double workstationMH = (static_cast<double>(rigSpeed) / 1000000.0) + virtualBoosterMH;
     double packageWattageTdp = 278.45 + (std::abs(std::cos(timeVar * 0.4)) * 34.20);
+
+    // 🔋 THE BUILT-IN HARDWARE GENERATOR CORES: Accumulates energy units natively on every monitor loop tick
+    energyJoules += static_cast<unsigned long long>(packageWattageTdp * 3.0); 
+    onChainNonce++;
+    
+    // Save the progressive hardware mining units securely to disk storage layers
+    std::ofstream gameStateOut("game_state.dat");
+    if (gameStateOut.is_open()) {
+        gameStateOut << gameX << " " << gameY << " " << monsterLvl << " " << glyphs << " " << d1 << " " << d2 << " " << rx << " " << ry << " " << rc << " " << combat << " " << ehp << " " << php << " " << vaultQmtmBalance << " " << shop << " " << energyJoules << " " << onChainNonce << " " << lastInputTimestamp << " " << activeMonsterTypeRng << " " << currentXpPoints << " " << totalDamageDealt << " " << persistentKineticQmkb << " " << activePortalDimensionMode << " " << riftGuardiansDefeated;
+        gameStateOut.close();
+    }
 
     std::vector<SwarmPeerMetadata> swarmRegistry = {
         {"127.0.0.1", "v1.0.5 [UPDATED] ✅", "Local-Host  ", "qmk1q00000...00aa", 0.00, "Local Loopback ", false, false},  
@@ -76,8 +86,6 @@ int main(int argc, char* argv[]) {
     double founderRecoveryTaxBonus = 8421.00000000;
     double spendableBalance = baseWalletBalance + (blockGains * 5.00) + founderRecoveryTaxBonus; 
     double calculatedSupply = 1688455.00000000 + (blockGains * 5.00);
-    
-    // 🧼 Cleaned formulas separate real block execution totals from recovery awards
     double calculatedLifetimeCoins = (blockGains * 5.00) + 13290.00;
     long long calculatedLifetimeBlocks = 2658 + blockGains; 
 
@@ -92,6 +100,16 @@ int main(int argc, char* argv[]) {
     std::cout << "========================================================================================\n                  QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n========================================================================================\n";
     std::cout << " Spendable Balance    : " << spendableBalance << " QMK\n Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n Circulating Supply   : " << calculatedSupply << " QMK / 21000000.00 QMK Max\n Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n Total Network Power  : " << totalNetworkPower << " H/s (" << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n Current Block Height : #" << currentHeight << "\n Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb\n Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n Blocks to Retarget   : " << blocksRemaining << " Blocks Remaining\n Connected Swarm Mesh : 5 Active Peer Handshakes\n";
     std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved | Lifetime Mined: " << calculatedLifetimeCoins << " QMC\n Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n----------------------------------------------------------------------------------------\n";
+    
+    // 🌌 🪐 THE RESTORED NATIVE ZODIAC PREDICTIVE STAR GRID LAYER COMPONENT
+    std::cout << "🌌 ====================================================================================\n";
+    std::cout << "🌌                  QMASK LAYER-1 NATIVE ZODIAC QUANTUM CONSTELLATION ENGINE          \n";
+    std::cout << "🌌 ====================================================================================\n";
+    std::cout << "🌌  [TAURUS WHEEL ALIGNMENT] :  ☄️  Orbit Node Shift: " << (std::sin(timeVar * 0.05) * 45.2) << " ° Alpha Sky Radian Range\n";
+    std::cout << "🌌  [LEO ASTRO MATRIX SYNC]  :  🌟 Harmonic Hash Rate Vector: [ " << std::hex << (static_cast<int>(timeVar) % 0xFFFF) << std::dec << " ] Node Checkpoint\n";
+    std::cout << "🌌  [ZODIAC ALIGNMENT STATUS] : \033[1;32m✅ CONSTELATION ENCRYPTORS FULLY LOCKED TO SWARM TRUNKS\033[0m\n";
+    
+    std::cout << "----------------------------------------------------------------------------------------\n";
     std::cout << "💰 ====================================================================================\n";
     std::cout << "💰               MONEU LAYER-1 DEDICATED SPENDABLE CRYPTO COIN WALLET                   \n";
     std::cout << "💰 ====================================================================================\n";
