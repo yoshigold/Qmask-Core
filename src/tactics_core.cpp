@@ -77,7 +77,8 @@ public:
         }
         player.lastInputTimestamp = currentMs; player.onChainNonce++;
         
-        if (!portalsOpen && player.inCombatMode == 0 && actionKey != ' ' && actionKey != '1' && actionKey != '2' && actionKey != '3') { 
+        // 🔒 THE FINISHED EXPLOIT PROTECTION SHIELD: Hard-lock energy updates if gates are active on the network map grid
+        if (!portalsOpen && player.inCombatMode == 0 && player.accumulatedGlyphs < requiredThreshold && actionKey != ' ' && actionKey != '1' && actionKey != '2' && actionKey != '3') { 
             player.persistentEnergyJoules += 250ULL; 
         }
         
@@ -206,7 +207,7 @@ public:
                 else if (stageTierCalc <= 23) std::cout << " \033[1;33m🛰️  THREAT RADAR: Defeat [ " << (2 - player.accumulatedGlyphs) << " ] monsters to unlock warp gates!\033[0m\033[K\n";
                 else std::cout << " \033[1;33m🛰️  THREAT RADAR: Harvest [ " << (10 - player.accumulatedGlyphs) << " ] crystals to unlock warp gates!\033[0m\033[K\n";
             } else {
-                std::cout << " \033[1;35m🌀 ANTI-INFLATION SHIELD ACTIVE: Diamond matrix burned out! Warp through Purple (🌀) to shift!\033[0m\033[K\n";
+                std::cout << " \033[1;35m🌀 ANTI-INFLATION SHIELD ACTIVE: Energy & diamond matrix frozen! Warp through Purple (🌀) to shift!\033[0m\033[K\n";
             }
         }
         
