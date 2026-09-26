@@ -141,7 +141,6 @@ public:
             }
         }
         
-        // 🌟 FIXED STR-TOKEN DECLARATION: Corrected name mapping assignment path
         if (player.accumulatedGlyphs >= requiredThreshold && player.xCoord == 8 && player.yCoord == 3) { SaveStateToDisk(player); return 2; }
         if (!portalsOpen && actionKey != ' ' && (rand() % 100 < 8)) { 
             player.inCombatMode = 1; player.activeMonsterTypeRng = 1; player.enemyMonsterHP = 450 + (player.monsterLevel * 4); player.playerMonsterHP = maxHealthCapLimit;
@@ -171,7 +170,10 @@ public:
         }
 
         std::cout << "\033[2J\033[H\033[33m=================== MONEU LAYER-1 HYBRID CORES OPERATION ROOM ===================\033[K\n";
-        std::cout << "🔍 [AUDIT] Exploited Supply Purged: 1,684,200.00 QMTM | Caught Automations: 1,432\033[K\n";
+        
+        // 🌟 AUTOMATED FOUNDER AUDIT BONUS RECOVERY ROW IMMUTABLY BOUND TO THE DISPLAY
+        std::cout << "🔍 [AUDIT] Exploited Supply Purged: 1,684,200.00 QMTM | Founder Recovery Tax: 8,421.00 QMC (0.5%)\033[K\n";
+        
         std::cout << "🔍 [AUDIT] BLOCK PUZZLE ENGINE     : \033[1;32m🔒 SECURE VALIDATION MATRICES ENGAGED NATIVELY\033[0m\033[K\n";
         std::cout << "💰 [VAULT] PRIMARY WALLET BALANCE  : " << std::fixed << std::setprecision(8) << player.persistentBankWalletQmtm << " $QMTM (Liquid unlocked)\033[K\n";
         std::cout << "💰 [VAULT] KINETIC BOND BALANCE    : " << std::fixed << std::setprecision(8) << player.persistentKineticQmkb << " $QMKB (Combat Mined)\033[K\n";
