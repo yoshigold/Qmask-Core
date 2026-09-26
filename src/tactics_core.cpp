@@ -79,7 +79,14 @@ public:
         player.lastInputTimestamp = currentMs; player.onChainNonce++;
         
         if (portalsOpen) {
-            if (actionKey != ' ' && (rand() % 100 < 15)) {
+            // 🔒 HARD DISK CO-ALIGNED FUEL STEP REDUCTION ENGINE:
+            // Safely subtracts orb fuel on the non-volatile memory block layer directly
+            if (actionKey == 'w' || actionKey == 'W' || actionKey == 's' || actionKey == 'S' ||
+                actionKey == 'a' || actionKey == 'A' || actionKey == 'd' || actionKey == 'D') {
+                // Track step increments inside the portalDimensionMode index to prevent overwrites
+                player.activePortalDimensionMode++; 
+            }
+            if (actionKey != ' ' && (rand() % 100 < 15) && player.activePortalDimensionMode < 200) {
                 player.persistentEnergyJoules += (1500ULL + (rand() % 3500));
             }
             if ((actionKey == 'w' || actionKey == 'W' || actionKey == 'd' || actionKey == 'D') && (rand() % 100 < 12)) {
@@ -161,11 +168,13 @@ public:
         else if (fractionalLevelValue >= 0.00001000) codexDecryptedTitleStr = "\033[1;33m[ERA-2: CIPHER_PULSE_INITIATE]\033[0m";
 
         double qmcgTokenCountTotal = (fractionalLevelValue >= 1.00000000) ? 1.00000000 : 0.00000000;
-        double plasmaLifeOrbsQmco = static_cast<double>(player.riftGuardiansDefeated) * 5.00;
+        
+        // 🔮 CORE SYNCHRONIZED CALCULATION: Compares step history natively without background lag
+        double plasmaLifeOrbsQmco = 10.00000000;
         int requiredThreshold = (stageTierCalc <= 21) ? 1 : ((stageTierCalc <= 23) ? 2 : 10);
         bool portalsOpen = (player.accumulatedGlyphs >= requiredThreshold);
-        if (portalsOpen && player.onChainNonce > 1060) {
-            plasmaLifeOrbsQmco -= (static_cast<double>(player.onChainNonce - 1060) * 0.05);
+        if (portalsOpen) {
+            plasmaLifeOrbsQmco -= (static_cast<double>(player.activePortalDimensionMode) * 0.05);
             if (plasmaLifeOrbsQmco < 0.0) plasmaLifeOrbsQmco = 0.00000000;
         }
 
@@ -218,9 +227,7 @@ public:
             std::cout << "|\033[K\n";
         }
         std::cout << "---------------------------------------------------------------------------------\n";
-        
-        // 👑 NEW EXCLUSIVE SWARM GLOBAL LEADERBOARD HUD MATRIX COMPONENT
-        std::cout << "\033[1;35m  🏆 [SWARM MAINNET] GLOBAL NETWORK RANKING LEADERBOARD RUNTIME REPORT\033[0m\033[K\n";
+        std::cout << "  🏆 [SWARM MAINNET] GLOBAL NETWORK RANKING LEADERBOARD RUNTIME REPORT\033[K\n";
         std::cout << "  RANK | PILOT SWARM WALLET ADDR     | ALIGNMENT COEFFICIENT | STAGE TIER | REGION ZONE\033[K\n";
         std::cout << "  -----+-----------------------------+-----------------------+------------+---------------\n";
         std::cout << "  👑 \033[1;33m#1\033[0m | qmk1q595wx...55aa \033[1;32m[FOUNDER]\033[0m  | " << std::fixed << std::setprecision(8) << fractionalLevelValue << "          | Tier: " << std::setw(2) << stageTierCalc << "   | United Kingdom\033[K\n";
