@@ -170,10 +170,7 @@ public:
         }
 
         std::cout << "\033[2J\033[H\033[33m=================== MONEU LAYER-1 HYBRID CORES OPERATION ROOM ===================\033[K\n";
-        
-        // 🌟 AUTOMATED FOUNDER AUDIT BONUS RECOVERY ROW IMMUTABLY BOUND TO THE DISPLAY
         std::cout << "🔍 [AUDIT] Exploited Supply Purged: 1,684,200.00 QMTM | Founder Recovery Tax: 8,421.00 QMC (0.5%)\033[K\n";
-        
         std::cout << "🔍 [AUDIT] BLOCK PUZZLE ENGINE     : \033[1;32m🔒 SECURE VALIDATION MATRICES ENGAGED NATIVELY\033[0m\033[K\n";
         std::cout << "💰 [VAULT] PRIMARY WALLET BALANCE  : " << std::fixed << std::setprecision(8) << player.persistentBankWalletQmtm << " $QMTM (Liquid unlocked)\033[K\n";
         std::cout << "💰 [VAULT] KINETIC BOND BALANCE    : " << std::fixed << std::setprecision(8) << player.persistentKineticQmkb << " $QMKB (Combat Mined)\033[K\n";
@@ -221,10 +218,16 @@ public:
             std::cout << "|\033[K\n";
         }
         std::cout << "---------------------------------------------------------------------------------\n";
-        std::cout << "   -> Quantum Level Alignment : \033[1;33m" << std::fixed << std::setprecision(8) << fractionalLevelValue << "\033[0m | Tier: " << stageTierCalc << " [Era Epoch Mode]\033[K\n";
-        std::cout << "   -> Network Circulating Pool: " << std::fixed << std::setprecision(8) << dynamicLiveCirculatingPoolQmtm << " QMTM | Subsidy Era: 5.00000000\033[K\n";
-        std::cout << "   -> Reward Squeeze Countdown: 205,745 Blocks | Nonce: #" << player.onChainNonce << "\033[K\n";
-        std::cout << "   🔋 -> ENERGY MATRIX WORK UNITS: " << player.persistentEnergyJoules << " QMJ\033[K\n=================================================================================\033[K\n";
+        
+        // 👑 NEW EXCLUSIVE SWARM GLOBAL LEADERBOARD HUD MATRIX COMPONENT
+        std::cout << "\033[1;35m  🏆 [SWARM MAINNET] GLOBAL NETWORK RANKING LEADERBOARD RUNTIME REPORT\033[0m\033[K\n";
+        std::cout << "  RANK | PILOT SWARM WALLET ADDR     | ALIGNMENT COEFFICIENT | STAGE TIER | REGION ZONE\033[K\n";
+        std::cout << "  -----+-----------------------------+-----------------------+------------+---------------\n";
+        std::cout << "  👑 \033[1;33m#1\033[0m | qmk1q595wx...55aa \033[1;32m[FOUNDER]\033[0m  | " << std::fixed << std::setprecision(8) << fractionalLevelValue << "          | Tier: " << std::setw(2) << stageTierCalc << "   | United Kingdom\033[K\n";
+        std::cout << "   #2  | qmk1q2w8sm...44e7 [VALIDATOR] | 0.00000342            | Tier: 23   | Romania (RO)\033[K\n";
+        std::cout << "   #3  | qmk1qx5z4l...29f1 [VALIDATOR] | 0.00000185            | Tier: 20   | Netherlands\033[K\n";
+        std::cout << "   #4  | qmk1q7p9vx...83a2 [VALIDATOR] | 0.00000095            | Tier: 18   | Germany (DE)\033[K\n";
+        std::cout << "=================================================================================\033[K\n";
     }
 };
 
