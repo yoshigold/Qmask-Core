@@ -29,18 +29,18 @@ int main(int argc, char* argv[]) {
         gameStateIn.close();
     }
 
-    if (argc > 1 && std::string(argv) == "getblock") return 0;
-    if (argc > 1 && std::string(argv) == "--game-panel") {
+    if (argc > 1 && std::string(argv[1]) == "getblock") return 0;
+    if (argc > 1 && std::string(argv[1]) == "--game-panel") {
         char inputChar = ' '; 
-        if (argc > 2 && argv != nullptr) { 
-            inputChar = argv; 
+        if (argc > 2 && argv[2] != nullptr) { 
+            inputChar = argv[2][0]; 
         }
         MONEU::RunGameConsoleEngineFrame(inputChar); 
         return 0;
     }
 
     long long currentHeight = 339991;
-    if (argc > 1 && argv != nullptr) { try { currentHeight = std::stoll(std::string(argv)); } catch (...) {} }
+    if (argc > 1 && argv[1] != nullptr) { try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {} }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     double timeVar = static_cast<double>(epochSeconds);
@@ -72,13 +72,12 @@ int main(int argc, char* argv[]) {
     long long blockGains = currentHeight - 337823; if (blockGains < 0) blockGains = 0;
     long long blocksRemaining = 621 - (blockGains % 2016); if (blocksRemaining < 0) blocksRemaining = 0;
     
-    // 🔒 THE FINANCIAL HARDENING CORRECTION: Explicitly factor the 8,421.00 QMC Founder Recovery Tax directly into spendable balances
     double founderRecoveryTaxBonus = 8421.00000000;
     double spendableBalance = baseWalletBalance + (blockGains * 5.00) + founderRecoveryTaxBonus; 
     double calculatedSupply = 1688455.00000000 + (blockGains * 5.00);
-    
-    long long calculatedLifetimeBlocks = 2658 + blockGains; 
     double calculatedLifetimeCoins = 13290.00 + (blockGains * 5.00) + founderRecoveryTaxBonus;
+    long long calculatedLifetimeBlocks = 2658 + blockGains; 
+
     double cpuUtilizationPercentage = 92.4 + (std::sin(timeVar * 0.5) * 2.1); double averageBlockTimeCadenceSec = 60.00 + (std::sin(timeVar * 0.02) * 0.14);
     double baseTransactionFeeQmc = 0.00010000 + (std::sin(timeVar * 0.1) * 0.00000015); double dynamicCurrentBlockSizeKb = 34.25 + (std::abs(std::cos(timeVar)) * 12.80);
     std::vector<std::string> feePulseString = {"-","-","-","-","-","-","-","-","-","-","-","-"};
@@ -106,7 +105,7 @@ int main(int argc, char* argv[]) {
     std::cout << "========================================================================================\n                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n========================================================================================\n IP ADDRESS      | CLIENT VERSION       | RIG IDENTITY   | MINING WALLET ADDR            | HASHRATE   | COUNTRY/ZONE\n-----------------+----------------------+---------------+-------------------------------+------------+---------------\n";
     for (size_t i = 0; i < swarmRegistry.size(); i++) {
         double cMH = swarmRegistry[i].baseHashrateMH; if (swarmRegistry[i].isWorkstation) { cMH = workstationMH; } else if (cMH > 0.0) { double pF = std::sin(timeVar + (i * 2.5)) * (swarmRegistry[i].baseHashrateMH * 0.015); cMH += pF; }
-        std::string hStr = "0.00 H/s  "; if (cMH > 0.0) { std::stringstream ss; ss << std::fixed << std::setprecision(2) << cMH << " MH/s"; hStr = ss.str(); }
+        std::stringstream ss; ss << std::fixed << std::setprecision(2) << cMH << " MH/s"; std::string hStr = (cMH > 0.0) ? ss.str() : "0.00 H/s  ";
         std::string wD = swarmRegistry[i].walletAddress; if (swarmRegistry[i].isWorkstation) wD += " 👑 (Founder)";
         std::cout << " " << std::left << std::setw(15) << swarmRegistry[i].ipAddress << " | " << std::setw(20) << swarmRegistry[i].clientVersion << " | " << std::setw(13) << swarmRegistry[i].rigName << " | " << std::setw(29) << wD << " | " << std::setw(10) << hStr << " | " << swarmRegistry[i].geographicCountry << "\n";
     }
