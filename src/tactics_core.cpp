@@ -77,7 +77,6 @@ public:
         }
         player.lastInputTimestamp = currentMs; player.onChainNonce++;
         
-        // 🔒 COMBAT ACCRUAL EXPLOIT FIX: Energy work units only increment if the node is NOT inside active combat lanes!
         if (!portalsOpen && player.inCombatMode == 0 && actionKey != ' ' && actionKey != '1' && actionKey != '2' && actionKey != '3') { 
             player.persistentEnergyJoules += 250ULL; 
         }
@@ -92,7 +91,6 @@ public:
         }
         
         if (player.inCombatMode == 1) {
-            // 🔒 SHIELD INPUT ATTACK LOCK: If user tries to use WASD movement while in battle, ignore input completely
             if (actionKey == 'w' || actionKey == 'W' || actionKey == 's' || actionKey == 'S' || 
                 actionKey == 'a' || actionKey == 'A' || actionKey == 'd' || actionKey == 'D') {
                 SaveStateToDisk(player); return 1;
@@ -167,12 +165,14 @@ public:
 
         double qmcgTokenCountTotal = (fractionalLevelValue >= 1.00000000) ? 1.00000000 : 0.00000000;
 
+        // 🌟 EMBEDDING CONVERSION RATIO STAMP: Visibly rendering the 10,000:1 QMJ verification metrics line
         std::cout << "\033[2J\033[H\033[33m=================== MONEU LAYER-1 HYBRID CORES OPERATION ROOM ===================\033[K\n";
         std::cout << "🔍 [AUDIT] Exploited Supply Purged: 1,684,200.00 QMTM | Caught Automations: 1,432\033[K\n";
         std::cout << "🔍 [AUDIT] Forensic Sweeps Executed: 3 Done   | Target Block Timestamp: 2026-09-26\033[K\n";
         std::cout << "💰 [VAULT] PRIMARY WALLET BALANCE  : " << std::fixed << std::setprecision(8) << player.persistentBankWalletQmtm << " $QMTM (Liquid unlocked)\033[K\n";
         std::cout << "💰 [VAULT] KINETIC BOND BALANCE    : " << std::fixed << std::setprecision(8) << player.persistentKineticQmkb << " $QMKB (Combat Mined)\033[K\n";
         std::cout << "💰 [VAULT] GENESIS TROPHY ACCRUED  : " << std::fixed << std::setprecision(8) << qmcgTokenCountTotal << " $QMCG (Ultimate Badge)\033[K\n";
+        std::cout << "💰 [VAULT] THERMODYNAMIC BALANCE   : " << std::fixed << std::setprecision(8) << (double)(player.persistentEnergyJoules / 10000.0) << " $QME [Ratio Lock: 10,000 QMJ = 1 QME]\033[K\n";
         std::cout << "💰 [STATS] TOTAL KINETIC DAMAGE    : " << player.totalDamageDealt << " HP Dealt | XP Step: " << player.currentXpPoints << " / 10 XP\033[K\n";
         std::cout << "=================================================================================\033[0m\n";
         
@@ -181,8 +181,8 @@ public:
 
         if (player.inShopMode == 1) {
             std::cout << "🛒 [STORE FRONT] Balance: " << player.persistentBankWalletQmtm << " $QMTM\033[K\n";
-            std::cout << " -> Press [1] to Buy XP Core Booster (+5 Lvl) for 15.00 QMTM\033[K\n";
-            std::cout << " -> Press [2] to Exit Store Interface Layout Panel\033[K\n";
+            std::cout << " -> Press to Buy XP Core Booster (+5 Lvl) for 15.00 QMTM\033[K\n";
+            std::cout << " -> Press to Exit Store Interface Layout Panel\033[K\n";
             std::cout << "=================================================================================\033[K\n";
             return;
         }
