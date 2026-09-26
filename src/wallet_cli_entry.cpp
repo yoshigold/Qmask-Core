@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    long long currentHeight = 338719;
+    long long currentHeight = 339991;
     if (argc > 1 && argv[1] != nullptr) { try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {} }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -53,7 +53,6 @@ int main(int argc, char* argv[]) {
     long long rigSpeed = 24532431 + static_cast<long long>(liveVariance + microNoise);
     double workstationMH = (static_cast<double>(rigSpeed) / 1000000.0) + virtualBoosterMH;
     double packageWattageTdp = 278.45 + (std::abs(std::cos(timeVar * 0.4)) * 34.20);
-    energyJoules += static_cast<unsigned long long>(packageWattageTdp * 0.05);
 
     std::vector<SwarmPeerMetadata> swarmRegistry = {
         {"127.0.0.1", "v1.0.5 [UPDATED] ✅", "Local-Host  ", "qmk1q00000...00aa", 0.00, "Local Loopback ", false, false},  
@@ -88,8 +87,11 @@ int main(int argc, char* argv[]) {
     std::cout << "💰 ====================================================================================\n";
     std::cout << "💰               MONEU LAYER-1 DEDICATED SPENDABLE CRYPTO COIN WALLET                   \n";
     std::cout << "💰 ====================================================================================\n";
-    std::cout << "💰  -> LIQUID UNLOCKED GAME COIN BALANCE : " << std::fixed << std::setprecision(8) << vaultQmtmBalance << " QMTM (Solid Capital) \n";
-    std::cout << "💰  -> ACCRUED THERMODYNAMIC STABLE ASSET: " << std::fixed << std::setprecision(8) << (double)(energyJoules / 10000.0) << " QME (Fixed Growth)   \n";
+    std::cout << "💰  -> LIQUID UNLOCKED GAME COIN BALANCE : " << vaultQmtmBalance << " QMTM (Solid Capital) \n";
+    
+    // 🌟 THE SYNCED RENDER FIX: Injecting the 10,000 ratio suffix line natively into the primary monitor loop
+    std::cout << "💰  -> ACCRUED THERMODYNAMIC STABLE ASSET: " << (double)(energyJoules / 10000.0) << " QME [Ratio Lock: 10,000 QMJ = 1 QME]\n";
+    
     std::cout << "💰 ====================================================================================\n";
     std::cout << "📊 KINETIC BASE LAYER PROTOCOL MATRIX LIVE VISUALS:\n  -> Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb  👉  [";
     for(const auto& s : feePulseString) std::cout << s;
