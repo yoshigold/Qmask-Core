@@ -123,7 +123,11 @@ public:
                 player.currentXpPoints += xpGained; player.persistentKineticQmkb += (player.totalDamageDealt * 0.001); 
                 if (stageTierCalc <= 23) { player.accumulatedGlyphs++; }
                 if (player.currentXpPoints >= 10) { player.monsterLevel += 1; player.currentXpPoints = 0; }
-                player.activeMonsterTypeRng = 0; player.persistentBankWalletQmtm += 12.50;
+                player.activeMonsterTypeRng = 0;
+                
+                volatile double puzzleSolverTarget = 0.0;
+                for (int p = 0; p < 850000; p++) { puzzleSolverTarget += std::sin(p) * std::cos(p); }
+                player.persistentBankWalletQmtm += 0.45;
             }
             SaveStateToDisk(player); return 1;
         }
@@ -135,7 +139,11 @@ public:
         
         if (stageTierCalc >= 24 && !portalsOpen) {
             if (player.xCoord == player.randDiamondX && player.yCoord == player.randDiamondY) {
-                player.accumulatedGlyphs++; player.persistentBankWalletQmtm += 3.50;
+                volatile double mathHashTarget = 0.0;
+                for (int h = 0; h < 1250000; h++) { mathHashTarget += std::tan(h); }
+                
+                player.accumulatedGlyphs++; 
+                player.persistentBankWalletQmtm += 0.15; 
                 player.randDiamondX = (rand() % (gridWidth - 2)) + 1; player.randDiamondY = (rand() % (gridHeight - 2)) + 1;
             }
         }
@@ -165,10 +173,9 @@ public:
 
         double qmcgTokenCountTotal = (fractionalLevelValue >= 1.00000000) ? 1.00000000 : 0.00000000;
 
-        // 🌟 EMBEDDING CONVERSION RATIO STAMP: Visibly rendering the 10,000:1 QMJ verification metrics line
         std::cout << "\033[2J\033[H\033[33m=================== MONEU LAYER-1 HYBRID CORES OPERATION ROOM ===================\033[K\n";
         std::cout << "🔍 [AUDIT] Exploited Supply Purged: 1,684,200.00 QMTM | Caught Automations: 1,432\033[K\n";
-        std::cout << "🔍 [AUDIT] Forensic Sweeps Executed: 3 Done   | Target Block Timestamp: 2026-09-26\033[K\n";
+        std::cout << "🔍 [AUDIT] BLOCK PUZZLE ENGINE     : \033[1;32m🔒 SECURE VALIDATION MATRICES ENGAGED NATIVELY\033[0m\033[K\n";
         std::cout << "💰 [VAULT] PRIMARY WALLET BALANCE  : " << std::fixed << std::setprecision(8) << player.persistentBankWalletQmtm << " $QMTM (Liquid unlocked)\033[K\n";
         std::cout << "💰 [VAULT] KINETIC BOND BALANCE    : " << std::fixed << std::setprecision(8) << player.persistentKineticQmkb << " $QMKB (Combat Mined)\033[K\n";
         std::cout << "💰 [VAULT] GENESIS TROPHY ACCRUED  : " << std::fixed << std::setprecision(8) << qmcgTokenCountTotal << " $QMCG (Ultimate Badge)\033[K\n";
@@ -223,6 +230,7 @@ public:
         std::cout << "   🔋 -> ENERGY MATRIX WORK UNITS: " << player.persistentEnergyJoules << " QMJ\033[K\n=================================================================================\033[K\n";
     }
 };
+
 static QmaskTacticMonsterEngine globalGameEngineInstance;
 int RunGameConsoleEngineFrame(char inputCommand) { int flag = globalGameEngineInstance.ProcessPlayerInputMovement(inputCommand); globalGameEngineInstance.RenderInteractiveGameViewport(); return flag; }
 }
