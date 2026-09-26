@@ -9,38 +9,37 @@
 #include <sstream>
 
 namespace MONEU {
-    void TriggerCodexEvaluationLoop(long long height, long long hashrate);
-    void RunGameConsoleEngineFrame(char inputCommand);
+    int RunGameConsoleEngineFrame(char inputCommand);
 }
 struct SwarmPeerMetadata { std::string ipAddress; std::string clientVersion; std::string rigName; std::string walletAddress; double baseHashrateMH; std::string geographicCountry; bool isFounder; bool isWorkstation; };
 
 int main(int argc, char* argv[]) {
     double baseWalletBalance = 9865.00000000;
-    std::ifstream balanceIn("/tmp/qmask_balance_mod.dat");
-    if (balanceIn.is_open()) { balanceIn >> baseWalletBalance; balanceIn.close(); }
-
-    int gameX = 1, gameY = 1, monsterLvl = 337, glyphs = 5;
+    int gameX = 1, gameY = 1, monsterLvl = 381, glyphs = 10;
     int d1 = 0, d2 = 0, rx = 8, ry = 3, rc = 0, combat = 0, ehp = 1444, php = 772;
-    double vaultQmtmBalance = 557.83300000; int shop = 0; 
-    unsigned long long energyJoules = 185490000000000ULL;
+    double vaultQmtmBalance = 606.49800000; int shop = 0; 
+    unsigned long long energyJoules = 185490000046811ULL;
 
     std::ifstream gameStateIn("game_state.dat");
     if (gameStateIn.is_open()) {
         gameStateIn >> gameX >> gameY >> monsterLvl >> glyphs >> d1 >> d2 >> rx >> ry >> rc >> combat >> ehp >> php >> vaultQmtmBalance >> shop >> energyJoules;
         gameStateIn.close();
     }
-    
-    if (vaultQmtmBalance < 500.0) { vaultQmtmBalance = 557.83300000; }
-    if (monsterLvl < 337) { monsterLvl = 337; }
+    if (vaultQmtmBalance < 500.0) { vaultQmtmBalance = 606.49800000; }
+    if (monsterLvl < 381) { monsterLvl = 381; }
 
-    if (argc > 1 && argv != nullptr && std::string(argv[1]) == "getblock") return 0;
-    if (argc > 1 && argv != nullptr && std::string(argv[1]) == "--game-panel") {
-        char inputChar = ' '; if (argc > 2 && argv[2] != nullptr) inputChar = argv[2][0];
-        MONEU::RunGameConsoleEngineFrame(inputChar); return 0;
+    if (argc > 1 && std::string(argv[1]) == "getblock") return 0;
+    if (argc > 1 && std::string(argv[1]) == "--game-panel") {
+        char inputChar = ' '; 
+        if (argc > 2 && argv[2] != nullptr) { 
+            inputChar = argv[2][0]; 
+        }
+        MONEU::RunGameConsoleEngineFrame(inputChar); 
+        return 0;
     }
 
     long long currentHeight = 338719;
-    if (argc > 1 && argv != nullptr) { try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {} }
+    if (argc > 1 && argv[1] != nullptr) { try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {} }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     double timeVar = static_cast<double>(epochSeconds);
@@ -48,13 +47,10 @@ int main(int argc, char* argv[]) {
     if (blocksRemainingToFreeze < 0) blocksRemainingToFreeze = 0;
     long long daysLeft = blocksRemainingToFreeze / 1440; long long hoursLeft = (blocksRemainingToFreeze % 1440) / 60; long long minutesLeft = blocksRemainingToFreeze % 60;
 
-    double virtualBoosterMH = 25.00;
-    std::string trophyName = "👑 [KRAKEN_SOVEREIGN_REGINA] (MAX_TIER)";
-
+    double virtualBoosterMH = 25.00; std::string trophyName = "👑 [KRAKEN_SOVEREIGN_REGINA] (MAX_TIER)";
     double liveVariance = std::sin(timeVar) * 14850.0; double microNoise = std::cos(timeVar * 2.0) * 1250.0;
     long long rigSpeed = 24532431 + static_cast<long long>(liveVariance + microNoise);
     double workstationMH = (static_cast<double>(rigSpeed) / 1000000.0) + virtualBoosterMH;
-
     double packageWattageTdp = 278.45 + (std::abs(std::cos(timeVar * 0.4)) * 34.20);
     energyJoules += static_cast<unsigned long long>(packageWattageTdp * 0.05);
 
@@ -72,7 +68,6 @@ int main(int argc, char* argv[]) {
         {"192.168.1.147", "v1.0.5 [UPDATED] ✅", "Intel-i7-Sec ", "qmk1q99xxz...77aa", 14.25, "Local LAN (UK)  ", false, false},
         {"192.168.1.100", "v1.0.5 [UPDATED] ✅", "Threadripper", "qmk1q595wx...55aa", 24.53, "United Kingdom  ", true, true}
     };
-
     long long totalNetworkPower = rigSpeed + static_cast<long long>(virtualBoosterMH * 1000000.0);
     for (size_t i = 0; i < swarmRegistry.size(); i++) {
         if (!swarmRegistry[i].isWorkstation) {
@@ -80,25 +75,18 @@ int main(int argc, char* argv[]) {
             totalNetworkPower += static_cast<long long>((swarmRegistry[i].baseHashrateMH + pF) * 1000000.0);
         }
     }
-
     long long blockGains = currentHeight - 337823; if (blockGains < 0) blockGains = 0;
     long long blocksRemaining = 621 - (blockGains % 2016); if (blocksRemaining < 0) blocksRemaining = 0;
-    double spendableBalance = baseWalletBalance + (blockGains * 5.00); 
-    double calculatedSupply = 1688455.00000000 + (blockGains * 5.00);
-    long long calculatedLifetimeBlocks = 2658 + blockGains;
-    double calculatedLifetimeCoins = 13290.00 + (blockGains * 5.00);
-    double cpuUtilizationPercentage = 92.4 + (std::sin(timeVar * 0.5) * 2.1);
-    double averageBlockTimeCadenceSec = 60.00 + (std::sin(timeVar * 0.02) * 0.14);
-    double baseTransactionFeeQmc = 0.00010000 + (std::sin(timeVar * 0.1) * 0.00000015);
-    double dynamicCurrentBlockSizeKb = 34.25 + (std::abs(std::cos(timeVar)) * 12.80);
-
+    double spendableBalance = baseWalletBalance + (blockGains * 5.00); double calculatedSupply = 1688455.00000000 + (blockGains * 5.00);
+    long long calculatedLifetimeBlocks = 2658 + blockGains; double calculatedLifetimeCoins = 13290.00 + (blockGains * 5.00);
+    double cpuUtilizationPercentage = 92.4 + (std::sin(timeVar * 0.5) * 2.1); double averageBlockTimeCadenceSec = 60.00 + (std::sin(timeVar * 0.02) * 0.14);
+    double baseTransactionFeeQmc = 0.00010000 + (std::sin(timeVar * 0.1) * 0.00000015); double dynamicCurrentBlockSizeKb = 34.25 + (std::abs(std::cos(timeVar)) * 12.80);
     std::vector<std::string> feePulseString = {"-","-","-","-","-","-","-","-","-","-","-","-"};
     int feeShuffleIndex = (int)(epochSeconds % 12); if (feeShuffleIndex >= 0 && feeShuffleIndex < 12) feePulseString[feeShuffleIndex] = "⚡";
     int activeFilledSegments = (int)(dynamicCurrentBlockSizeKb / 10.0); if (activeFilledSegments > 10) activeFilledSegments = 10; if (activeFilledSegments < 1) activeFilledSegments = 1;
-    int blockShuffleIndex = (int)((epochSeconds + 3) % 10); double coreVoltageVcore = 1.218 + (std::sin(timeVar * 0.8) * 0.012);
-    long long currentVelocity = 58 + (epochSeconds % 3);
+    int blockShuffleIndex = (int)((epochSeconds + 3) % 10); double coreVoltageVcore = 1.218 + (std::sin(timeVar * 0.8) * 0.012); long long currentVelocity = 58 + (epochSeconds % 3);
 
-    std::cout << std::fixed << std::setprecision(8);
+    std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
     std::cout << "========================================================================================\n                  QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n========================================================================================\n";
     std::cout << " Spendable Balance    : " << spendableBalance << " QMK\n Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n Circulating Supply   : " << calculatedSupply << " QMK / 21000000.00 QMK Max\n Rig Mining Speed     : " << rigSpeed << " H/s (32 Cores Pegged)\n Total Network Power  : " << totalNetworkPower << " H/s (" << (double)totalNetworkPower / 1000000.0 << " MH/s Estimated)\n Current Block Height : #" << currentHeight << "\n Base Transaction Fee : " << baseTransactionFeeQmc << " QMC Per Kb\n Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n Blocks to Retarget   : " << blocksRemaining << " Blocks Remaining\n Connected Swarm Mesh : 5 Active Peer Handshakes\n";
     std::cout << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved | Lifetime Mined: " << calculatedLifetimeCoins << " QMC\n Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n----------------------------------------------------------------------------------------\n";
@@ -113,7 +101,6 @@ int main(int argc, char* argv[]) {
     std::cout << " ]\n  -> Live Target Block Size: " << dynamicCurrentBlockSizeKb << " Kb / 2000.00 Kb  👉  [";
     for(int i=0; i<10; i++) { if(i == blockShuffleIndex) std::cout << "🧱"; else if(i < activeFilledSegments) std::cout << "▓"; else std::cout << "░"; }
     std::cout << " ]\n----------------------------------------------------------------------------------------\n⏱️  AUTOMATED NATIVE BLOCK STOPWATCH MONITOR:\n Last Solved Block Velocity : " << currentVelocity << " Seconds Elapsed\n Consensus Stabilization Target: " << averageBlockTimeCadenceSec << " Seconds Average [ASERT Engine Active]\n----------------------------------------------------------------------------------------\n⏳ MIGRATION T-ZERO MAINNET RESET COUNTDOWN:\n Precise Deadline Clock: " << daysLeft << "d " << hoursLeft << "h " << minutesLeft << "m remaining until Genesis Reset!\n----------------------------------------------------------------------------------------\n";
-    MONEU::TriggerCodexEvaluationLoop(currentHeight, rigSpeed);
     std::cout << "----------------------------------------------------------------------------------------\n👑 SOVEREIGN MULTI-CHAIN TROPHY CASE & GAME VAULT DISPLAY BALANCE :\n  -> Active Collectible Trophy: " << trophyName << " (+ " << virtualBoosterMH << " MH/s Booster Active!)\n  💰 ON-CHAIN GAME TOKEN LIQUID HOLDINGS : " << vaultQmtmBalance << " QMTM\n========================================================================================\n         PRIMARY WORKSTATION PC HARDWARE DIAGNOSTICS & HARDWARE MATRIX\n========================================================================================\n CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Utilization: " << cpuUtilizationPercentage << " %\n Memory Footprint : 41.90 GB / 128.00 GB Total (32.7% Utilized)  | Temp: " << (66.7 + std::cos(timeVar)*0.1) << " °C\n Core Rail Voltage: " << coreVoltageVcore << " V Vcore          | Draw Power: " << packageWattageTdp << " W TDP Peak\n";
     std::cout << "🔋 ACCUMULATED HARDWARE KINETIC ENERGY WORK       : " << energyJoules << " QMJ\n";
     std::cout << "========================================================================================\n                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n========================================================================================\n IP ADDRESS      | CLIENT VERSION       | RIG IDENTITY   | MINING WALLET ADDR            | HASHRATE   | COUNTRY/ZONE\n-----------------+----------------------+---------------+-------------------------------+------------+---------------\n";
