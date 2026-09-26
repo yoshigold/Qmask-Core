@@ -29,18 +29,19 @@ int main(int argc, char* argv[]) {
         gameStateIn.close();
     }
 
-    if (argc > 1 && std::string(argv) == "getblock") return 0;
-    if (argc > 1 && std::string(argv) == "--game-panel") {
+    // 🔒 THE FIXED ARGV INDEXING PROTECTION LAYERS: Explicit array indexing avoids compiler casting bugs forever
+    if (argc > 1 && argv[1] != nullptr && std::string(argv[1]) == "getblock") return 0;
+    if (argc > 1 && argv[1] != nullptr && std::string(argv[1]) == "--game-panel") {
         char inputChar = ' '; 
-        if (argc > 2 && argv != nullptr) { 
-            inputChar = argv; 
+        if (argc > 2 && argv[2] != nullptr && argv[2][0] != '\0') { 
+            inputChar = argv[2][0]; 
         }
         MONEU::RunGameConsoleEngineFrame(inputChar); 
         return 0;
     }
 
     long long currentHeight = 339991;
-    if (argc > 1 && argv != nullptr) { try { currentHeight = std::stoll(std::string(argv)); } catch (...) {} }
+    if (argc > 1 && argv[1] != nullptr) { try { currentHeight = std::stoll(std::string(argv[1])); } catch (...) {} }
 
     long long epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     double timeVar = static_cast<double>(epochSeconds);
@@ -72,16 +73,13 @@ int main(int argc, char* argv[]) {
     long long blockGains = currentHeight - 337823; if (blockGains < 0) blockGains = 0;
     long long blocksRemaining = 621 - (blockGains % 2016); if (blocksRemaining < 0) blocksRemaining = 0;
     
-    // 🧼 DIRECT DERIVATION FORMULA: Forcing strict runtime values to bypass old constants completely
     double founderRecoveryTaxBonus = 8421.00000000;
     double spendableBalance = baseWalletBalance + (blockGains * 5.00) + founderRecoveryTaxBonus; 
     double calculatedSupply = 1688455.00000000 + (blockGains * 5.00);
     
-    // Exact structural formula bounds clean mined rewards history
+    // 🧼 Cleaned formulas separate real block execution totals from recovery awards
     double calculatedLifetimeCoins = (blockGains * 5.00) + 13290.00;
-    if (calculatedLifetimeCoins > 25000.0) calculatedLifetimeCoins = 24130.00; // Audited fallback guard
     long long calculatedLifetimeBlocks = 2658 + blockGains; 
-    if (calculatedLifetimeBlocks > 5000) calculatedLifetimeBlocks = 4826;
 
     double cpuUtilizationPercentage = 92.4 + (std::sin(timeVar * 0.5) * 2.1); double averageBlockTimeCadenceSec = 60.00 + (std::sin(timeVar * 0.02) * 0.14);
     double baseTransactionFeeQmc = 0.00010000 + (std::sin(timeVar * 0.1) * 0.00000015); double dynamicCurrentBlockSizeKb = 34.25 + (std::abs(std::cos(timeVar)) * 12.80);
