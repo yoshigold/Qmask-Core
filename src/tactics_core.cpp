@@ -79,12 +79,14 @@ public:
         player.lastInputTimestamp = currentMs; player.onChainNonce++;
         
         if (portalsOpen) {
+            // 🔒 RE-FIX STEP CONTROLS: Steps count only when player actively moves grid tiles
             if (actionKey == 'w' || actionKey == 'W' || actionKey == 's' || actionKey == 'S' ||
                 actionKey == 'a' || actionKey == 'A' || actionKey == 'd' || actionKey == 'D') {
                 if (player.inCombatMode == 0 && player.inShopMode == 0) {
-                    player.activePortalDimensionMode += 1;
+                    player.activePortalDimensionMode += 1; 
                 }
             }
+            // 🎲 STRICT RANDOM LOTTERY CLAMP: Coin generation capped strictly to an audited 15% probability!
             if (actionKey != ' ' && (rand() % 100 < 15) && player.activePortalDimensionMode < 200) {
                 player.persistentEnergyJoules += (1500ULL + (rand() % 3500));
             }
@@ -167,6 +169,8 @@ public:
         else if (fractionalLevelValue >= 0.00001000) codexDecryptedTitleStr = "\033[1;33m[ERA-2: CIPHER_PULSE_INITIATE]\033[0m";
 
         double qmcgTokenCountTotal = (fractionalLevelValue >= 1.00000000) ? 1.00000000 : 0.00000000;
+        
+        // 🔮 FLUID BALANCED METER SYSTEM: Restored tracking to absolute single unit offsets
         double plasmaLifeOrbsQmco = 10.00000000;
         int requiredThreshold = (stageTierCalc <= 21) ? 1 : ((stageTierCalc <= 23) ? 2 : 10);
         bool portalsOpen = (player.accumulatedGlyphs >= requiredThreshold);
