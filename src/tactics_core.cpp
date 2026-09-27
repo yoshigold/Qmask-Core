@@ -79,10 +79,9 @@ public:
         player.lastInputTimestamp = currentMs; player.onChainNonce++;
         
         if (portalsOpen) {
-            // 🔒 FIXED STEP ISOLATION CORE: Tracks movement step counts type-safely in column 22 without memory collisions
             if (actionKey == 'w' || actionKey == 'W' || actionKey == 's' || actionKey == 'S' ||
                 actionKey == 'a' || actionKey == 'A' || actionKey == 'd' || actionKey == 'D') {
-                player.activePortalDimensionMode++; 
+                player.activePortalDimensionMode += 1; 
             }
             if (actionKey != ' ' && (rand() % 100 < 15) && player.activePortalDimensionMode < 200) {
                 player.persistentEnergyJoules += (1500ULL + (rand() % 3500));
@@ -147,8 +146,6 @@ public:
         }
         
         if (player.accumulatedGlyphs >= requiredThreshold && player.xCoord == 8 && player.yCoord == 3) { SaveStateToDisk(player); return 2; }
-        
-        // 👾 FIX CREATURE ENCOUNTER INDEX: Restored standard random monster spawning rates to normal level parameters (8% chance)
         if (!portalsOpen && actionKey != ' ' && (rand() % 100 < 8)) { 
             player.inCombatMode = 1; player.activeMonsterTypeRng = 1; player.enemyMonsterHP = 450 + (player.monsterLevel * 4); player.playerMonsterHP = maxHealthCapLimit;
         }
@@ -168,8 +165,6 @@ public:
         else if (fractionalLevelValue >= 0.00001000) codexDecryptedTitleStr = "\033[1;33m[ERA-2: CIPHER_PULSE_INITIATE]\033[0m";
 
         double qmcgTokenCountTotal = (fractionalLevelValue >= 1.00000000) ? 1.00000000 : 0.00000000;
-        
-        // 🔮 FIXED DISPLAY MATH: Calculates step orbs cleanly based on isolated memory cells
         double plasmaLifeOrbsQmco = 10.00000000;
         int requiredThreshold = (stageTierCalc <= 21) ? 1 : ((stageTierCalc <= 23) ? 2 : 10);
         bool portalsOpen = (player.accumulatedGlyphs >= requiredThreshold);
@@ -188,11 +183,19 @@ public:
         std::cout << "💰 [VAULT] GENESIS TROPHY ACCRUED  : " << std::fixed << std::setprecision(8) << qmcgTokenCountTotal << " $QMCG (Ultimate Badge)\033[K\n";
         std::cout << "💰 \033[1;35m[VAULT] FOUNDER'S GLITCH COIN   : 6736.80000000 $QMG (Vested Custody Isolation Lock) 🔒\033[0m\033[K\n";
         std::cout << "💰 \033[1;32m[VAULT] WHITE-HAT BOUNTY ASSET  : 1684.20000000 $QMC (Liquid Distributed Yield)     ✅\033[0m\033[K\n";
-        std::cout << "💰 [VAULT] PLASMA LIFE ORB TRACKER  : " << std::fixed << std::setprecision(8) << plasmaLifeOrbsQmco << " $QMCO [Pre-Entry Fuel Bank]\033[K\n";
+        std::cout << "💰 [VAULT] PLASMA LIFE ORB TRACKER  : " << std::fixed << std::setprecision(8) << plasmaLifeOrbsQmco << " $QMCO [Steps Taken: " << player.activePortalDimensionMode << " / 200]\033[K\n";
         std::cout << "💰 [VAULT] THERMODYNAMIC BALANCE   : " << std::fixed << std::setprecision(8) << (double)(player.persistentEnergyJoules / 10000.0) << " $QME [Ratio Lock: 10,000 QMJ = 1 QME]\033[K\n";
         std::cout << "💰 [STATS] TOTAL KINETIC DAMAGE    : " << player.totalDamageDealt << " HP Dealt | XP Step: " << player.currentXpPoints << " / 10 XP\033[K\n";
         std::cout << "=================================================================================\033[K\n";
         
+        if (player.inShopMode == 1) {
+            std::cout << "🛒 [STORE FRONT] Balance: " << player.persistentBankWalletQmtm << " $QMTM\033[K\n";
+            std::cout << " -> Press to Buy XP Core Booster (+5 Lvl) for 15.00 QMTM\033[K\n";
+            std::cout << " -> Press to Exit Store Interface Layout Panel\033[K\n";
+            std::cout << "=================================================================================\033[K\n";
+            return;
+        }
+
         if (player.inCombatMode == 1) { 
             std::cout << "\033[1;32m🐍 [WILD SHADOW CREATURE] CHRONO-VIPER! HP: [ " << player.enemyMonsterHP << " ]\033[0m\033[K\n";
             std::cout << "👾 Your Guardian Dragon HP: [ \033[1;32m" << player.playerMonsterHP << " / " << maxHealthCapLimit << " HP Max\033[0m ]\033[K\n";
