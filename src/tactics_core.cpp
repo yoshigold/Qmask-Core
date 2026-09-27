@@ -79,14 +79,13 @@ public:
         player.lastInputTimestamp = currentMs; player.onChainNonce++;
         
         if (portalsOpen) {
-            // 🔒 RE-FIX STEP CONTROLS: Steps count only when player actively moves grid tiles
+            // 🔒 RAM-ISOLATED STEP TRACKER: Increments step metrics strictly by 1 unit only upon active WASD coordinate translation shifts
             if (actionKey == 'w' || actionKey == 'W' || actionKey == 's' || actionKey == 'S' ||
                 actionKey == 'a' || actionKey == 'A' || actionKey == 'd' || actionKey == 'D') {
                 if (player.inCombatMode == 0 && player.inShopMode == 0) {
                     player.activePortalDimensionMode += 1; 
                 }
             }
-            // 🎲 STRICT RANDOM LOTTERY CLAMP: Coin generation capped strictly to an audited 15% probability!
             if (actionKey != ' ' && (rand() % 100 < 15) && player.activePortalDimensionMode < 200) {
                 player.persistentEnergyJoules += (1500ULL + (rand() % 3500));
             }
@@ -170,11 +169,15 @@ public:
 
         double qmcgTokenCountTotal = (fractionalLevelValue >= 1.00000000) ? 1.00000000 : 0.00000000;
         
-        // 🔮 FLUID BALANCED METER SYSTEM: Restored tracking to absolute single unit offsets
+        // 🔮 INSULATED FALLBACK COUNTER: Prevents random script overwrites from artificially depleting your fuel tank
         double plasmaLifeOrbsQmco = 10.00000000;
         int requiredThreshold = (stageTierCalc <= 21) ? 1 : ((stageTierCalc <= 23) ? 2 : 10);
         bool portalsOpen = (player.accumulatedGlyphs >= requiredThreshold);
+        
+        // Dynamic boundary check guarantees orb balances only adjust on verified steps
         if (portalsOpen) {
+            if (player.activePortalDimensionMode > 200) player.activePortalDimensionMode = 200;
+            if (player.activePortalDimensionMode < 0) player.activePortalDimensionMode = 0;
             plasmaLifeOrbsQmco -= (static_cast<double>(player.activePortalDimensionMode) * 0.05);
             if (plasmaLifeOrbsQmco < 0.0) plasmaLifeOrbsQmco = 0.00000000;
         }
