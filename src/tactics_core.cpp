@@ -79,7 +79,6 @@ public:
         player.lastInputTimestamp = currentMs; player.onChainNonce++;
         
         if (portalsOpen) {
-            // 🔒 RAM-ISOLATED STEP TRACKER: Increments step metrics strictly by 1 unit only upon active WASD coordinate translation shifts
             if (actionKey == 'w' || actionKey == 'W' || actionKey == 's' || actionKey == 'S' ||
                 actionKey == 'a' || actionKey == 'A' || actionKey == 'd' || actionKey == 'D') {
                 if (player.inCombatMode == 0 && player.inShopMode == 0) {
@@ -168,13 +167,9 @@ public:
         else if (fractionalLevelValue >= 0.00001000) codexDecryptedTitleStr = "\033[1;33m[ERA-2: CIPHER_PULSE_INITIATE]\033[0m";
 
         double qmcgTokenCountTotal = (fractionalLevelValue >= 1.00000000) ? 1.00000000 : 0.00000000;
-        
-        // 🔮 INSULATED FALLBACK COUNTER: Prevents random script overwrites from artificially depleting your fuel tank
         double plasmaLifeOrbsQmco = 10.00000000;
         int requiredThreshold = (stageTierCalc <= 21) ? 1 : ((stageTierCalc <= 23) ? 2 : 10);
         bool portalsOpen = (player.accumulatedGlyphs >= requiredThreshold);
-        
-        // Dynamic boundary check guarantees orb balances only adjust on verified steps
         if (portalsOpen) {
             if (player.activePortalDimensionMode > 200) player.activePortalDimensionMode = 200;
             if (player.activePortalDimensionMode < 0) player.activePortalDimensionMode = 0;
