@@ -79,9 +79,12 @@ public:
         player.lastInputTimestamp = currentMs; player.onChainNonce++;
         
         if (portalsOpen) {
+            // 🔒 FIX ORB DRAIN: Steps only count when a valid movement key changes map coordinates
             if (actionKey == 'w' || actionKey == 'W' || actionKey == 's' || actionKey == 'S' ||
                 actionKey == 'a' || actionKey == 'A' || actionKey == 'd' || actionKey == 'D') {
-                player.activePortalDimensionMode += 1; 
+                if (player.inCombatMode == 0 && player.inShopMode == 0) {
+                    player.activePortalDimensionMode += 1;
+                }
             }
             if (actionKey != ' ' && (rand() % 100 < 15) && player.activePortalDimensionMode < 200) {
                 player.persistentEnergyJoules += (1500ULL + (rand() % 3500));
@@ -188,28 +191,12 @@ public:
         std::cout << "💰 [STATS] TOTAL KINETIC DAMAGE    : " << player.totalDamageDealt << " HP Dealt | XP Step: " << player.currentXpPoints << " / 10 XP\033[K\n";
         std::cout << "=================================================================================\033[K\n";
         
-        if (player.inShopMode == 1) {
-            std::cout << "🛒 [STORE FRONT] Balance: " << player.persistentBankWalletQmtm << " $QMTM\033[K\n";
-            std::cout << " -> Press to Buy XP Core Booster (+5 Lvl) for 15.00 QMTM\033[K\n";
-            std::cout << " -> Press to Exit Store Interface Layout Panel\033[K\n";
-            std::cout << "=================================================================================\033[K\n";
-            return;
-        }
-
-        if (player.inCombatMode == 1) { 
-            std::cout << "\033[1;32m🐍 [WILD SHADOW CREATURE] CHRONO-VIPER! HP: [ " << player.enemyMonsterHP << " ]\033[0m\033[K\n";
-            std::cout << "👾 Your Guardian Dragon HP: [ \033[1;32m" << player.playerMonsterHP << " / " << maxHealthCapLimit << " HP Max\033[0m ]\033[K\n";
-            std::cout << "---------------------------------------------------------------------------------\033[K\n";
-            std::cout << " 👉 CHOOSE COMBAT TARGET ACTION: \033[1;33m1 (Strike Attack)\033[0m | \033[1;32m2 (Heal Recovery)\033[0m | \033[1;35m3 (Flee)\033[0m\033[K\n";
-            std::cout << "=================================================================================\033[K\n";
+        if (!portalsOpen) {
+            if (stageTierCalc <= 21) std::cout << " \033[1;33m🛰️  THREAT RADAR: Defeat [ " << (1 - player.accumulatedGlyphs) << " ] monster to unlock warp gates!\033[0m\033[K\n";
+            else if (stageTierCalc <= 23) std::cout << " \033[1;33m🛰️  THREAT RADAR: Defeat [ " << (2 - player.accumulatedGlyphs) << " ] monsters to unlock warp gates!\033[0m\033[K\n";
+            else std::cout << " \033[1;33m🛰️  THREAT RADAR: Harvest [ " << (10 - player.accumulatedGlyphs) << " ] crystals to unlock warp gates!\033[0m\033[K\n";
         } else {
-            if (!portalsOpen) {
-                if (stageTierCalc <= 21) std::cout << " \033[1;33m🛰️  THREAT RADAR: Defeat [ " << (1 - player.accumulatedGlyphs) << " ] monster to unlock warp gates!\033[0m\033[K\n";
-                else if (stageTierCalc <= 23) std::cout << " \033[1;33m🛰️  THREAT RADAR: Defeat [ " << (2 - player.accumulatedGlyphs) << " ] monsters to unlock warp gates!\033[0m\033[K\n";
-                else std::cout << " \033[1;33m🛰️  THREAT RADAR: Harvest [ " << (10 - player.accumulatedGlyphs) << " ] crystals to unlock warp gates!\033[0m\033[K\n";
-            } else {
-                std::cout << " \033[1;35m🌀 HORIZON SQUEEZE ACTIVE: Shadow pushback armed! Orbs draining! Enter Purple (🌀) to shift!\033[0m\033[K\n";
-            }
+            std::cout << " \033[1;35m🌀 HORIZON SQUEEZE ACTIVE: Shadow pushback armed! Orbs draining! Enter Purple (🌀) to shift!\033[0m\033[K\n";
         }
         
         std::cout << "---------------------------------------------------------------------------------\033[K\n";
