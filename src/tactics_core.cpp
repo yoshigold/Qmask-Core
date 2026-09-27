@@ -79,7 +79,6 @@ public:
         player.lastInputTimestamp = currentMs; player.onChainNonce++;
         
         if (portalsOpen) {
-            // 🔒 FIX ORB DRAIN: Steps only count when a valid movement key changes map coordinates
             if (actionKey == 'w' || actionKey == 'W' || actionKey == 's' || actionKey == 'S' ||
                 actionKey == 'a' || actionKey == 'A' || actionKey == 'd' || actionKey == 'D') {
                 if (player.inCombatMode == 0 && player.inShopMode == 0) {
