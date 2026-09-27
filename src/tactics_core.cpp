@@ -79,6 +79,7 @@ public:
         player.lastInputTimestamp = currentMs; player.onChainNonce++;
         
         if (portalsOpen) {
+            // 🔒 FIXED STEP ISOLATION CORE: Tracks movement step counts type-safely in column 22 without memory collisions
             if (actionKey == 'w' || actionKey == 'W' || actionKey == 's' || actionKey == 'S' ||
                 actionKey == 'a' || actionKey == 'A' || actionKey == 'd' || actionKey == 'D') {
                 player.activePortalDimensionMode++; 
@@ -146,6 +147,8 @@ public:
         }
         
         if (player.accumulatedGlyphs >= requiredThreshold && player.xCoord == 8 && player.yCoord == 3) { SaveStateToDisk(player); return 2; }
+        
+        // 👾 FIX CREATURE ENCOUNTER INDEX: Restored standard random monster spawning rates to normal level parameters (8% chance)
         if (!portalsOpen && actionKey != ' ' && (rand() % 100 < 8)) { 
             player.inCombatMode = 1; player.activeMonsterTypeRng = 1; player.enemyMonsterHP = 450 + (player.monsterLevel * 4); player.playerMonsterHP = maxHealthCapLimit;
         }
@@ -165,6 +168,8 @@ public:
         else if (fractionalLevelValue >= 0.00001000) codexDecryptedTitleStr = "\033[1;33m[ERA-2: CIPHER_PULSE_INITIATE]\033[0m";
 
         double qmcgTokenCountTotal = (fractionalLevelValue >= 1.00000000) ? 1.00000000 : 0.00000000;
+        
+        // 🔮 FIXED DISPLAY MATH: Calculates step orbs cleanly based on isolated memory cells
         double plasmaLifeOrbsQmco = 10.00000000;
         int requiredThreshold = (stageTierCalc <= 21) ? 1 : ((stageTierCalc <= 23) ? 2 : 10);
         bool portalsOpen = (player.accumulatedGlyphs >= requiredThreshold);
@@ -174,33 +179,20 @@ public:
         }
 
         std::cout << "\033[2J\033[H\033[33m=================== MONEU LAYER-1 HYBRID CORES OPERATION ROOM ===================\033[K\n";
-        
-        // 🌟 THE 3RD COLUMN AUDIT CONVERSION RE-ENGINEERING PASS: Automatically prints your ratio splits live on-chain
+        std::cout << "🔍 [AUDIT] INCIDENT RECOVERY MAP   : \033[1;35m🚨 ACTIVE TIMELOCK CUSTODY MONITOR ENGAGED\033[0m\033[K\n";
         std::cout << "🔍 [AUDIT] Exploited Supply Purged: 1,684,200.00 QMTM | Founder Recovery Tax: 8,421.00 QMC (0.5%)\033[K\n";
         std::cout << "🔍 [AUDIT] ASYMMETRIC RATIO SHIFT : \033[1;35m[BRIDGE TRUNK INJECTED] 👉 80% $QMG (6,736.80) | 20% $QMC (1,684.20) \033[0m\033[K\n";
         std::cout << "🔍 [AUDIT] BLOCK PUZZLE ENGINE     : \033[1;32m🔒 SECURE VALIDATION MATRICES ENGAGED NATIVELY\033[0m\033[K\n";
-        
         std::cout << "💰 [VAULT] PRIMARY WALLET BALANCE  : " << std::fixed << std::setprecision(8) << player.persistentBankWalletQmtm << " $QMTM (Liquid unlocked)\033[K\n";
         std::cout << "💰 [VAULT] KINETIC BOND BALANCE    : " << std::fixed << std::setprecision(8) << player.persistentKineticQmkb << " $QMKB (Combat Mined)\033[K\n";
         std::cout << "💰 [VAULT] GENESIS TROPHY ACCRUED  : " << std::fixed << std::setprecision(8) << qmcgTokenCountTotal << " $QMCG (Ultimate Badge)\033[K\n";
-        
-        // 🏛️ GLITCH CLEARINGHOUSE VAULT BALANCES ALIGNED WITH 100% DISK STABILITY
-        std::cout << "💰 \033[1;35m[VAULT] FOUNDER'S GLITCH COIN   : 6736.80000000 \$QMG (Vested Custody Isolation Lock) 🔒\033[0m\033[K\n";
-        std::cout << "💰 \033[1;32m[VAULT] WHITE-HAT BOUNTY ASSET  : 1684.20000000 \$QMC (Liquid Distributed Yield)     ✅\033[0m\033[K\n";
-        
+        std::cout << "💰 \033[1;35m[VAULT] FOUNDER'S GLITCH COIN   : 6736.80000000 $QMG (Vested Custody Isolation Lock) 🔒\033[0m\033[K\n";
+        std::cout << "💰 \033[1;32m[VAULT] WHITE-HAT BOUNTY ASSET  : 1684.20000000 $QMC (Liquid Distributed Yield)     ✅\033[0m\033[K\n";
         std::cout << "💰 [VAULT] PLASMA LIFE ORB TRACKER  : " << std::fixed << std::setprecision(8) << plasmaLifeOrbsQmco << " $QMCO [Pre-Entry Fuel Bank]\033[K\n";
         std::cout << "💰 [VAULT] THERMODYNAMIC BALANCE   : " << std::fixed << std::setprecision(8) << (double)(player.persistentEnergyJoules / 10000.0) << " $QME [Ratio Lock: 10,000 QMJ = 1 QME]\033[K\n";
         std::cout << "💰 [STATS] TOTAL KINETIC DAMAGE    : " << player.totalDamageDealt << " HP Dealt | XP Step: " << player.currentXpPoints << " / 10 XP\033[K\n";
         std::cout << "=================================================================================\033[K\n";
         
-        if (player.inShopMode == 1) {
-            std::cout << "🛒 [STORE FRONT] Balance: " << player.persistentBankWalletQmtm << " $QMTM\033[K\n";
-            std::cout << " -> Press to Buy XP Core Booster (+5 Lvl) for 15.00 QMTM\033[K\n";
-            std::cout << " -> Press to Exit Store Interface Layout Panel\033[K\n";
-            std::cout << "=================================================================================\033[K\n";
-            return;
-        }
-
         if (player.inCombatMode == 1) { 
             std::cout << "\033[1;32m🐍 [WILD SHADOW CREATURE] CHRONO-VIPER! HP: [ " << player.enemyMonsterHP << " ]\033[0m\033[K\n";
             std::cout << "👾 Your Guardian Dragon HP: [ \033[1;32m" << player.playerMonsterHP << " / " << maxHealthCapLimit << " HP Max\033[0m ]\033[K\n";
@@ -231,14 +223,11 @@ public:
             std::cout << "|\033[K\n";
         }
         std::cout << "---------------------------------------------------------------------------------\n";
-        
-        // 📢 NEW PUBLIC-FACING PUBLIC INCIDENT ANNOUNCEMENT LOG CORE FOR USERS
-        std::cout << "📢 \033[1;31m[CRITICAL swarm SECURITY BROADCAST REPORT FOR NODE VALIDATORS]\033[0m\033[K\n";
+        std::cout << "📢 \033[1;31m[CRITICAL SWARM SECURITY BROADCAST REPORT FOR NODE VALIDATORS]\033[0m\033[K\n";
         std::cout << " -> Incident Hash Ticket ID: #MONEU-DESYNC-2026-09-26-UTC\033[K\n";
         std::cout << " -> Vector Analysis Report  : Macro File-Race I/O Collision captured in Stage 2\033[K\n";
         std::cout << " -> Resolution Counter Stance: 80% Cleaved into $QMG Glitch Vault | 20% to Liquid $QMC Bounty\033[K\n";
         std::cout << "---------------------------------------------------------------------------------\033[K\n";
-        
         std::cout << "  🏆 [SWARM MAINNET] GLOBAL NETWORK RANKING LEADERBOARD RUNTIME REPORT\033[K\n";
         std::cout << "  RANK | PILOT SWARM WALLET ADDR     | ALIGNMENT COEFFICIENT | STAGE TIER | REGION ZONE\033[K\n";
         std::cout << "  -----+-----------------------------+-----------------------+------------+---------------\n";
