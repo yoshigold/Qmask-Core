@@ -1,3 +1,4 @@
+#include <openssl/sha.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -28,6 +29,20 @@ char CaptureRawKeystrokeNatively() {
     tcsetattr(STDIN_FILENO, TCSANOW, &oldSettings);
     return inputChar;
 }
+
+std::string ComputeSha256Signature(const std::string& inputDataString) {
+    unsigned char hashDigest[SHA256_DIGEST_LENGTH];
+    SHA256_CTX sha256Context;
+    SHA256_Init(&sha256Context);
+    SHA256_Update(&sha256Context, inputDataString.c_str(), inputDataString.size());
+    SHA256_Final(hashDigest, &sha256Context);
+    std::stringstream textStream;
+    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
+        textStream << std::hex << std::setw(2) << std::setfill('0') << (int)hashDigest[i];
+    }
+    return "0x" + textStream.str();
+}
+
 int main(int argc, char* argv[]) {
     double wallet = 9865.0; int gx=4, gy=2, lvl=340280, gly=0, d1=0, d2=0, rx=9, ry=0, rc=0, cmb=0; int ehp=100, php=1200;
     double qmtm = 1179.530; int shp = 0; unsigned long long qmj = 185490009451450ULL;
@@ -206,7 +221,7 @@ int main(int argc, char* argv[]) {
     std::cout << "========================================================================================\n                  QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n========================================================================================\n"
               << " Spendable Balance    : " << spendableBalance << " QMK\n Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n Circulating Supply   : " << std::fixed << std::setprecision(8) << (1699295.0 + (blockGains * 5.0)) << " QMK / 21000000.00 QMK Max\n Rig Mining Speed     : " << speed << " H/s (32 Cores Pegged)\n Total Network Power  : 137661790 H/s (137.66179000 MH/s Estimated)\n Current Block Height : #" << currentHeight << "\n Base Transaction Fee : 0.00010013 QMC Per Kb\n Live Target Block Size: " << calculatedBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n Blocks to Retarget   : 469 Blocks Remaining\n Connected Swarm Mesh : 5 Active Peer Handshakes\n"
               << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved | Lifetime Mined: " << calculatedLifetimeCoins << " QMC\n Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n----------------------------------------------------------------------------------------\n"
-              << "🌌 ====================================================================================\n                  QMASK LAYER-1 NATIVE ZODIAC QUANTUM CONSTELLATION ENGINE          \n========================================================================================\n  [TAURUS WHEEL ALIGNMENT] :  ☄️  Orbit Node Shift: " << (23.72 + std::sin(timeVar * 0.01)) << " ° Alpha Sky Radian Range\n  [LEO ASTRO MATRIX SYNC]  :  🌟 Harmonic Hash Rate Vector: [ 3f26 ] Node Checkpoint\n  [NATIVE CONSTELLATION SE] :  👉  [" << visualElectricalBar << " ] NATIVE CODES TUNNEL MATRIX ACCELERATOR\n  [ZODIAC ALIGNMENT STATUS] : \033[1;32m🔓 ZODIAC CODEX STATUS: DECRYPTING MAINNET BLOCKS (ACTIVE PILOT)\033[0m\n----------------------------------------------------------------------------------------\n"
+              << "🌌 ====================================================================================\n                  QMASK LAYER-1 NATIVE ZODIAC QUANTUM CONSTELLATION ENGINE          \n========================================================================================\n  [TAURUS WHEEL ALIGNMENT] :  ☄️  Orbit Node Shift: " << (23.72 + std::sin(timeVar * 0.01)) << " ° Alpha Sky Radian Range\n  [LEO ASTRO MATRIX SYNC]  :  🌟 Harmonic Hash Rate Vector: [ 3f26 ] Node Checkpoint\n  [NATIVE CONSTELLATION SE] :  👉  [" << visualElectricalBar << " ] NATIVE CODES TUNNEL MATRIX ACCELERATOR\n  [ZODIAC ALIGNMENT STATUS] : \033[1;32m🔓 ZODIAC CODEX STATUS: DECRYPTING MAINNET BLOCKS (ACTIVE PILOT)\033[0m\n  [SHA-256 BLOCK NOTARY]   : \033[1;36m🛡️  CURRENT SIGNATURE HASH: " << ComputeSha256Signature(std::to_string(currentHeight) + std::to_string(spendableBalance) + std::to_string(now)) << "\033[0m\n----------------------------------------------------------------------------------------\n"
               << "💰 ====================================================================================\n               MONEU LAYER-1 DEDICATED SPENDABLE CRYPTO COIN WALLET                   \n========================================================================================\n  -> LIQUID UNLOCKED GAME COIN BALANCE : " << qmtm << " QMTM (Solid Capital) \n  -> ACCRUED THERMODYNAMIC STABLE ASSET: " << (double)(qmj / 10000.0) << " QME [Ratio Lock: 10,000 QMJ = 1 QME]\n  -> FOUNDER'S GLITCH COIN VAULT BLOCK : 6736.80000000 QMG (80% Vested Custody Locked) 🔒\n  -> FOUNDER RECOVERY TAX ASSET BOUNTY : 1684.20000000 QMC (20% Distributed Yield) ✅\n========================================================================================\n📊 KINETIC BASE LAYER PROTOCOL MATRIX LIVE VISUALS:\n  -> Base Transaction Fee : 0.00010013 QMC Per Kb\n  -> Live Target Block Size: " << calculatedBlockSizeKb << " Kb / 2000.00 Kb         👉  [" << progressBarText << "🧱 ]\n----------------------------------------------------------------------------------------\n⏱️  AUTOMATED NATIVE BLOCK STOPWATCH MONITOR:\n Last Solved Block Velocity : " << currentVelocity << " Seconds Elapsed\n Consensus Stabilization Target: " << averageBlockTimeCadenceSec << " Seconds Average [ASERT Engine Active]\n 📊 MINI HISTORY RECORD      : " << elapsedSinceLastBlock << "s elapsed since last validated block signature\n----------------------------------------------------------------------------------------\n⏳ MIGRATION T-ZERO MAINNET RESET COUNTDOWN:\n Precise Deadline Clock: " << d << "d " << h << "h " << m << "m " << s << "s remaining until Genesis Reset!\n----------------------------------------------------------------------------------------\n👑 SOVEREIGN MULTI-CHAIN TROPHY CASE & GAME VAULT DISPLAY BALANCE :\n  -> Active Collectible Trophy: 👑 [KRAKEN_SOVEREIGN_REGINA] (MAX_TIER) (+ 25.00 MH/s Booster Active!)\n  💰 ON-CHAIN GAME TOKEN LIQUID HOLDINGS : " << qmtm << " QMTM\n========================================================================================\n         PRIMARY WORKSTATION PC HARDWARE DIAGNOSTICS & HARDWARE MATRIX\n========================================================================================\n CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Utilization: " << cpu << " %\n Core Rail Voltage: 1.224 V Vcore          | Draw Power: " << tdp << " W TDP Peak\n🔋 ACCUMULATED HARDWARE KINETIC ENERGY WORK       : " << qmj << " QMJ\n========================================================================================\n                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n========================================================================================\n IP ADDRESS      | CLIENT VERIFY    | RIG IDENTITY | MINING WALLET IDENTITY         | HASHRATE    | COUNTRY/ZONE\n-----------------+------------------+--------------+--------------------------------+-------------+---------------\n";
     for (size_t i = 0; i < swarmRegistry.size(); i++) {
         double currentMH = swarmRegistry[i].baseHashrateMH; std::string cType = "[SIM PASSIVE]";
@@ -216,5 +231,10 @@ int main(int argc, char* argv[]) {
         std::stringstream ss; ss << std::fixed << std::setprecision(2) << currentMH << " MH/s"; std::string hStr = (currentMH > 0.0) ? ss.str() : "0.00 H/s  ";
         std::cout << " " << std::left << std::setw(15) << swarmRegistry[i].ipAddress << " | " << std::setw(16) << cType << " | " << std::setw(12) << swarmRegistry[i].rigName << " | " << std::setw(30) << swarmRegistry[i].walletAddress << " | " << std::setw(11) << hStr << " | " << swarmRegistry[i].geographicCountry << "\n";
     }
-    std::cout << "========================================================================================\n" << "\033[1;32m🟢 GLOBAL SWARM GATEWAY: ACTIVE (PORT 18332 LISTENING VIA NETSH PROXY RELAY) ✅\033[0m\n" << "========================================================================================\n"; return 0;
+    std::ofstream out("game_state.dat", std::ios::binary);
+    if (out.is_open()) {
+        out << gx << " " << gy << " " << currentHeight << " " << gly << " " << d1 << " " << d2 << " " << rx << " " << ry << " " << rc << " " << cmb << " " << ehp << " " << php << " " << qmtm << " " << shp << " " << qmj << " " << nce << " " << ts << " " << now << " " << xp << " " << dmg << " " << qmkb << " " << pmd << " " << rgd << " " << hk << " " << cc;
+        out.close();
+    }
+    return 0;
 }
