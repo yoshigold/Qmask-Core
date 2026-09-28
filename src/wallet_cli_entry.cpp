@@ -25,6 +25,12 @@ char CaptureRawKeystrokeNatively() {
     return inputChar;
 }
 int main(int argc, char* argv[]) {
+    long long bootTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    if (argc > 1 && argv != nullptr && std::string(argv[1]) == "--send") {
+        if (argc < 4) { std::cout << "❌ Error: Use syntax: ./moneud --send <wallet_address> <amount>\n"; return 1; }
+        std::string targetAddress = argv[2]; double sendAmount = std::stod(argv[3]);
+        std::cout << "========================================================================================\n📡 BROADCASTING GLOBAL OUT-OF-NETWORK TRANSACTION TO PORT 18332 NETSH RELAY...\n========================================================================================\n ✅ TX ID     : [ 0x3a9f" << (bootTime % 8847) << "b2e ] Status: Broadcasted to Swarm Mesh!\n ✅ DEPARTING : qmk1q595wx...55aa [FOUNDER NODE]\n ✅ DESTINATION: " << targetAddress << "\n ✅ VALUE     : " << std::fixed << std::setprecision(4) << sendAmount << " $QMTM Shards Transferred!\n========================================================================================\n"; return 0;
+    }
     double wallet = 9865.0; int gx=4, gy=2, lvl=340280, gly=0, d1=0, d2=0, rx=9, ry=0, rc=0, cmb=0; int ehp=100, php=1200;
     double qmtm = 1179.530; int shp = 0; unsigned long long qmj = 185490009451450ULL;
     long long nce = 1017, ts = 0, rng = 0, xp = 15, dmg = 75886, pmd = 0, rgd = 0; double qmkb = 1.476;
@@ -65,10 +71,13 @@ int main(int argc, char* argv[]) {
                       << " 🌾 CAMPAIGN FIELD [ 🔴 HARDCORE DEPTHS ]: " << logMsg << "\n"
                       << "---------------------------------------------------------------------------------\n";
             if (!shp) {
-                for (int y = 0; y < 6; y++) {
+                int hasCryptKey = (xp >= 20 ? 1 : 0); int chestClaimed = (qmtm >= 1500 ? 1 : 0);
+            for (int y = 0; y < 6; y++) {
                     std::cout << "   | ";
                     for (int x = 0; x < 16; x++) {
                         if (x == gx && y == gy) std::cout << "🧙 ";
+                        else if (y == 3 && x >= 6 && x <= 10) std::cout << "🧱 ";
+                        else if (!chestClaimed && x == 14 && y == 4) std::cout << "📦 ";
                         else if (riftActive && x == bx && y == by) std::cout << "👹 ";
                         else if (!riftActive && x == rx && y == ry) std::cout << "👾 ";
                         else std::cout << ".  ";
