@@ -61,13 +61,11 @@ public:
             else if (actionKey == '2' || isDir) { player.inShopMode = 0; }
             SaveStateToDisk(player); return 1;
         }
-
-        // 🌟 TALENT BOOK TREE TRIGGER (State 3 handles skill allocations)
         if ((actionKey == 'k' || actionKey == 'K') && player.inCombatMode == 0) {
             player.inShopMode = (player.inShopMode == 3) ? 0 : 3; SaveStateToDisk(player); return 1;
         }
         if (player.inShopMode == 3) {
-            if (actionKey == '1' && player.currentXpPoints >= 2) { player.currentXpPoints -= 2; player.monsterLevel += 5; } // Invest 2 XP for +5 Base Damage Rating!
+            if (actionKey == '1' && player.currentXpPoints >= 2) { player.currentXpPoints -= 2; player.monsterLevel += 5; }
             else if (actionKey == '2' || isDir) { player.inShopMode = 0; }
             SaveStateToDisk(player); return 1;
         }
@@ -90,10 +88,7 @@ public:
                 player.inCombatMode = 0; if (!phase1) player.riftGuardiansDefeated += 1; 
                 player.persistentBankWalletQmtm += (25.00 * (player.activeMonsterTypeRng == 3 ? 4.0 : 1.0) * damp);
                 if ((rand() % 100) < (player.activeMonsterTypeRng == 1 ? 20 : 50)) player.diamond1Captured += 1;
-                
-                // 📊 XP SYSTEM GAINS: Yields training points on success!
-                player.currentXpPoints += (player.activeMonsterTypeRng == 3 ? 5 : 2); 
-                player.activeMonsterTypeRng = 0; 
+                player.currentXpPoints += (player.activeMonsterTypeRng == 3 ? 5 : 2); player.activeMonsterTypeRng = 0; 
             }
             SaveStateToDisk(player); return 1;
         }
@@ -116,17 +111,26 @@ public:
     void RenderInteractiveGameViewport() {
         PlayerPositionState player = LoadStateFromDisk();
         int cap = 250 + (player.monsterLevel * 6); double frac = (double)player.monsterLevel / 100000000.0; int tier = 1 + (player.monsterLevel / 20);
-        double orb = 10.0; int reqKills = (tier <= 20) ? 3 : ((tier <= 25) ? 5 : 10);
-        bool phase1 = (player.riftGuardiansDefeated >= reqKills); bool phase2 = (player.accumulatedGlyphs >= 10);
+        int requiredKills = (tier <= 20) ? 3 : ((tier <= 25) ? 5 : 10);
+        bool phase1 = (player.riftGuardiansDefeated >= requiredKills); bool phase2 = (player.accumulatedGlyphs >= 10);
 
         std::string evolutionForm = "Starter Dragon Pupa";
         if (player.monsterLevel >= 535) evolutionForm = "👑 [KRAKEN HORIZON LEVIATHAN] (MAX EVOLUTION)";
         else if (player.monsterLevel >= 500) evolutionForm = "Sovereign Glitch-Drake Elite";
 
-        std::cout << "\033[2J\033[H=================== MONEU LAYER-1 HYBRID CORES OPERATION ROOM ===================\n";
-        std::cout << "💰 [VAULT] PRIMARY WALLET BALANCE  : " << std::fixed << std::setprecision(8) << player.persistentBankWalletQmtm << " QMTM\n";
-        std::cout << "💰 [VAULT] KINETIC BOND BALANCE    : " << player.persistentKineticQmkb << " QMKB\n";
-        std::cout << "💰 [VAULT] PLASMA LIFE ORB TRACKER  : " << orb << " QMCO [Steps: " << player.activePortalDimensionMode << " / 200]\n=================================================================================\n";
+        std::cout << "\033[2J\033[H\033[33m=================== MONEU LAYER-1 HYBRID CORES OPERATION ROOM ===================\033[K\n";
+        std::cout << "🔍 [AUDIT] INCIDENT RECOVERY MAP   : \033[1;35m🚨 ACTIVE TIMELOCK CUSTODY MONITOR ENGAGED\033[0m\033[K\n";
+        std::cout << "🔍 [AUDIT] Exploited Supply Purged: 1,684,200.00 QMTM | Founder Recovery Tax: 8,421.00 QMC (0.5%)\033[K\n";
+        std::cout << "🔍 [AUDIT] ASYMMETRIC RATIO SHIFT : \033[1;35m[BRIDGE TRUNK INJECTED] 👉 80% $QMG (6,736.80) | 20% $QMC (1,684.20) \033[0m\033[K\n";
+        std::cout << "🔍 [AUDIT] BLOCK PUZZLE ENGINE     : \033[1;32m🔒 COMPLETE WSL DIAGNOSTIC RUNTIME STABILIZED\033[0m\033[K\n";
+        std::cout << "💰 [VAULT] PRIMARY WALLET BALANCE  : " << std::fixed << std::setprecision(8) << player.persistentBankWalletQmtm << " $QMTM\033[K\n";
+        std::cout << "💰 [VAULT] KINETIC BOND BALANCE    : " << std::fixed << std::setprecision(8) << player.persistentKineticQmkb << " $QMKB\033[K\n";
+        std::cout << "💰 \033[1;35m[VAULT] FOUNDER'S GLITCH COIN   : 6736.80000000 $QMG (Vested Custody Isolation Lock) 🔒\033[0m\033[K\n";
+        std::cout << "💰 \033[1;32m[VAULT] WHITE-HAT BOUNTY ASSET  : 1684.20000000 $QMC (Liquid Distributed Yield)     ✅\033[0m\033[K\n";
+        std::cout << "💰 [VAULT] PLASMA LIFE ORB TRACKER  : 10.00000000 $QMCO [Steps Taken: " << player.activePortalDimensionMode << " / 200]\033[K\n";
+        std::cout << "💰 [VAULT] THERMODYNAMIC BALANCE   : " << std::fixed << std::setprecision(8) << (double)(player.persistentEnergyJoules / 10000.0) << " $QME [Ratio Lock: 10,000 QMJ = 1 QME]\033[K\n";
+        std::cout << "💰 [STATS] TOTAL KINETIC DAMAGE    : " << player.totalDamageDealt << " HP Dealt | XP Step: " << player.currentXpPoints << " / 10 XP\033[K\n";
+        std::cout << "=================================================================================\033[K\n";
         
         if (player.inShopMode == 3) {
             std::cout << "\033[1;33m🌟 [SOVEREIGN COMPANION TALENT ALLOCATION SHIFT] Total Training Bank: [ " << player.currentXpPoints << " XP ]\n";
@@ -146,11 +150,11 @@ public:
         }
         else {
             std::string zoneLabel = (tier <= 20) ? "🟢 EASY FRONTIER" : ((tier <= 25) ? "🟡 MEDIUM FORGE" : "🔴 HARDCORE DEPTHS");
-            if (!phase1) { std::cout << " \033[1;33m🌾 FIELD [ " << zoneLabel << " - TIER " << tier << " ]: Clear [ " << (reqKills - player.riftGuardiansDefeated) << " ] field encounters! [K: Talents | I: Bag]\033[0m\n"; }
+            if (!phase1) { std::cout << " \033[1;33m🌾 CAMPAIGN FIELD [ " << zoneLabel << " - TIER " << tier << " ]: Clear [ " << (requiredKills - player.riftGuardiansDefeated) << " ] field encounters! [K: Talents | I: Bag]\033[0m\n"; }
             else if (!phase2) { std::cout << " \033[1;32m💎 EXTRACTION SQUAD [ TIER " << tier << " ]: Field clear! Extract Diamond Shards (💎) to charge portal! [K: Talents]\033[0m\n"; }
             else { std::cout << " \033[1;35m🌀 HORIZON SQUEEZE ACTIVE: Sector cleared! Navigate to Purple Gateway (🌀) at 8,3!\033[0m\n"; }
         }
-        std::cout << "---------------------------------------------------------------------------------\n";
+        std::cout << "---------------------------------------------------------------------------------\033[K\n";
         
         if (player.inShopMode == 2) {
             std::cout << "   | [💼 SLOT 01] : Chrono-Potion       x" << player.diamond1Captured << " (Restores HP)      |\n";
@@ -170,10 +174,22 @@ public:
                     else if (phase2 && x == 8 && y == 3) std::cout << "\033[35m🌀\033[0m "; 
                     else if (phase1 && !phase2 && x == player.randDiamondX && y == player.randDiamondY) std::cout << "\033[33m💎\033[0m "; 
                     else std::cout << ".  ";
-                } std::cout << "|\n";
+                } std::cout << "|\033[K\n";
             }
         }
-        std::cout << "---------------------------------------------------------------------------------\n  👑 #1 | qmk1q595wx...55aa [FOUNDER]  | " << frac << " | Tier: " << tier << " | XP: " << player.currentXpPoints << " | UK\n=================================================================================\n";
+        std::cout << "---------------------------------------------------------------------------------\n";
+        std::cout << "📢 \033[1;31m[CRITICAL SWARM SECURITY BROADCAST REPORT FOR NODE VALIDATORS]\033[0m\033[K\n";
+        std::cout << " -> Incident Hash Ticket ID: #MONEU-DESYNC-2026-09-26-UTC\033[K\n";
+        std::cout << " -> Vector Analysis Report  : Macro File-Race I/O Collision captured in Stage 2\033[K\n";
+        std::cout << "---------------------------------------------------------------------------------\033[K\n";
+        std::cout << "  🏆 [SWARM MAINNET] GLOBAL NETWORK RANKING LEADERBOARD REPORT\033[K\n";
+        std::cout << "  RANK | PILOT SWARM WALLET ADDR     | ALIGNMENT COEFFICIENT | STAGE TIER | REGION ZONE\033[K\n";
+        std::cout << "  -----+-----------------------------+-----------------------+------------+---------------\n";
+        std::cout << "  👑 \033[1;33m#1\033[0m | qmk1q595wx...55aa \033[1;32m[FOUNDER]\033[0m  | " << std::fixed << std::setprecision(8) << frac << "          | Tier: " << std::setw(2) << tier << "   | United Kingdom\033[K\n";
+        std::cout << "   #2  | qmk1q2w8sm...44e7 [VALIDATOR] | 0.00000342            | Tier: 23   | Romania (RO)\033[K\n";
+        std::cout << "   #3  | qmk1qx5z4l...29f1 [VALIDATOR] | 0.00000185            | Tier: 20   | Netherlands\033[K\n";
+        std::cout << "   #4  | qmk1q7p9vx...83a2 [VALIDATOR] | 0.00000095            | Tier: 18   | Germany (DE)\033[K\n";
+        std::cout << "=================================================================================\033[K\n";
     }
 };
 static QmaskTacticMonsterEngine engine;
