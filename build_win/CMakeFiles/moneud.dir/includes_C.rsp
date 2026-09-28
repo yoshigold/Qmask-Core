@@ -1,0 +1,1 @@
+-I"/mnt/c/Users/user/Desktop/Qmask-Core/src" -I"/mnt/c/Users/user/Desktop/Qmask-Core/src/crypto" -I"/mnt/c/Users/user/Desktop/Qmask-Core/src/crypto/ed25519-donna" -I"/mnt/c/Users/user/Desktop/Qmask-Core/src/consensus" -I"/mnt/c/Users/user/Desktop/Qmask-Core/src/primitives"

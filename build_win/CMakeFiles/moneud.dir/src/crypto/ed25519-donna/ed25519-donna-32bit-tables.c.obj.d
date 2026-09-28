@@ -1,0 +1,33 @@
+CMakeFiles/moneud.dir/src/crypto/ed25519-donna/ed25519-donna-32bit-tables.c.obj: \
+ /mnt/c/Users/user/Desktop/Qmask-Core/src/crypto/ed25519-donna/ed25519-donna-32bit-tables.c \
+ /mnt/c/Users/user/Desktop/Qmask-Core/src/crypto/ed25519-donna/ed25519-donna.h \
+ /mnt/c/Users/user/Desktop/Qmask-Core/src/crypto/ed25519-donna/ed25519-donna-portable.h \
+ /usr/share/mingw-w64/include/stdlib.h \
+ /usr/share/mingw-w64/include/corecrt.h \
+ /usr/share/mingw-w64/include/_mingw.h \
+ /usr/share/mingw-w64/include/_mingw_mac.h \
+ /usr/share/mingw-w64/include/_mingw_secapi.h \
+ /usr/share/mingw-w64/include/vadefs.h \
+ /usr/share/mingw-w64/include/sdks/_mingw_ddk.h \
+ /usr/share/mingw-w64/include/corecrt_wstdlib.h \
+ /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/limits.h \
+ /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/syslimits.h \
+ /usr/share/mingw-w64/include/limits.h \
+ /usr/share/mingw-w64/include/crtdefs.h \
+ /usr/share/mingw-w64/include/sec_api/stdlib_s.h \
+ /usr/share/mingw-w64/include/malloc.h \
+ /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/mm_malloc.h \
+ /usr/share/mingw-w64/include/errno.h \
+ /usr/share/mingw-w64/include/string.h \
+ /usr/share/mingw-w64/include/sec_api/string_s.h \
+ /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/stdint.h \
+ /usr/share/mingw-w64/include/stdint.h \
+ /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/stddef.h \
+ /usr/share/mingw-w64/include/stddef.h \
+ /mnt/c/Users/user/Desktop/Qmask-Core/src/crypto/ed25519-donna/curve25519-donna-32bit.h \
+ /mnt/c/Users/user/Desktop/Qmask-Core/src/crypto/ed25519-donna/curve25519-donna-helpers.h \
+ /mnt/c/Users/user/Desktop/Qmask-Core/src/crypto/ed25519-donna/modm-donna-32bit.h \
+ /mnt/c/Users/user/Desktop/Qmask-Core/src/crypto/ed25519-donna/ed25519-donna-basepoint-table.h \
+ /mnt/c/Users/user/Desktop/Qmask-Core/src/crypto/options.h \
+ /mnt/c/Users/user/Desktop/Qmask-Core/src/crypto/ed25519-donna/ed25519-donna-32bit-tables.h \
+ /mnt/c/Users/user/Desktop/Qmask-Core/src/crypto/ed25519-donna/ed25519-donna-impl-base.h

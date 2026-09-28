@@ -1,0 +1,3 @@
+/usr/bin/cmake -E rm -f CMakeFiles/moneud.dir/objects.a
+/usr/bin/x86_64-w64-mingw32-ar qc CMakeFiles/moneud.dir/objects.a @CMakeFiles/moneud.dir/objects1.rsp
+/usr/bin/x86_64-w64-mingw32-g++  -static-libgcc -static-libstdc++ -static -O3 -DNDEBUG -static -static-libgcc -static-libstdc++ -Wl,--whole-archive CMakeFiles/moneud.dir/objects.a -Wl,--no-whole-archive -o moneud.exe -Wl,--out-implib,libmoneud.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/moneud.dir/linkLibs.rsp
