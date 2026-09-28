@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
     
     int riftActive = 0; int bx = -1, by = -1; int bossHp = 500;
 
-    std::ifstream in("game_state.dat");
+    std::ifstream in("game_state.dat", std::ios::binary);
     if (in.is_open()) { in >> gx >> gy >> lvl >> gly >> d1 >> d2 >> rx >> ry >> rc >> cmb >> ehp >> php >> qmtm >> shp >> qmj >> nce >> ts >> rng >> xp >> dmg >> qmkb >> pmd >> rgd; in.close(); }
     if (ehp <= 0) ehp = 100; if (qmj < 100000) qmj = 185490009451450ULL; if (php <= 0) php = 1200;
 
@@ -131,7 +131,7 @@ int main(int argc, char* argv[]) {
             }
             
             if (gx < 0) gx = 0; if (gx > 15) gx = 15; if (gy < 0) gy = 0; if (gy > 5) gy = 5;
-            std::ofstream out("game_state.dat");
+            std::ofstream out("game_state.dat", std::ios::binary);
             if (out.is_open()) { out << gx << " " << gy << " " << lvl << " " << gly << " " << d1 << " " << d2 << " " << rx << " " << ry << " " << rc << " " << cmb << " " << ehp << " " << php << " " << qmtm << " " << shp << " " << qmj << " " << nce << " " << now << " " << rng << " " << xp << " " << dmg << " " << qmkb << " " << pmd << " " << rgd; out.close(); }
         } return 0;
     }
@@ -144,21 +144,21 @@ int main(int argc, char* argv[]) {
             double timeVar = static_cast<double>(loopTime);
             double tdpDraw = 278.45 + (std::abs(std::cos(timeVar * 0.4)) * 34.20);
             
-            std::ifstream inCheck("game_state.dat");
+            std::ifstream inCheck("game_state.dat", std::ios::binary);
             if (inCheck.is_open()) { inCheck >> gx >> gy >> lvl >> gly >> d1 >> d2 >> rx >> ry >> rc >> cmb >> ehp >> php >> qmtm >> shp >> qmj >> nce >> ts >> rng >> xp >> dmg >> qmkb >> pmd >> rgd; inCheck.close(); }
             if (qmj < 100000) qmj = 185490009451450ULL;
 
             qmj += static_cast<unsigned long long>(tdpDraw * 8.5);
             std::cout << "[BLOCK VALIDATED] Mined Block Height: #" << currentHeight << " | Difficulty: 400000000000\n🪐 [STVW Engine] Active Block Height: #" << currentHeight << " | Live Energy Balance: " << qmj << " QMJ | Accumulated Yield: " << (double)(qmj / 10000.0) << " QME\n🟢 Stable Baseline Loop: Issuing regular 5.00 QMK mining reward blocks.\n" << std::flush;
             
-            currentHeight++; std::ofstream out("game_state.dat");
+            currentHeight++; std::ofstream out("game_state.dat", std::ios::binary);
             if (out.is_open()) {
                 out << gx << " " << gy << " " << currentHeight << " " << gly << " " << d1 << " " << d2 << " " << rx << " " << ry << " " << rc << " " << cmb << " " << ehp << " " << php << " " << qmtm << " " << shp << " " << qmj << " " << nce << " " << loopTime << " " << rng << " " << xp << " " << dmg << " " << qmkb << " " << pmd << " " << rgd; out.close();
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(60000));
         } return 0;
     }
-    std::ifstream inLive("game_state.dat");
+    std::ifstream inLive("game_state.dat", std::ios::binary);
     if (inLive.is_open()) { inLive >> gx >> gy >> currentHeight >> gly >> d1 >> d2 >> rx >> ry >> rc >> cmb >> ehp >> php >> qmtm >> shp >> qmj >> nce >> ts >> rng >> xp >> dmg >> qmkb >> pmd >> rgd; inLive.close(); }
     if (qmj < 100000) qmj = 185490009451450ULL;
 
