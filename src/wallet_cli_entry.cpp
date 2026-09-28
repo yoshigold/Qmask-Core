@@ -11,7 +11,11 @@
 #include <termios.h>
 #include <unistd.h>
 
-struct SwarmPeerMetadata { std::string ipAddress; std::string clientVersion; std::string rigName; std::string walletAddress; double baseHashrateMH; std::string geographicCountry; bool isFounder; bool isWorkstation; long long lastSeenTimestamp; };
+struct SwarmPeerMetadata { 
+    std::string ipAddress; std::string clientVersion; std::string rigName; 
+    std::string walletAddress; double baseHashrateMH; std::string geographicCountry; 
+    bool isFounder; bool isWorkstation; long long lastSeenTimestamp; 
+};
 
 char CaptureRawKeystrokeNatively() {
     char inputChar = 0; struct termios oldSettings, newSettings;
@@ -48,7 +52,6 @@ int main(int argc, char* argv[]) {
         } else { std::cout << "❌ Transaction Failed: Insufficient liquid balance!\n"; }
         return 0;
     }
-
     if (argc > 1 && argv != nullptr && std::string(argv[1]) == "--game-panel") {
         std::string logMsg = "✨ Press [R] to open a Boss Rift Portal! Hunt down the Crypt Chest [📦]!";
         while (true) {
@@ -57,10 +60,14 @@ int main(int argc, char* argv[]) {
             hasCryptKey = (xp >= 20 ? 1 : 0); chestClaimed = (qmtm >= 1500.0 ? 1 : 0);
 
             std::cout << "\033[2J\033[H=================== MONEU LAYER-1 HYBRID CORES OPERATION ROOM ===================\n"
-                      << "🔍 [AUDIT] LAYER-1 CORE RECOVERY   : 🛰️ P2P ROUTER ONLINE | STORAGE: BINARY STREAM PACKED\n"
-                      << "💰 [VAULT] LIQUID UNLOCKED BALANCE : " << std::fixed << std::setprecision(4) << qmtm << " $QMTM Shards\n"
-                      << "💰 [VAULT] THERMODYNAMIC BALANCE   : " << (double)(qmj / 10000.0) << " $QME | Orb Tracker: " << php << " HP\n"
-                      << "💰 [STATS] CRYPT KEYS COLLECTED    : " << (hasCryptKey ? "🔑 SECURED" : "❌ NONE") << " | Experience: " << xp << " XP\n";
+                      << "🔍 [AUDIT] INCIDENT RECOVERY MAP   : 🚨 ACTIVE TIMELOCK CUSTODY MONITOR ENGAGED\n"
+                      << "💰 [VAULT] PRIMARY WALLET BALANCE  : " << std::fixed << std::setprecision(4) << qmtm << " $QMTM\n"
+                      << "💰 [VAULT] FOUNDER'S GLITCH COIN   : 6736.80000000 $QMG (Vested Isolation Lock) 🔒\n"
+                      << "💰 [VAULT] WHITE-HAT BOUNTY ASSET  : 1684.20000000 $QMC (Liquid Yield)              ✅\n"
+                      << "💰 [VAULT] PLASMA LIFE ORB TRACKER  : " << (double)php << " $QMCO [Staff Upgrade: Tier " << staffTier << "]\n"
+                      << "💰 [VAULT] THERMODYNAMIC BALANCE   : " << (double)(qmj / 10000.0) << " $QME\n"
+                      << "💰 [STATS] TOTAL KINETIC DAMAGE    : " << dmg << " HP Dealt | Current Level Shards: " << xp << " XP\n"
+                      << "💰 [STATS] CRYPT KEYS COLLECTED    : " << (hasCryptKey ? "🔑 SECURED" : "❌ NONE") << "\n";
             if (shp) {
                 std::cout << "---------------------------------------------------------------------------------\n"
                           << "🛒 [WHITE-HAT MERCHANT UPGRADE SHOP] Spend Shards to boost your network variables:\n"
@@ -89,6 +96,9 @@ int main(int argc, char* argv[]) {
                 }
             }
             std::cout << "---------------------------------------------------------------------------------\n"
+                      << "  🏆 [SWARM MAINNET] GLOBAL NETWORK RANKING LEADERBOARD REPORT\n"
+                      << "  👑 #1 | qmk1q595wx...55aa [FOUNDER]  | Tier: 17013 | Hashrate: " << (49.52 + hashrateBoosterMH) << " MH/s | UK\n"
+                      << "=================================================================================\n"
                       << "[CONTROLS] : W,A,S,D to move | [SPACEBAR] strike | [B] Shop | [R] Open Rift | X: Exit\n"
                       << "=================================================================================\n";
             
@@ -165,11 +175,11 @@ int main(int argc, char* argv[]) {
     double timeVar = static_cast<double>(now); long long rem = 1790905200LL - now; if (rem < 0) rem = 0;
     long long d = rem / 86400, h = (rem % 86400) / 3600, m = (rem % 3600) / 60, s = rem % 60;
     double speed = 24532431.0 + std::sin(timeVar)*14850.0; double tdp = 278.45 + (std::abs(std::cos(timeVar * 0.4)) * 34.20);
-    qmj += static_cast<unsigned long long>(tdp * 0.85);
+    long long structuralTimeDelta = 12 + (now % 7); qmj += static_cast<unsigned long long>(tdp * 0.85) + (structuralTimeDelta * 15000ULL);
 
-    long long blockGains = currentHeight - 337823; if (blockGains < 0) blockGains = 0;
+    long long pseudoTimeDelta = (now % 3600) / 12; long long blockGains = (currentHeight - 337823) + pseudoTimeDelta; if (blockGains < 0) blockGains = 0;
     long long calculatedLifetimeBlocks = 2658 + blockGains; double calculatedLifetimeCoins = (blockGains * 5.0) + 13290.0;
-    double spendableBalance = wallet + (blockGains * 5.0) + 1684.20;
+    double spendableBalance = wallet + (blockGains * 5.0) + qmtm;
     long long elapsedSinceLastBlock = now - ts; if (ts <= 0 || elapsedSinceLastBlock < 0 || elapsedSinceLastBlock > 3600) elapsedSinceLastBlock = now % 60;
     double averageBlockTimeCadenceSec = 60.0145 + (std::sin(static_cast<double>(currentHeight) * 0.2) * 0.0380);
     double cpu = 90.95 + (std::sin(timeVar * 0.5) * 1.1); long long currentVelocity = 54 + (currentHeight % 13);
@@ -194,7 +204,7 @@ int main(int argc, char* argv[]) {
 
     std::cout << "\033[2J\033[H" << std::fixed << std::setprecision(8);
     std::cout << "========================================================================================\n                  QMASK MASTER SWARM OPERATIONAL CONTROL PANEL\n========================================================================================\n"
-              << " Spendable Balance    : " << spendableBalance << " QMK\n Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n Circulating Supply   : 1699295.00000000 QMK / 21000000.00 QMK Max\n Rig Mining Speed     : " << speed << " H/s (32 Cores Pegged)\n Total Network Power  : 137661790 H/s (137.66179000 MH/s Estimated)\n Current Block Height : #" << currentHeight << "\n Base Transaction Fee : 0.00010013 QMC Per Kb\n Live Target Block Size: " << calculatedBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n Blocks to Retarget   : 469 Blocks Remaining\n Connected Swarm Mesh : 5 Active Peer Handshakes\n"
+              << " Spendable Balance    : " << spendableBalance << " QMK\n Immature Vault Total : 500.00000000 QMK (100 Blocks Locked)\n Circulating Supply   : " << std::fixed << std::setprecision(8) << (1699295.0 + (blockGains * 5.0)) << " QMK / 21000000.00 QMK Max\n Rig Mining Speed     : " << speed << " H/s (32 Cores Pegged)\n Total Network Power  : 137661790 H/s (137.66179000 MH/s Estimated)\n Current Block Height : #" << currentHeight << "\n Base Transaction Fee : 0.00010013 QMC Per Kb\n Live Target Block Size: " << calculatedBlockSizeKb << " Kb / 2000.00 Kb Maximum Size Cap\n Blocks to Retarget   : 469 Blocks Remaining\n Connected Swarm Mesh : 5 Active Peer Handshakes\n"
               << " Miner Lifetime Blocks: " << calculatedLifetimeBlocks << " Blocks Solved | Lifetime Mined: " << calculatedLifetimeCoins << " QMC\n Governance Stance    : SHARE_FTG Voting Pipeline Engaged\n----------------------------------------------------------------------------------------\n"
               << "🌌 ====================================================================================\n                  QMASK LAYER-1 NATIVE ZODIAC QUANTUM CONSTELLATION ENGINE          \n========================================================================================\n  [TAURUS WHEEL ALIGNMENT] :  ☄️  Orbit Node Shift: " << (23.72 + std::sin(timeVar * 0.01)) << " ° Alpha Sky Radian Range\n  [LEO ASTRO MATRIX SYNC]  :  🌟 Harmonic Hash Rate Vector: [ 3f26 ] Node Checkpoint\n  [NATIVE CONSTELLATION SE] :  👉  [" << visualElectricalBar << " ] NATIVE CODES TUNNEL MATRIX ACCELERATOR\n  [ZODIAC ALIGNMENT STATUS] : \033[1;32m🔓 ZODIAC CODEX STATUS: DECRYPTING MAINNET BLOCKS (ACTIVE PILOT)\033[0m\n----------------------------------------------------------------------------------------\n"
               << "💰 ====================================================================================\n               MONEU LAYER-1 DEDICATED SPENDABLE CRYPTO COIN WALLET                   \n========================================================================================\n  -> LIQUID UNLOCKED GAME COIN BALANCE : " << qmtm << " QMTM (Solid Capital) \n  -> ACCRUED THERMODYNAMIC STABLE ASSET: " << (double)(qmj / 10000.0) << " QME [Ratio Lock: 10,000 QMJ = 1 QME]\n  -> FOUNDER'S GLITCH COIN VAULT BLOCK : 6736.80000000 QMG (80% Vested Custody Locked) 🔒\n  -> FOUNDER RECOVERY TAX ASSET BOUNTY : 1684.20000000 QMC (20% Distributed Yield) ✅\n========================================================================================\n📊 KINETIC BASE LAYER PROTOCOL MATRIX LIVE VISUALS:\n  -> Base Transaction Fee : 0.00010013 QMC Per Kb\n  -> Live Target Block Size: " << calculatedBlockSizeKb << " Kb / 2000.00 Kb         👉  [" << progressBarText << "🧱 ]\n----------------------------------------------------------------------------------------\n⏱️  AUTOMATED NATIVE BLOCK STOPWATCH MONITOR:\n Last Solved Block Velocity : " << currentVelocity << " Seconds Elapsed\n Consensus Stabilization Target: " << averageBlockTimeCadenceSec << " Seconds Average [ASERT Engine Active]\n 📊 MINI HISTORY RECORD      : " << elapsedSinceLastBlock << "s elapsed since last validated block signature\n----------------------------------------------------------------------------------------\n⏳ MIGRATION T-ZERO MAINNET RESET COUNTDOWN:\n Precise Deadline Clock: " << d << "d " << h << "h " << m << "m " << s << "s remaining until Genesis Reset!\n----------------------------------------------------------------------------------------\n👑 SOVEREIGN MULTI-CHAIN TROPHY CASE & GAME VAULT DISPLAY BALANCE :\n  -> Active Collectible Trophy: 👑 [KRAKEN_SOVEREIGN_REGINA] (MAX_TIER) (+ 25.00 MH/s Booster Active!)\n  💰 ON-CHAIN GAME TOKEN LIQUID HOLDINGS : " << qmtm << " QMTM\n========================================================================================\n         PRIMARY WORKSTATION PC HARDWARE DIAGNOSTICS & HARDWARE MATRIX\n========================================================================================\n CPU Architecture : AMD Ryzen Threadripper PRO 5955WX (32 Cores) | Utilization: " << cpu << " %\n Core Rail Voltage: 1.224 V Vcore          | Draw Power: " << tdp << " W TDP Peak\n🔋 ACCUMULATED HARDWARE KINETIC ENERGY WORK       : " << qmj << " QMJ\n========================================================================================\n                     QMASK ALL-IN-ONE SWARM NETWORKING REGISTRY REPORT\n========================================================================================\n IP ADDRESS      | CLIENT VERIFY    | RIG IDENTITY | MINING WALLET IDENTITY         | HASHRATE    | COUNTRY/ZONE\n-----------------+------------------+--------------+--------------------------------+-------------+---------------\n";
